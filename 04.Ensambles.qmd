@@ -1,0 +1,236 @@
+---
+title: "02.Ensambles"
+---
+
+## 01. Ensamble de las secuencias
+
+Un vez teniendo las secuencias limpias ya podemos realizar el ensamble.\
+Ensamblaremos con [**MetaSPAdes**](https://github.com/ablab/spades) y [**Megahit**](https://github.com/voutcn/megahit), después compararemos ambos ensambles basándonos en longitudes de los contigs con QUAST y el porcentaje de lecturas que dan lugar al coensamble, esto con bbmap de [**bbtools**](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/).
+
+Los ensambladores de metagenomas que actualmente se utilizan funcionan mediante la generación de gráficos de Bruijin:
+
+![](images/clipboard-2589208043.png)
+
+Manos a la obra, vamos a ensamblar diferentes versiones de ensambles.
+
+Vamos a crear el directorio de resultados
+
+``` bash
+mkdir -p results/03.ensambles/09h
+```
+
+### 01.1 Versión 1 de ensamble
+
+1.  Ahora si, vamos a ensamblar las lecturas usando el tamaño e incrementos de k-mers que el programa tiene por defecto, esta será nuestra primer versión.
+
+Vamos a generar un script que corra esta versión:
+
+``` bash
+nano scripts/03.1.ensamble_megahit_v1.sh
+```
+
+``` bash
+#!/usr/bin/bash
+# Nombre y fecha
+# Script que corre  version 1 de ensamble con megahit
+
+# v01
+megahit -t 4 --min-contig-len 1000 \
+ --out-prefix v1_megahit \
+ -1 results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz \
+ -2 results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz \
+ -o results/03.ensambles/09h/v1 
+```
+
+Guardamos tecleando `ctrl` + `o` + `enter` y luego `ctrl` + `x` + `enter`
+
+Y ejecutamos asi:
+
+``` bash
+nohup bash scripts/03.1.ensamble_megahit_v1.sh > outs/03.1.ensambles_megahit.out &
+```
+
+::: callout-important
+## OJO
+
+Estamos utilizando la opción `--min-contig-len 1000` para efectos del curso y el tipo de datos que tenemos, sin embargo, esta opción podría estar demasiado laxa, hay estudios que han demostrado que el uso de contigs de longitud menor a 2000 pb puede producir malas agrupaciones de genomas (MAGs) .
+:::
+
+---
+
+::: callout-warning
+## Precaución
+
+Las siguientes dos versiones de ensamble tardan todavía más tiempo que la primer versión, así que nos dimos a la tarea de correrlas y los resultados se encuentran en el directorio de resultados correspondiente. Exploremoslos!!!
+:::
+
+El flujo y código para correr las otras dos versiones se depliega a continuación, recuerda que **NO es para ejecutarse**, pero te lo dejamos como ejemplo para que lo puedas replicar más tarde en los ejercicios.
+
+:::: {.callout-tip collapse="true"}
+## Versiones 2 y 3 de ensambles
+
+---
+
+### 01.2 Versión 2 de ensamble
+
+2.  Para la segunda versión con megahit, cambiaremos el tamaño y pasos de k-mers. Aunque no lo vamos a ejecutar, te dejamos la linea de código que se usa para esta versión. Vamos a revisarla:
+
+``` {.bash collapse="true"}
+# v02
+megahit -t 4 --min-contig-len 1000 \
+ --presets meta-sensitive --out-prefix v2_megahit \
+ -1 results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz \
+ -2 results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz \
+ -o results/03.ensambles/09h/v2 
+```
+
+---
+
+### 01.3 Versión 3 de ensamble
+
+La tercera versión de ensamble es mediante otro ensamblador llamado metaSPAdes, en esta versión usaremos los parámetros por defecto para poder hacer una comparación justa con la primer versión de Megahit.
+
+``` bash
+#El directorio para los resultados
+mkdir -p results/03.ensambles/09h/v3
+# La linea de comando para ejecutarla
+nohup metaspades.py -t 6 \
+ -1 results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz \
+ -2 results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz \
+ -o results/03.ensambles/09h/v3 > outs/03.2.metaspades.nohup &
+```
+
+Remover contigs que sean menores a 1000 pb para que sea comparable con los ensambles de megahit, puede ser con seqkit
+
+``` bash
+seqkit seq -m 1000 results/03.ensambles/09h/v3/scaffolds.fasta > results/03.ensambles/09h/v3_spades.fasta
+```
+
+Revisemos el contenido del directorio `results/03.ensambles/`
+
+``` bash
+ls results/03.ensambles/
+```
+
+Notarás que el ensamble filtrado de spades ya vive en este directorio
+
+---
+
+::: callout-note
+## Una buena práctica
+
+Cómo todo en la ciencia, la ejecución de proyectos bioinformáticos requieren de buenas prácticas, una de tantas es eliminar archivos intermedios que dejan de ser útiles después de la exploración.
+
+En el ejemplo de los ensambles, los archivos intermedios suelen ser muy pesados y esto ocasiona saturación del servidor, así que vamos a limpiar nuestro directorio de ensambles.
+
+``` bash
+ # cambiamos de lugar los ensambles de megahit y los renombramos
+ mv v1/v1_megahit.contigs.fa v1_megahit.fasta
+ mv v2/v2_megahit.contigs.fa v2_megahit.fasta
+ 
+ # ya que tenemos los resultados en el directorio results/03.ensambles, 
+ #eliminamos los directorios que contienen todos los archivos
+ #intermedios de cada versión de ensamble 
+ rm -r v1/ v2/ v3/
+```
+:::
+::::
+
+------------------------------------------------------------------------
+
+## 02. Comparación de ensambles
+
+## 02.1 Mapeo de las lecturas
+
+Se usara [**bbtools**](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/) para mapear las secuencias ensambladas.
+
+Vamos a crear el directorio que albergará los resultados de profundidad
+
+``` bash
+mkdir -p results/04.compare/09h/
+```
+
+Vamos a mapear todos los ensambles que obtuvimos a las lecturas limpias, hagamos un script para esto:
+
+``` bash
+nano scripts/04.profundidad.sh
+```
+
+``` bash
+#!/usr/bin/bash
+#Script que corre BBmap para mapear y obtener el numero de lecturas mapeadas a cada version de ensamble
+
+# version 1
+bbmap.sh ref=results/03.ensambles/09h/v1_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz threads=10 scafstats=results/04.compare/09h/v1.stats
+
+# version 2
+bbmap.sh ref=results/03.ensambles/09h/v2_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz threads=10 scafstats=results/04.compare/09h/v2.stats
+
+# version 3
+bbmap.sh ref=results/03.ensambles/09h/v3_spades.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz threads=10 scafstats=results/04.compare/09h/v3.stats
+```
+
+Y lo ejecutamos asi:
+
+``` bash
+nohup bash scripts/04.profundidad.sh > outs/04.bbmap.out &
+```
+
+Vamos a explorar cuantas lecturas se mapearon en cada uno de los ensambles
+
+``` bash
+for file in $(ls results/04.compare/09h/*.stats); do 
+  echo "El número de lecturas mapeadas al ensamble:  " $file "es: "
+  cut -f9 $file | grep -v assignedBases | awk '{sum += $1;}END{print sum;}'
+done
+```
+
+![](images/clipboard-488604145.png)
+
+Bien, ahora ya sabemos que ensamble se formó con una mayor cantidad de lecturas, sin embargo, ahora nos falta conocer que ensamble tiene una mayor longitud de contigs.
+
+::: callout-caution
+## Preguntas
+
+¿Qué porcentaje de las lecturas se mapearon en todos los casos?
+
+¿Qué pasó con las lecturas que no mapearon al ensamble?
+:::
+
+## 02.2 Longitud de los contigs
+
+Por último, se utilizará [Quast](https://github.com/ablab/quast) para revisar la longitud que tienen los contigs de cada ensamble.
+
+``` bash
+quast.py results/03.ensambles/09h/*.fasta -o results/04.compare/09h/quast
+```
+
+Veamos los resultados: `less results/04.compare/09h/quast/report.txt` o descarguemos el `report.html o pdf`.
+
+![](images/clipboard-3590529693.png)
+
+Observemos la ayuda de metaquast para que veamos todo el potencial de esta herramienta:
+
+``` bash
+metaquast.py --help
+```
+
+::: callout-caution
+## Preguntas
+
+¿Qué ensamble es el mejor?
+
+¿Porqué seleccionarlo?
+
+¿Qué importancia tiene probar diferentes pasos y tamaños de k-mers y diferentes ensambladores?
+:::
+
+# La diversión ha llegado:
+
+::: callout-tip
+## Ejercicios
+
+**Ahora a te toca tí**
+
+Les toca ensamblar la muestra del tiempo de fermentación que les tocó. En equipo discutan y **sólo un miembro del equipo corra el script** mientras los demás le ayudan a dictar las lineas de comandos, discutan los resultados y preparen una diapositiva para que la presenten.
+:::

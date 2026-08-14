@@ -1,0 +1,142 @@
+[
+  {
+    "objectID": "01.Presentacion_pozol.html",
+    "href": "01.Presentacion_pozol.html",
+    "title": "El pozol",
+    "section": "",
+    "text": "El pozol es un alimento ácido, fermentado a partir de maíz nixtamalizado, de importancia económica y cultural, se consume desde tiempos prehispánicos y se ha estudiado desde los años 50s.\nAlgunos puntos importantes que conocemos son:\n\n\nNo se inocula y al final de su fermentación tiene alta diversidad microbiana.\nEs muy nutritivo, tiene un alto contenido de aminoácidos esenciales.\nEs considerado como prebiótico, contiene fibras solubles y microorganismos benéficos para la salud intestinal humana.\n\n\n\n🧬🔊🦠 Imaginemos que se quiere impulsar la producción de esta bebida y para ello necesitan saber todo acerca de su naturaleza microbiana.\nUna importante industria alimenticia los contacta como expertos en ecología microbiana y les pide ayuda para descubrir los siguientes puntos:\n\n\n¿Qué actores microbianos están presentes durante el proceso de fermentación?\n¿Qué funciones metabólicas están ocurriendo?\n¿Cambia la comunidad microbiana a lo largo del proceso?\n¿Cómo ocurre la bioconversión del maíz durante la fermentación, quién participa y cómo lo hace?\n\n\nLa empresa secuenció cuatro puntos de fermentación de muestras que se obtuvieron en un mercado de Campeche. Las muestras se secuenciaron con Illumina NextSeq500 con lecturas pareadas de 75 pb. Los datos están públicos bajo el Bioproject: PRJNA648868\n\n\nEl artículo: López-Sánchez et al., 2023. Analysing the dynamics of the bacterial community in pozol, a Mexican fermented corn dough. 10.1099/mic.0.001355"
+  },
+  {
+    "objectID": "02.Espacio_de_trabajo.html",
+    "href": "02.Espacio_de_trabajo.html",
+    "title": "00. Preparación del proyecto",
+    "section": "",
+    "text": "Durante cualquier proyecto bioinformático es importante tener orden del directorio de trabajo y los procesos que se ejecutan.\nUna buena práctica es crear un directorio principal del proyecto que contenga subdirectorios de trabajo, la estructura puede ser la siguiente:\ndata Directorio donde se almacenan los datos que sirven como\nentrada inicial para comenzar el proyecto.\nresults Directorio en el que se almacenan los resultados obtenidos\nen cada paso del análisis.\nscripts Directorio en el que se almacenan los scripts generados en cada paso del análisis.\nouts Directorio en el se direccionan las salidas del stdout a un archivo log de cada proceso.\nREADME.md Archivo README principal en el que se explica el objetivo\ndel proyecto, el flujo de trabajo, los requistos de\nejecución, estructura del repositorio, los resultados obtenidos y sus conclusiones.\n\nConozcamos el directorio en el que estamos situados\npwd\nVamos a acceder al directorio de este proyecto\ncd reads2mags_pozol\nY ahora revisemos la estructura\nls\nEntremos al directorio data para ver lo que contiene\ncd data/\nls -lh\n¿Cuántas muestra hay?"
+  },
+  {
+    "objectID": "02.Espacio_de_trabajo.html#espacio-de-trabajo",
+    "href": "02.Espacio_de_trabajo.html#espacio-de-trabajo",
+    "title": "00. Preparación del proyecto",
+    "section": "",
+    "text": "Durante cualquier proyecto bioinformático es importante tener orden del directorio de trabajo y los procesos que se ejecutan.\nUna buena práctica es crear un directorio principal del proyecto que contenga subdirectorios de trabajo, la estructura puede ser la siguiente:\ndata Directorio donde se almacenan los datos que sirven como\nentrada inicial para comenzar el proyecto.\nresults Directorio en el que se almacenan los resultados obtenidos\nen cada paso del análisis.\nscripts Directorio en el que se almacenan los scripts generados en cada paso del análisis.\nouts Directorio en el se direccionan las salidas del stdout a un archivo log de cada proceso.\nREADME.md Archivo README principal en el que se explica el objetivo\ndel proyecto, el flujo de trabajo, los requistos de\nejecución, estructura del repositorio, los resultados obtenidos y sus conclusiones.\n\nConozcamos el directorio en el que estamos situados\npwd\nVamos a acceder al directorio de este proyecto\ncd reads2mags_pozol\nY ahora revisemos la estructura\nls\nEntremos al directorio data para ver lo que contiene\ncd data/\nls -lh\n¿Cuántas muestra hay?"
+  },
+  {
+    "objectID": "02.Espacio_de_trabajo.html#vamos-a-organizarnos",
+    "href": "02.Espacio_de_trabajo.html#vamos-a-organizarnos",
+    "title": "00. Preparación del proyecto",
+    "section": "02. Vamos a organizarnos",
+    "text": "02. Vamos a organizarnos\n\n\n\n\n\n\nTipReglas del juego\n\n\n\n\nEn este tutorial haremos el ejemplo corriendo la muestra de 9 horas.\nSe formaran 6 equipos (2 correspondientes a los tiempos 0, 24 y 48 horas).\nSe reunirán y en equipo discutirán y presentarán sus resultados cuando se indique en el tutorial."
+  },
+  {
+    "objectID": "02.Espacio_de_trabajo.html#advertencias",
+    "href": "02.Espacio_de_trabajo.html#advertencias",
+    "title": "00. Preparación del proyecto",
+    "section": "03. Advertencias",
+    "text": "03. Advertencias\n\nLa presente práctica sólo es una representación del flujo de trabajo para el an álisis metagenómico, sin embargo, no sustituye los manuales de cada programa y el flujo puede variar dependiendo del tipo de datos y pregunta de investigación, de hecho para fines del taller, con frecuencia se utilizan las lineas de comando más simples para eficientar tiempo y recursos, tómalo en cuenta.\n\nCada programa tiene una ayuda y un manual de usuario, es importante revisarlo y conocer cada parámetro que se ejecute. En terminal se puede consultar el manual con el comando man y también se puede consultar la ayuda con -h o --help, por ejemplo fastqc -h.\n\n\n\n\n\n\n\n\nImportant\n\n\n\n🧠 Para tenerlo presente\nEn bioinformática cualquier línea de comandos generará un resultado, de ahí a que esos resultados sean correctos puede haber una gran diferencia.\nEn cada paso:\n\nDetente a revisar la información de cada programa, lee el manual y la ayuda\nElige los parámetros que mejor se adapten a tus datos.\nAnaliza las salidas de cada proceso y los resultados.\nHaz varias pruebas, usa controles (positivo y negativo).\nVisita foros de ayuda, complementa con IA.\nToma decisiones informadas y con argumentos sólidos.\nDisfruta el proceso."
+  },
+  {
+    "objectID": "02.Espacio_de_trabajo.html#cómo-abordar-proyecto-metagenómico",
+    "href": "02.Espacio_de_trabajo.html#cómo-abordar-proyecto-metagenómico",
+    "title": "00. Preparación del proyecto",
+    "section": "04. ¿Cómo abordar Proyecto Metagenómico?",
+    "text": "04. ¿Cómo abordar Proyecto Metagenómico?\nEn los proyectos metagenómicos el diseño experimental y el procesamiento de los datos es muy importante. El procesamiento puede abordarse de dos maneras diferentes, durante este taller veremos la forma más básica y durante la segunda parte veremos la forma avanzada."
+  },
+  {
+    "objectID": "03.Filtrados.html",
+    "href": "03.Filtrados.html",
+    "title": "01.Filtros",
+    "section": "",
+    "text": "Entremos al directorio data\ncd data/\n\n\n\n\n\n\nNote¿Pero, qué es un FASTQ?\n\n\n\nUn archivo FASTQ contiene secuencias de ADN/ARN obtenidas mediante secuenciación masiva y la calidad de cada base. Cada lectura ocupa 4 líneas:\n\nIdentificador de la lectura.\nSecuencia de nucleótidos.\nSeparador (+).\nCalidad de cada base codificada en caracteres.\n\n\n\n\nVeamos cuántas lecturas tiene la muestra del tiempo 0 hrs:\nzcat 09hrs_sm_R1.fastq.gz | awk 'END {print NR/4}'\nzcat 09hrs_sm_R2.fastq.gz | awk 'END {print NR/4}'\n\n\n\n\n\n\nWarningPreguntas\n\n\n\n1) ¿Cuántas muestras hay?\n2) ¿Cuántas lecturas tiene cada muestra?\n\n\n\n\n\n\nTip\n\n\n\n\n\nOpción para ver todas de un jalón\nprintf \"Muestra\\tR1\\tR2\\tTotal\\n\"\nfor r1 in *_R1.fastq.gz; do\n    sample=$(basename \"$r1\" _R1.fastq.gz)\n    r2=\"${sample}_R2.fastq.gz\"\n\n    n1=$(zcat \"$r1\" | awk 'END {print NR/4}')\n    n2=$(zcat \"$r2\" | awk 'END {print NR/4}')\n    total=$((n1 + n2))\n\n    printf \"%s\\t%s\\t%s\\t%s\\n\" \"$sample\" \"$n1\" \"$n2\" \"$total\"\ndone\nRespuesta:\n\n\n\nMuestra\nR1\nR2\nTotal\n\n\n0hrs_sm\n1117454\n1117454\n2234908\n\n\n24hrs_sm\n9888834\n9888834\n19777668\n\n\n48hrs_sm\n7260747\n7260747\n14521494\n\n\n9hrs_sm\n9899280\n9899280\n19798560"
+  },
+  {
+    "objectID": "03.Filtrados.html#recordatorio-sobre-las-lecturas",
+    "href": "03.Filtrados.html#recordatorio-sobre-las-lecturas",
+    "title": "01.Filtros",
+    "section": "",
+    "text": "Entremos al directorio data\ncd data/\n\n\n\n\n\n\nNote¿Pero, qué es un FASTQ?\n\n\n\nUn archivo FASTQ contiene secuencias de ADN/ARN obtenidas mediante secuenciación masiva y la calidad de cada base. Cada lectura ocupa 4 líneas:\n\nIdentificador de la lectura.\nSecuencia de nucleótidos.\nSeparador (+).\nCalidad de cada base codificada en caracteres.\n\n\n\n\nVeamos cuántas lecturas tiene la muestra del tiempo 0 hrs:\nzcat 09hrs_sm_R1.fastq.gz | awk 'END {print NR/4}'\nzcat 09hrs_sm_R2.fastq.gz | awk 'END {print NR/4}'\n\n\n\n\n\n\nWarningPreguntas\n\n\n\n1) ¿Cuántas muestras hay?\n2) ¿Cuántas lecturas tiene cada muestra?\n\n\n\n\n\n\nTip\n\n\n\n\n\nOpción para ver todas de un jalón\nprintf \"Muestra\\tR1\\tR2\\tTotal\\n\"\nfor r1 in *_R1.fastq.gz; do\n    sample=$(basename \"$r1\" _R1.fastq.gz)\n    r2=\"${sample}_R2.fastq.gz\"\n\n    n1=$(zcat \"$r1\" | awk 'END {print NR/4}')\n    n2=$(zcat \"$r2\" | awk 'END {print NR/4}')\n    total=$((n1 + n2))\n\n    printf \"%s\\t%s\\t%s\\t%s\\n\" \"$sample\" \"$n1\" \"$n2\" \"$total\"\ndone\nRespuesta:\n\n\n\nMuestra\nR1\nR2\nTotal\n\n\n0hrs_sm\n1117454\n1117454\n2234908\n\n\n24hrs_sm\n9888834\n9888834\n19777668\n\n\n48hrs_sm\n7260747\n7260747\n14521494\n\n\n9hrs_sm\n9899280\n9899280\n19798560"
+  },
+  {
+    "objectID": "03.Filtrados.html#evaluación-de-calidad-con-fastqc",
+    "href": "03.Filtrados.html#evaluación-de-calidad-con-fastqc",
+    "title": "01.Filtros",
+    "section": "01. Evaluación de calidad con FastQC",
+    "text": "01. Evaluación de calidad con FastQC\nPara evaluar la calidad de nuestros archivos FASTQ, utilizaremos FastQC\nFastQC es un programa que nos permite visualizar la calidad de nuestras lecturas, permitiendo detectar alguna anomalía en las secuencias antes de hacer cualquier análisis:\n\nLecturas de baja calidad en los extremos\nContaminación por adaptadores\nSesgos en la secuenciación\nPresencia de secuencias duplicadas\n\n\n\n\n\n\n\nImportantDirectorio Principal\n\n\n\nRegresemos a nuestro directorio principal:\ncd\ncd reads2mags_pozol\n\n\nVamos a crear el directorio que albergará los resultados de fastqc y multiqc\nmkdir -p results/01.fastqc/09h\nRevisaremos la calidad con fastqc\nfastqc data/09hrs_sm_R* -o results/01.fastqc/09h"
+  },
+  {
+    "objectID": "03.Filtrados.html#eliminación-de-adaptadores-y-lecturas-de-baja-calidad.",
+    "href": "03.Filtrados.html#eliminación-de-adaptadores-y-lecturas-de-baja-calidad.",
+    "title": "01.Filtros",
+    "section": "02. Eliminación de adaptadores y lecturas de baja calidad.",
+    "text": "02. Eliminación de adaptadores y lecturas de baja calidad.\n\n\n\n\n\nUsaremos TrimGalore que nos permite eliminar lecturas de baja calidad, adaptadores, duplicados, etc. Existen otros programas para limpiar las lecturas como Trimmomatic, Fastp, etc.\nCreamos el directorio de resultados\nmkdir -p results/02.trimgalore/09h\nAhora si vamos a filtrar las lecturas\nAntes de ejecutarlo veamos la ayuda de trim_galore\ntrim_galore --help\ntrim_galore --fastqc -j 4 --paired data/09h_1.fastq.gz data/09h_2.fastq.gz -o results/02.trimgalore/9h"
+  },
+  {
+    "objectID": "03.Filtrados.html#revisemos-la-calidad-de-las-lecturas-antes-y-después-de-limpiar",
+    "href": "03.Filtrados.html#revisemos-la-calidad-de-las-lecturas-antes-y-después-de-limpiar",
+    "title": "01.Filtros",
+    "section": "03. Revisemos la calidad de las lecturas antes y después de limpiar",
+    "text": "03. Revisemos la calidad de las lecturas antes y después de limpiar\nMultiQC toma los resultados de FastQC y los resume en un único informe que nos permite:\n\nRevisar la calidad de todas las muestras a la vez.\nComparar rápidamente cuál muestra tiene peor calidad.\nFacilitar la interpretación sin tener que abrir muchos HTMLs.\nIdentificar como están las lecturas y los posibles problemas para planear futuros análisis si son necesarios.\n\nRevisemos la calidad con multiqc\nmultiqc results/01.fastqc/09h/ results/02.trimgalore/09h/ -o results/02.trimgalore/09h/\nDescarguemos el resultado de multiqc para evaluarlo\n# Descubramos cual es la ruta absoluta del resultado de multiqc\nrealpath results/02.trimgalore/09h/multiqc_report.html\n\n#en mi caso es:\n# /home/dianao/reads2mags_pozol/results/02.trimgalore/09h/multiqc_report.html\n\n# Ahora vamos a una terminal de nuestra computadora para poder descargar el archivo\nscp dianao@[ip del servidor]:/home/dianao/reads2mags_pozol/results/02.trimgalore/09h/multiqc_report.html\n\n\n\n\n\n\n\nWarningReúnanse en equipo y resuelvan estas preguntas\n\n\n\n¿Cambió la calidad?\n¿Cuántas lecturas había y cuántas quedaron después del filtro?\nTiempo: 15 min"
+  },
+  {
+    "objectID": "03.Filtrados.html#nota-sobre-la-remoción-del-genoma-del-maíz",
+    "href": "03.Filtrados.html#nota-sobre-la-remoción-del-genoma-del-maíz",
+    "title": "01.Filtros",
+    "section": "04. Nota sobre la remoción del genoma del maíz",
+    "text": "04. Nota sobre la remoción del genoma del maíz\nComo las muestras del pozol tienen DNA de maíz es necesario eliminar las lecturas de éste para quedarnos con las secuencias pertenecientes al microbioma. Para hacer este proceso se necesita hacer un mapeo global, existen diferentes herramientas que nos permiten realizarlo, como bwa, bowtie2, bbmap o minimap (este último para lecturas largas).\nCómo es un proceso largo, nos dimos a la tarea de ejecutarlo y las lecturas que estaremos trabajando ya no contienen el genoma del maiz. Este es el script que usamos para obtenerlas.\n\n\n\n\n\n\nTipScrip de remoción de hospedero\n\n\n\n\n\n#!/bin/bash\n#Script que corre bwa para mapear lecturas metagenomas al genoma del hospedero, en este caso maiz utilizando BWA y Samtools\n\n\n# 01. Utilizamos BWA para crear un índice basado en el genoma de referencia del maíz\nbwa index -p maize_index -a bwtsw data/zeamays.fa\n# 23 min\n\n# 02. Ya que creamos el índice haremos un alineamiento de las lecturas del pozol para mapear las correspondientes al genoma del maíz\n\nbwa mem -t 10 maize_index data/09hrs_R1.fastq.gz \\\n data/09hrs_R2.fastq.gz \\\n | samtools view -Sb - | samtools sort -o data/mapping.sorted.bam\n \necho \"INFO: Pipeline finalizado. El resultado está en mapping.sorted.bam\"\n\n#Ahora vamos a extraer las lecturas que no corresponden al genoma del maíz (flag77) y (flag 141)\n\n#Primero en R1\nsamtools view -f 77 mapping.sorted.bam | \\\nawk '{print \"@\"$1\"\\n\"$10\"\\n+\\n\"$11}' &gt; data/09hrs_sm_R1.fastq\n# Ahora en R2\nsamtools view -f 141 mapping.sorted.bam | \\\nawk '{print \"@\"$1\"\\n\"$10\"\\n+\\n\"$11}' &gt; data/09hrs_sm_R2.fastq"
+  },
+  {
+    "objectID": "04.Ensambles.html",
+    "href": "04.Ensambles.html",
+    "title": "02.Ensambles",
+    "section": "",
+    "text": "Un vez teniendo las secuencias limpias ya podemos realizar el ensamble.\nEnsamblaremos con MetaSPAdes y Megahit, después compararemos ambos ensambles basándonos en longitudes de los contigs con QUAST y el porcentaje de lecturas que dan lugar al coensamble, esto con bbmap de bbtools.\nLos ensambladores de metagenomas que actualmente se utilizan funcionan mediante la generación de gráficos de Bruijin:\n\nManos a la obra, vamos a ensamblar diferentes versiones de ensambles.\nVamos a crear el directorio de resultados\nmkdir -p results/03.ensambles/09h\n\n\n\nAhora si, vamos a ensamblar las lecturas usando el tamaño e incrementos de k-mers que el programa tiene por defecto, esta será nuestra primer versión.\n\nVamos a generar un script que corra esta versión:\nnano scripts/03.1.ensamble_megahit_v1.sh\n#!/usr/bin/bash\n# Nombre y fecha\n# Script que corre  version 1 de ensamble con megahit\n\n# v01\nmegahit -t 4 --min-contig-len 1000 \\\n --out-prefix v1_megahit \\\n -1 results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz \\\n -2 results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz \\\n -o results/03.ensambles/09h/v1 \nGuardamos tecleando ctrl + o + enter y luego ctrl + x + enter\nY ejecutamos asi:\nnohup bash scripts/03.1.ensamble_megahit_v1.sh &gt; outs/03.1.ensambles_megahit.out &\n\n\n\n\n\n\nImportantOJO\n\n\n\nEstamos utilizando la opción --min-contig-len 1000 para efectos del curso y el tipo de datos que tenemos, sin embargo, esta opción podría estar demasiado laxa, hay estudios que han demostrado que el uso de contigs de longitud menor a 2000 pb puede producir malas agrupaciones de genomas (MAGs) .\n\n\n\n\n\n\n\n\n\nWarningPrecaución\n\n\n\nLas siguientes dos versiones de ensamble tardan todavía más tiempo que la primer versión, así que nos dimos a la tarea de correrlas y los resultados se encuentran en el directorio de resultados correspondiente. Exploremoslos!!!\n\n\nEl flujo y código para correr las otras dos versiones se depliega a continuación, recuerda que NO es para ejecutarse, pero te lo dejamos como ejemplo para que lo puedas replicar más tarde en los ejercicios.\n\n\n\n\n\n\nTipVersiones 2 y 3 de ensambles\n\n\n\n\n\n\n\n\n\nPara la segunda versión con megahit, cambiaremos el tamaño y pasos de k-mers. Aunque no lo vamos a ejecutar, te dejamos la linea de código que se usa para esta versión. Vamos a revisarla:\n\n# v02\nmegahit -t 4 --min-contig-len 1000 \\\n --presets meta-sensitive --out-prefix v2_megahit \\\n -1 results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz \\\n -2 results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz \\\n -o results/03.ensambles/09h/v2 \n\n\n\n\nLa tercera versión de ensamble es mediante otro ensamblador llamado metaSPAdes, en esta versión usaremos los parámetros por defecto para poder hacer una comparación justa con la primer versión de Megahit.\n#El directorio para los resultados\nmkdir -p results/03.ensambles/09h/v3\n# La linea de comando para ejecutarla\nnohup metaspades.py -t 6 \\\n -1 results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz \\\n -2 results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz \\\n -o results/03.ensambles/09h/v3 &gt; outs/03.2.metaspades.nohup &\nRemover contigs que sean menores a 1000 pb para que sea comparable con los ensambles de megahit, puede ser con seqkit\nseqkit seq -m 1000 results/03.ensambles/09h/v3/scaffolds.fasta &gt; results/03.ensambles/09h/v3_spades.fasta\nRevisemos el contenido del directorio results/03.ensambles/\nls results/03.ensambles/\nNotarás que el ensamble filtrado de spades ya vive en este directorio\n\n\n\n\n\n\n\nNoteUna buena práctica\n\n\n\nCómo todo en la ciencia, la ejecución de proyectos bioinformáticos requieren de buenas prácticas, una de tantas es eliminar archivos intermedios que dejan de ser útiles después de la exploración.\nEn el ejemplo de los ensambles, los archivos intermedios suelen ser muy pesados y esto ocasiona saturación del servidor, así que vamos a limpiar nuestro directorio de ensambles.\n # cambiamos de lugar los ensambles de megahit y los renombramos\n mv v1/v1_megahit.contigs.fa v1_megahit.fasta\n mv v2/v2_megahit.contigs.fa v2_megahit.fasta\n \n # ya que tenemos los resultados en el directorio results/03.ensambles, \n #eliminamos los directorios que contienen todos los archivos\n #intermedios de cada versión de ensamble \n rm -r v1/ v2/ v3/"
+  },
+  {
+    "objectID": "04.Ensambles.html#ensamble-de-las-secuencias",
+    "href": "04.Ensambles.html#ensamble-de-las-secuencias",
+    "title": "02.Ensambles",
+    "section": "",
+    "text": "Un vez teniendo las secuencias limpias ya podemos realizar el ensamble.\nEnsamblaremos con MetaSPAdes y Megahit, después compararemos ambos ensambles basándonos en longitudes de los contigs con QUAST y el porcentaje de lecturas que dan lugar al coensamble, esto con bbmap de bbtools.\nLos ensambladores de metagenomas que actualmente se utilizan funcionan mediante la generación de gráficos de Bruijin:\n\nManos a la obra, vamos a ensamblar diferentes versiones de ensambles.\nVamos a crear el directorio de resultados\nmkdir -p results/03.ensambles/09h\n\n\n\nAhora si, vamos a ensamblar las lecturas usando el tamaño e incrementos de k-mers que el programa tiene por defecto, esta será nuestra primer versión.\n\nVamos a generar un script que corra esta versión:\nnano scripts/03.1.ensamble_megahit_v1.sh\n#!/usr/bin/bash\n# Nombre y fecha\n# Script que corre  version 1 de ensamble con megahit\n\n# v01\nmegahit -t 4 --min-contig-len 1000 \\\n --out-prefix v1_megahit \\\n -1 results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz \\\n -2 results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz \\\n -o results/03.ensambles/09h/v1 \nGuardamos tecleando ctrl + o + enter y luego ctrl + x + enter\nY ejecutamos asi:\nnohup bash scripts/03.1.ensamble_megahit_v1.sh &gt; outs/03.1.ensambles_megahit.out &\n\n\n\n\n\n\nImportantOJO\n\n\n\nEstamos utilizando la opción --min-contig-len 1000 para efectos del curso y el tipo de datos que tenemos, sin embargo, esta opción podría estar demasiado laxa, hay estudios que han demostrado que el uso de contigs de longitud menor a 2000 pb puede producir malas agrupaciones de genomas (MAGs) .\n\n\n\n\n\n\n\n\n\nWarningPrecaución\n\n\n\nLas siguientes dos versiones de ensamble tardan todavía más tiempo que la primer versión, así que nos dimos a la tarea de correrlas y los resultados se encuentran en el directorio de resultados correspondiente. Exploremoslos!!!\n\n\nEl flujo y código para correr las otras dos versiones se depliega a continuación, recuerda que NO es para ejecutarse, pero te lo dejamos como ejemplo para que lo puedas replicar más tarde en los ejercicios.\n\n\n\n\n\n\nTipVersiones 2 y 3 de ensambles\n\n\n\n\n\n\n\n\n\nPara la segunda versión con megahit, cambiaremos el tamaño y pasos de k-mers. Aunque no lo vamos a ejecutar, te dejamos la linea de código que se usa para esta versión. Vamos a revisarla:\n\n# v02\nmegahit -t 4 --min-contig-len 1000 \\\n --presets meta-sensitive --out-prefix v2_megahit \\\n -1 results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz \\\n -2 results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz \\\n -o results/03.ensambles/09h/v2 \n\n\n\n\nLa tercera versión de ensamble es mediante otro ensamblador llamado metaSPAdes, en esta versión usaremos los parámetros por defecto para poder hacer una comparación justa con la primer versión de Megahit.\n#El directorio para los resultados\nmkdir -p results/03.ensambles/09h/v3\n# La linea de comando para ejecutarla\nnohup metaspades.py -t 6 \\\n -1 results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz \\\n -2 results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz \\\n -o results/03.ensambles/09h/v3 &gt; outs/03.2.metaspades.nohup &\nRemover contigs que sean menores a 1000 pb para que sea comparable con los ensambles de megahit, puede ser con seqkit\nseqkit seq -m 1000 results/03.ensambles/09h/v3/scaffolds.fasta &gt; results/03.ensambles/09h/v3_spades.fasta\nRevisemos el contenido del directorio results/03.ensambles/\nls results/03.ensambles/\nNotarás que el ensamble filtrado de spades ya vive en este directorio\n\n\n\n\n\n\n\nNoteUna buena práctica\n\n\n\nCómo todo en la ciencia, la ejecución de proyectos bioinformáticos requieren de buenas prácticas, una de tantas es eliminar archivos intermedios que dejan de ser útiles después de la exploración.\nEn el ejemplo de los ensambles, los archivos intermedios suelen ser muy pesados y esto ocasiona saturación del servidor, así que vamos a limpiar nuestro directorio de ensambles.\n # cambiamos de lugar los ensambles de megahit y los renombramos\n mv v1/v1_megahit.contigs.fa v1_megahit.fasta\n mv v2/v2_megahit.contigs.fa v2_megahit.fasta\n \n # ya que tenemos los resultados en el directorio results/03.ensambles, \n #eliminamos los directorios que contienen todos los archivos\n #intermedios de cada versión de ensamble \n rm -r v1/ v2/ v3/"
+  },
+  {
+    "objectID": "04.Ensambles.html#comparación-de-ensambles",
+    "href": "04.Ensambles.html#comparación-de-ensambles",
+    "title": "02.Ensambles",
+    "section": "02. Comparación de ensambles",
+    "text": "02. Comparación de ensambles"
+  },
+  {
+    "objectID": "04.Ensambles.html#mapeo-de-las-lecturas",
+    "href": "04.Ensambles.html#mapeo-de-las-lecturas",
+    "title": "02.Ensambles",
+    "section": "02.1 Mapeo de las lecturas",
+    "text": "02.1 Mapeo de las lecturas\nSe usara bbtools para mapear las secuencias ensambladas.\nVamos a crear el directorio que albergará los resultados de profundidad\nmkdir -p results/04.compare/09h/\nVamos a mapear todos los ensambles que obtuvimos a las lecturas limpias, hagamos un script para esto:\nnano scripts/04.profundidad.sh\n#!/usr/bin/bash\n#Script que corre BBmap para mapear y obtener el numero de lecturas mapeadas a cada version de ensamble\n\n# version 1\nbbmap.sh ref=results/03.ensambles/09h/v1_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz threads=10 scafstats=results/04.compare/09h/v1.stats\n\n# version 2\nbbmap.sh ref=results/03.ensambles/09h/v2_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz threads=10 scafstats=results/04.compare/09h/v2.stats\n\n# version 3\nbbmap.sh ref=results/03.ensambles/09h/v3_spades.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz threads=10 scafstats=results/04.compare/09h/v3.stats\nY lo ejecutamos asi:\nnohup bash scripts/04.profundidad.sh &gt; outs/04.bbmap.out &\nVamos a explorar cuantas lecturas se mapearon en cada uno de los ensambles\nfor file in $(ls results/04.compare/09h/*.stats); do \n  echo \"El número de lecturas mapeadas al ensamble:  \" $file \"es: \"\n  cut -f9 $file | grep -v assignedBases | awk '{sum += $1;}END{print sum;}'\ndone\n\nBien, ahora ya sabemos que ensamble se formó con una mayor cantidad de lecturas, sin embargo, ahora nos falta conocer que ensamble tiene una mayor longitud de contigs.\n\n\n\n\n\n\nCautionPreguntas\n\n\n\n¿Qué porcentaje de las lecturas se mapearon en todos los casos?\n¿Qué pasó con las lecturas que no mapearon al ensamble?"
+  },
+  {
+    "objectID": "04.Ensambles.html#longitud-de-los-contigs",
+    "href": "04.Ensambles.html#longitud-de-los-contigs",
+    "title": "02.Ensambles",
+    "section": "02.2 Longitud de los contigs",
+    "text": "02.2 Longitud de los contigs\nPor último, se utilizará Quast para revisar la longitud que tienen los contigs de cada ensamble.\nquast.py results/03.ensambles/09h/*.fasta -o results/04.compare/09h/quast\nVeamos los resultados: less results/04.compare/09h/quast/report.txt o descarguemos el report.html o pdf.\n\nObservemos la ayuda de metaquast para que veamos todo el potencial de esta herramienta:\nmetaquast.py --help\n\n\n\n\n\n\nCautionPreguntas\n\n\n\n¿Qué ensamble es el mejor?\n¿Porqué seleccionarlo?\n¿Qué importancia tiene probar diferentes pasos y tamaños de k-mers y diferentes ensambladores?"
+  },
+  {
+    "objectID": "00.Contenido.html",
+    "href": "00.Contenido.html",
+    "title": "Contenido del taller",
+    "section": "",
+    "text": "Tiempo estimado\nTema\n\n\n\n\n30 min\nPlática introducción a la metagenómica\n\n\n30 min\nFlujo general y planeación de proyectos\n\n\n30 min\nFiltrado por calidad y Remoción de hospedero\n\n\n1 h\nEnsambles\n\n\n15 min\nDescanso\n\n\n40 min\nComparación de ensambles\n\n\n2 h\nEquipos para que hagan todo con las 3 muestras sobrantes\n\n\n30 min\nResultados y discusión"
+  },
+  {
+    "objectID": "00.Contenido.html#día-uno",
+    "href": "00.Contenido.html#día-uno",
+    "title": "Contenido del taller",
+    "section": "",
+    "text": "Tiempo estimado\nTema\n\n\n\n\n30 min\nPlática introducción a la metagenómica\n\n\n30 min\nFlujo general y planeación de proyectos\n\n\n30 min\nFiltrado por calidad y Remoción de hospedero\n\n\n1 h\nEnsambles\n\n\n15 min\nDescanso\n\n\n40 min\nComparación de ensambles\n\n\n2 h\nEquipos para que hagan todo con las 3 muestras sobrantes\n\n\n30 min\nResultados y discusión"
+  },
+  {
+    "objectID": "00.Contenido.html#día-dos",
+    "href": "00.Contenido.html#día-dos",
+    "title": "Contenido del taller",
+    "section": "Día dos",
+    "text": "Día dos\n\n\n\nTiempo\nTema"
+  }
+]

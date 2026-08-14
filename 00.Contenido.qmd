@@ -1,0 +1,30 @@
+---
+title: "Contenido del taller"
+---
+
+## Día uno
+
+| Tiempo estimado | Tema                                                     |
+|------------------|-------------------------------------------------|
+| 30 min          | Plática introducción a la metagenómica                   |
+| 30 min          | Flujo general y planeación de proyectos                  |
+| 30 min          | Filtrado por calidad y Remoción de hospedero             |
+| 1 h             | Ensambles                                                |
+| 15 min          | Descanso                                                 |
+| 40 min          | Comparación de ensambles                                 |
+| 2 h             | Equipos para que hagan todo con las 3 muestras sobrantes |
+| 30 min          | Resultados y discusión                                   |
+|                 |                                                          |
+|                 |                                                          |
+
+---
+
+## Día dos
+
+| Tiempo | Tema |
+|--------|------|
+|        |      |
+|        |      |
+|        |      |
+|        |      |
+|        |      |

@@ -1,0 +1,48 @@
+project:
+  type: website
+  output-dir: docs
+
+
+website:
+  title: "De lecturas a MAGs:<br>Taller de Metagenómica Centrada en Genomas"
+  navbar:
+    logo: "Figures/landalab.jpeg"
+    logo-alt: "LandaLab"
+    logo-href: "https://www.instagram.com/landalab/"
+    pinned: true
+    left:
+      - href: 00.Contenido.qmd
+        text: Contenido
+      - href: 01.Presentacion_pozol.qmd
+        text: El pozol
+      - href: 02.Espacio_de_trabajo.qmd
+        text: Preparación del proyecto
+      - href: 03.Filtrados.qmd
+        text: Filtrados
+      - href: 04.Ensambles.qmd
+        text: Ensambles
+
+  page-footer:
+    right: "This page is built with ❤ Science 🦠 🧬 and [Quarto](https://quarto.org/)."
+    left: "Diana Hernández-Oaxaca, &copy; Copyright 2026"
+    center: "LandaLab"
+    background: "#dddaff"
+
+editor: visual
+
+format:
+  html:
+    link-external-icon: true
+    link-external-newwindow: true
+    smooth-scroll: true
+    theme:
+      - cosmo
+      - styles.css
+    linkcolor: "#097f5f"
+    anchor-sections: true
+    fig-cap-location: margin
+    reference-location: margin
+    citations-hover: true
+    footnotes-hover: true
+    toc: true
+    code-link: true

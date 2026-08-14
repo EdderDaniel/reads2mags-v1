@@ -1,0 +1,61 @@
+/*-- scss:defaults --*/
+$bs-blue: #027373 !default;
+
+$primary:    $bs-blue !default;   // color base del tema — esto mata el morado
+$navbar-bg:  #4DA284FF!default;   // fondo de la barra de iconos
+$navbar-fg:  #751C6DFF !default;   // color de los iconos (ver nota)
+$link-color: $bs-blue !default;
+
+/*-- scss:rules --*/
+.navbar {
+  background-color: #4DA284FF;
+}
+.quarto-title-banner{
+  background-color: #751C6DFF ;
+}
+.navbar-title {
+  white-space: pre-line;
+}
+.navbar-brand img {
+  max-height: 60px;   // ajústalo a tu gusto
+}
+.btn-primary {
+    color: #fff;
+    background-color: $bs-blue;
+    border-color: $bs-blue;
+}
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: $bs-blue;
+    border-color: $bs-blue;
+}
+.quarto-title-banner {
+    margin-bottom: 1em;
+    color: "#6FD2BE";
+    background: $bs-blue;
+}
+.page-link {
+      color: $bs-blue;
+}
+.page-link:hover {
+    z-index: 2;
+    color: #fff;
+    background-color: $bs-blue;
+    border-color: $bs-blue;
+}
+a{
+  color: $bs-blue;
+}
+b, strong {
+    color: $bs-blue;
+    font-weight: bolder;
+}
+div.quarto-post .listing-categories .listing-category {
+    color: $bs-blue;
+    border: solid 1px var(--bs-gray-400);
+    font-size: .8em;
+}
+p pre code:not(.sourceCode), li pre code:not(.sourceCode), pre code:not(.sourceCode) {
+  background-color: #f0efff;
+}
