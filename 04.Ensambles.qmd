@@ -322,3 +322,19 @@ Y lo ejecutamos:
 No las ejecutes, sólo es un ejemplo para que lo puedas usar en los ejercicios y en tus proyectos.
 :::
 ::::
+
+---
+
+---
+
+# Es tu momento:
+
+::: callout-tip
+## Ejercicio
+
+De nuevo te toca
+
+En equipos armen el script de profundidad con la muestra que les tocó y dejelo corriendo para que mañana lo revisemos.
+
+Tiempo 15 min
+:::
