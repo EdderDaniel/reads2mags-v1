@@ -148,6 +148,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link active" href="./04.Ensambles.html" aria-current="page"> 
 <span class="menu-text">Ensambles</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./05.Binning.html"> 
+<span class="menu-text">Binning</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./06.Taxonomy.html"> 
+<span class="menu-text">Taxonomía de MAGs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./07.Metabolic.html"> 
+<span class="menu-text">Metabolismo</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./08.ReadsTaxonomy.html"> 
+<span class="menu-text">Diversidad</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./09.Rbims_Hidrocarburos.html"> 
+<span class="menu-text">Hidrocarburos</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -457,7 +477,19 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <p>El mapeo lo corrimos con <a href="https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#introduction">bowtie2</a> que es una herramienta confiable y muy utilizada para alinear lecturas cortas a una referencia, en nuestro caso, la referencia es el ensamble metagenómico de la muestra de 09hrs.</p>
 <p>Bowtie2 genera un archivo de mapeo (SAM) que debe convertirse a un formato binario (BAM), para esta conversión usamos <a href="https://github.com/samtools/">samtools</a> que contiene multiples sub herramientas para trabajar con archivos de mapeos.</p>
 <p>Para generar este archivo se ejecutó el siguiente script:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> scripts/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> scripts/05.profundidad.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Script de profundidad
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/bash</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Diana Oaxaca 140826</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Script que ejecuta bowtie2, samtools y jgi para obtener la profundidad del ensamble</span></span>
@@ -487,6 +519,9 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="ex">jgi_summarize_bam_contig_depths</span> <span class="dt">\</span></span>
 <span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a> <span class="at">--outputDepth</span> <span class="va">$out</span>/09hrs_depth.txt <span class="dt">\</span></span>
 <span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a> <span class="va">$out</span>/09hrs.sorted.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
 <p>Y lo ejecutamos:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">nohup</span> bash scripts/05.profundidad.sh <span class="op">&gt;</span> outs/05.profundidad.out <span class="kw">&amp;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -499,7 +534,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>No las ejecutes, sólo es un ejemplo para que lo puedas usar en los ejercicios y en tus proyectos.</p>
+<p>No lo ejecutes, sólo es un ejemplo para que lo puedas usar en los ejercicios y en tus proyectos.</p>
 </div>
 </div>
 </div>

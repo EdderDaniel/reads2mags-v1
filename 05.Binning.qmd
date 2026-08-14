@@ -1,83 +1,47 @@
 ---
-title: "Genomas a partir de metagenomas"
+title: "Genomas a partir de metagenomas MAGs"
 ---
+
+## Un recordatorio
 
 La metagenómica hace referencia al estudio de todo el ADN de los organismos que se encuentran en un ambiente. La secuenciación de este material genético produce lecturas que pueden ensamblarse para conocer la diversidad microbiana y sus funciones.
 
 Típicamente los metagenomas pueden estudiarse mediante dos aproximaciones:
 
-1.  La clasificación taxonómica de contigs o lecturas y la inferencia metabólica de los contigs.
-2.  La reconstrucción de genomas a partir de metagenomas ([MAGs](https://merenlab.org/momics/)), clasificación taxonómica y la inferencia metabólica de los MAGs.
+<FONT COLOR="black">
 
-En este apartado nos enfocaremos en la segunda aproximación. Los MAGs se reconstruyen a partir de un ensamble metagenómico, los contigs de dicho ensamble se agrupan mediante la información de cobertura y frecuencia de tetranucleótidos. Esta agrupación puede generar errores, por lo que es indispensable evaluar la calidad de los MAGs mediante la completitud y redundancia de genes de copia única ([MerenLab y col.](https://anvio.org/vocabulary/))
+1.  La clasificación taxonómica de contigs o lecturas y la inferencia metabólica de los contigs.
+2.  **La reconstrucción de genomas a partir de metagenomas ([MAGs](https://merenlab.org/momics/)), clasificación taxonómica y la inferencia metabólica de los MAGs.**
+
+</FONT>
+
+En este taller nos enfocaremos en la segunda aproximación. Los **MAGs** se reconstruyen a partir de un ensamble metagenómico, los contigs de dicho ensamble se agrupan mediante la información de **cobertura y frecuencia de tetranucleótidos**. Esta agrupación puede generar errores, por lo que es indispensable evaluar la **calidad de los MAGs mediante la completitud y redundancia de genes de copia única** ([MerenLab y col.](https://anvio.org/vocabulary/))
 
 Para obtener MAGs podemos seguir el siguiente flujo de análisis:
 
 ![Figura 2. Metagenómica Centrada en Genomas](Figures/02.MAGs_workflow.png){fig-align="center"}
 
-En los días anteriores aprendieron a evaluar la calidad de las lecturas, filtrarlas y ensamblarlas, por lo que este apartado comenzará con un ensamble ya generado.
-
-Para generar los ensambles recomendamos ensamblar las lecturas con metaSPAdes y con MEGAHIT, compararlos con QUAST y con BBMap y seleccionar el mejor ensamble en términos de mayor porcentaje de mapeo, es decir utilizar el mayor número de lecturas posible y obtener contigs más largos.
-
-De acuerdo con el flujo de análisis (Figura 2), debemos partir de un ensamble, mapear las lecturas y obtener un archivo de profundidad de cada contig en el ensamble.
-
-:::: callout-caution
-## Nota
-
-El proceso de mapeo es demandante en tiempo de ejecución y recursos. Así que nos dimos a la tarea de generar el archivo de profundidad para comenzar directamente con el *binning*.
-
-El mapeo lo corrimos con [bowtie2](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#introduction) que es una herramienta confiable y muy utilizada para alinear lecturas cortas a una referencia, en nuestro caso, la referencia es el ensamble metagenómico de la muestra de 48hrs.
-
-Bowtie2 genera un archivo de mapeo (SAM) que debe convertirse a un formato binario (BAM), para esta conversión usamos [samtools](https://github.com/samtools/) que contiene multiples sub herramientas para trabajar con archivos de mapeos.
-
-Para generar este archivo se utilizaron las siguientes lineas de código.
-
-``` bash
-# Formatear el ensamble
-bowtie2-build results/02.ensambles/megahit/48hrs/48hrs.fasta results/03.profundidad/48hrs --threads 40
-
-# Mapear las lecturas contra el ensamble
-bowtie2 -x results/03.profundidad/48hrs -1 data/48hrs_sm_R1.fastq -2 data/48hrs_sm_R2.fastq -p 40 -S results/03.profundidad/48hrs.sam
-
-# Convertir de SAM a BAM y ordenar
-samtools view -Sb -O BAM -@ 40 results/03.profundidad/48hrs.sam | samtools sort -@ 40  -o results/03.profundidad/48hrs_sorted.bam
-
-# Obtener el índice
-samtools index results/03.profundidad/48hrs_sorted.bam
-```
-
-Ya que generamos el archivo bam ordenado obtuvimos un archivo con la información de cobertura de cada contig dentro del ensamble, este **archivo de profundidad** se generó con `jgi_summarize_bam_contig_depths` que es una herramienta desarrollada por el JGI.
-
-``` bash
-# jgi
-#Obtener el archivo de profundidad de cada contig
-jgi_summarize_bam_contig_depths  --outputDepth results/03.profundidad/48hrs.mgh_depth.txt results/03.profundidad/48hrs_sorted.bam
-```
-
-::: callout-warning
-## Atención
-
-No las ejecutes, sólo son un ejemplo para que las puedas usar con tus propios datos en el futuro.
-:::
-::::
-
 ::: callout-caution
-## Ejercicio 1
+## Exploren
 
 Antes de comenzar, reúnete con tu equipo y juntos
 
--   Revisen nuevamente el contenido de los directorios `02.ensambles` y `03.profundidad.txt`
+-   Revisen nuevamente el contenido de los directorios `Ensambles` y `Profundidad`
 
--   Discutan y en una diapositiva expliquen el flujo teórico que se siguió para obtener los archivos que están en esos directorios.
+-   ¿Cuentan con la información necesaria para realizar el *binning*?
 
-La liga de drive para ir trabajando durante el taller es esta: <https://docs.google.com/presentation/d/1f4vaJ_fV_8-i-dja2wtFx55vRkgeAB5Y4s-opCvFI1k/edit?usp=sharing>
+Tiempo: 5 min
 :::
 
-## Binning
+---
 
-Ahora si, vamos a agrupar los contigs del metaensamble en *bins* ...
+---
 
-### Metabat2
+## 01. Binning
+
+Ahora si, vamos a agrupar los contigs en *bins* ...
+
+### 01.1 Metabat2
 
 [Metabat2](https://bitbucket.org/berkeleylab/metabat/src/master/) es una herramienta que agrupa los contigs tomando la cobertura de cada contig y calcula su composición nucleotídica.
 
@@ -85,51 +49,30 @@ Para correr metabat necesitamos activar el [ambiente conda](https://conda.io/pro
 
 ![Metabat2. Kang et al., 2015. DOI:10.7717/peerj.1165](Figures/04.Metabat.png){fig-align="center" width="473"}
 
-::: callout-caution
-## Activar ambiente para Metabat2
+Ejecutemos Metabat2, pero antes vamos a crear el directorio de resultados:
 
--   
+``` bash
+mkdir -p results/06.metabat/09hrs
+```
 
-    ``` bash
-    conda activate metabat2
-    ```
+Y ahora vamos a correrlo
+
+``` bash
+metabat2 -i results/03.ensambles/09h/v2_megahit.fasta \
+ -a results/05.profundidad/09hrs/09hrs_depth.txt \
+ -o results/06.metabat/09hrs/metabat -m 1500 -t 6 --seed 123
+```
+
+::: callout-important
+## OJO
+
+Estamos utilizando la opción `-m 1500` para efectos del curso y el tipo de datos que tenemos, sin embargo, esta opción podría estar demasiado laxa, hay estudios que han demostrado que el uso de contigs de longitud menor a 2000 pb puede producir malas agrupaciones de genomas (MAGs) .
 :::
 
-Ahora que ya tenemos el ambiente activado vamos a crear nuestro script de slurm para ejecutarlo.
+------------------------------------------------------------------------
 
-``` bash
-nano src/04.metabat_48h.slurm
-```
-
-``` bash
-#!/bin/bash
-#SBATCH -J Metabat2 
-#SBATCH -t 0
-#SBATCH -e outs/04.metabat48h.err
-#SBATCH -o outs/04.metabat48h.out
-#SBATCH --export=ALL
-#SBATCH -n 4
-#SBATCH -N 1
-#SBATCH -p q2
-#SBATCH --mem 8G
-
-# 01. crearemos el directorio en el que se van a guardar los resultados de este proceso.
-mkdir -p results/04.metabat/48h/
-
-# 02. Corremos metabat
-metabat2 -i results/02.ensambles/48hrs.fasta -a results/03.profundidad/48hrs.mgh_depth.txt -o results/04.metabat/48h/metabat -m 1500 -t 4
-```
-
-Guarda tecleando `ctrl + o` `enter` y después `ctrl + x` `enter`
-
-Y ejecuta:
-
-``` bash
-sbatch src/04.metabat.slurm
-```
-
-:::: {.callout-important collapse="true" title="Responde:"}
-1.  ¿Cuántos bins se formaron?
+:::: {.callout-caution collapse="true" title="Responde:"}
+¿Cuántos bins se formaron?
 
 ::: {.callout-tip collapse="true" title="Ayuda"}
 1.  `ls`
@@ -137,70 +80,40 @@ sbatch src/04.metabat.slurm
 :::
 ::::
 
-Ya que corrimos Metabat2 vamos a ejecutar MaxBin2, pero primero necesitamos desactivar el ambiente:
+---
 
-::: callout-caution
-## Desactiva el ambiente
+---
 
-Para desactivar el ambiente debemos correr la siguiente linea:
-
-``` bash
-conda deactivate
-```
-:::
-
-### MaxBin2
+### 01.2 MaxBin2
 
 [MaxBin2](https://sourceforge.net/projects/maxbin/files/) agrupa los contigs de acuerdo a la información de cobertura, composición nucleotídica, contenido de GC y genes **marcadores de copia única**.
 
 Vamos a ejecutarlo, activemos el [ambiente conda](#0) donde se encuentra maxbin.
 
-::: callout-caution
+::: callout-note
 ## Activar ambiente para MaxBin2
 
--   
-
-    ``` bash
-    conda activate metagenomics
-    ```
+``` bash
+conda activate maxbin2
+```
 :::
 
 [![MaxBin2. Wu et al., 2014. https://doi.org/10.1186/2049-2618-2-26](Figures/03.Maxbin.png){width="471"}](https://doi.org/10.1186/2049-2618-2-26)
 
-Ahora si, vamos a crear el script y ejecutarlo.
+Ahora si, vamos a ejecutarlo, pero primero creamos el lugar donde se alojaran los resultados
 
 ``` bash
-nano src/05.maxbin_48h.slurm
+mkdir -p results/07.maxbin/09hrs
 ```
 
 ``` bash
-#!/bin/bash
-#SBATHC -J Maxbin 
-#SBATCH -t 0
-#SBATCH -e outs/05.maxbin48h.err
-#SBATCH -o outs/05.maxbin48h.out
-#SBATCH --export=ALL
-#SBATCH -n 4
-#SBATCH -N 1
-#SBATCH -p q2
-#SBATCH --mem 8G
-
-# 01. Crea el directorio para los resultados de MaxBin2
-
-mkdir -p results/05.maxbin/48h
-
-# 02. Correr maxbin
-
-run_MaxBin.pl -thread 4 -min_contig_length 1500 -contig results/02.ensambles/48hrs.fasta -abund results/03.profundidad/48hrs.mgh_depth.txt -out results/05.maxbin/48h/maxbin
+run_MaxBin.pl -thread 4 -min_contig_length 1500 \
+ -contig results/03.ensambles/09h/v2_megahit.fasta \
+ -abund results/05.profundidad/09hrs/09hrs_depth.txt \
+ -out results/07.maxbin/09hrs/09hrs
 ```
 
-Y lo ejecutamos:
-
-``` bash
-sbatch src/05.maxbin.slurm
-```
-
-:::: {.callout-important title="Responde:"}
+:::: {.callout-caution title="Explora"}
 ## Responde
 
 1\. ¿Cuántos bins se formaron?
@@ -209,7 +122,8 @@ sbatch src/05.maxbin.slurm
 
 ::: {.callout-tip collapse="true" title="Tip"}
 1.  `ls + wc -l`
-2.  `cat archivo | column -t`
+2.  `less`
+3.  `cat archivo | column -t`
 :::
 ::::
 
@@ -226,34 +140,26 @@ conda deactivate
 [VAMB](https://vamb.readthedocs.io/en/latest/) utiliza una combinación de enfoques de aprendizaje profundo y técnicas de agrupamiento basándose en sus patrones de composición de nucleótidos y en la co-ocurrencia de sus frecuencias de cobertura.
 
 ::: callout-caution
-## Activa el ambiente binning
-
--   
-
-    ``` bash
-    conda activate mt-vamb
-    ```
-:::
-
-Crea el script para vamb:
+## Activa el ambiente vamb
 
 ``` bash
-#!/bin/bash
-#SBATHC -J Vamb 
-#SBATCH -t 0
-#SBATCH -e outs/06.vamb.err
-#SBATCH -o outs/06.vamb.out
-#SBATCH --export=ALL
-#SBATCH -n 8
-#SBATCH -N 1
-#SBATCH -p q2
-#SBATCH --mem 32G
+conda activate vamb
+```
+:::
 
-# 01. Crea el directorio para los resultados de vamb
-mkdir -p results/06.vamb
+A vamb le gusta crear un directorio parental, pero no le gusta crear los directorios superiores, así que debemos crear el directorio que lo contendrá :/
 
-# 02. Correr vamb
-vamb --fasta results/02.ensambles/48hrs.fasta --bamfiles results/03.profundidad/48hrs_sorted.bam --minfasta 200000 --outdir results/06.vamb/48h -p 8 -m 1500
+``` bash
+mkdir -p results/08.vamb
+```
+
+Corramos vamb:
+
+``` bash
+vamb bin default --fasta results/03.ensambles/09h/v2_megahit.fasta \
+ --bamfiles results/05.profundidad/09hrs/09hrs.sorted.bam \
+ --outdir results/08.vamb/09hrsls \
+ -p 6 -m 1500 --seed 123 --minfasta 200000
 ```
 
 ::: callout-important

@@ -150,7 +150,7 @@ Les toca ensamblar la muestra del tiempo de fermentación que les tocó. En equi
 Tiempo 30 min
 :::
 
----
+------------------------------------------------------------------------
 
 # 02. Comparación de ensambles
 
@@ -253,9 +253,9 @@ Les toca obtener los datos de profundidad de cada ensamble, reunanse en equipos 
 Tiempo 1 hora
 :::
 
----
+------------------------------------------------------------------------
 
----
+------------------------------------------------------------------------
 
 # 03. Profundidad
 
@@ -263,7 +263,7 @@ Ok, hasta a aquí ya aprendimos a evaluar la calidad de las lecturas, filtrarlas
 
 Ahora es momento de obtener la profundidad. De acuerdo con el flujo de análisis debemos partir de un ensamble, mapear las lecturas y obtener un archivo de profundidad de cada contig en el ensamble, este archivo debe ser compatible con los programas de *binning*.
 
-:::: callout-caution
+::::: callout-note
 ## Nota
 
 El proceso de mapeo es demandante en tiempo de ejecución y recursos. Así que nos dimos a la tarea de generar el archivo de profundidad para el tiempo 09 hrs y comenzar directamente con el *binning*.
@@ -275,8 +275,11 @@ Bowtie2 genera un archivo de mapeo (SAM) que debe convertirse a un formato binar
 Para generar este archivo se ejecutó el siguiente script:
 
 ``` bash
-nano scripts/
+nano scripts/05.profundidad.sh
 ```
+
+::: {.callout-tip collapse="true"}
+## Script de profundidad
 
 ``` bash
 #!/usr/bin/bash
@@ -309,6 +312,7 @@ jgi_summarize_bam_contig_depths \
  --outputDepth $out/09hrs_depth.txt \
  $out/09hrs.sorted.bam
 ```
+:::
 
 Y lo ejecutamos:
 
@@ -319,13 +323,13 @@ Y lo ejecutamos:
 ::: callout-warning
 ## Atención
 
-No las ejecutes, sólo es un ejemplo para que lo puedas usar en los ejercicios y en tus proyectos.
+No lo ejecutes, sólo es un ejemplo para que lo puedas usar en los ejercicios y en tus proyectos.
 :::
-::::
+:::::
 
----
+------------------------------------------------------------------------
 
----
+------------------------------------------------------------------------
 
 # Es tu momento:
 

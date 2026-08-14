@@ -21,6 +21,17 @@ website:
         text: Filtrados
       - href: 04.Ensambles.qmd
         text: Ensambles
+      - href: 05.Binning.qmd
+        text: Binning
+      - href: 06.Taxonomy.qmd
+        text: Taxonomía de MAGs
+      - href: 07.Metabolic.qmd
+        text: Metabolismo
+      - href: 08.ReadsTaxonomy.qmd
+        text: Diversidad
+      - href: 09.Rbims_Hidrocarburos.qmd
+        text: Hidrocarburos
+
 
   page-footer:
     right: "This page is built with ❤ Science 🦠 🧬 and [Quarto](https://quarto.org/)."

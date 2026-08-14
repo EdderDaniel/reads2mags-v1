@@ -1,0 +1,276 @@
+---
+title: "02.Taxonomía"
+---
+
+# **¿Qué hay en mi metagenoma?**
+
+Vamos a responder esa pregunta usando dos enfoques complementarios:
+
+-   **Kaiju** (búsqueda a nivel **proteico** con traducción de lecturas)\
+-   **Kraken2** (clasificación de nucleótidos) + **Bracken** (reestimación **bayesiana** de abundancias)
+
+Aproximaciones a la clasificación taxonómica
+
+| Características | **Kaiju** | **Kraken2** | **Bracken** |
+|------------------|------------------|------------------|------------------|
+| Principio | Búsqueda en **proteínas** (lecturas traducidas) | Asignación por **k-mers** exactos de ADN | Reestima abundancias de Kraken por **longitud de lectura** y **distribución de k-mers** |
+| Fortaleza | Detecta homología lejana; útil para genes conservados y organismos divergentes | **Muy rápido** y escalable; excelente para screening inicial | Reduce **sobre/infraasignación** de Kraken; produce perfiles más **estables** |
+| Limitación | Más lento; depende de bases proteicas; puede perder regiones no codificantes | Sensible a contaminación de la BD; puede inflar taxones cercanos | Depende de **Kraken + DB** y parámetros (-l, -r) |
+| Salida típica | `.out` + `.summary.tsv` via `kaiju2table` | `.kreport` (por clado y rank) | `*.bracken.<RANK>.tsv` con fracciones y reads reestimados |
+| Cuándo usar | Descubrimiento/linajes lejanos; arqueas/virus/microeucariontes | Perfilado rápido multi-muestras | Informe final a un **nivel elegido** (C/G/S) |
+
+------------------------------------------------------------------------
+
+## 01. Kaiju
+
+Una forma de asignar taxonomía es usar las lecturas limpias o mejor aun los contigs generados en el ensamble y despues calcular la abundancia. Hay diferentes herramientas para hacer estas asignaciones como Kraken-Bracken, [Kaiju](https://github.com/bioinformatics-centre/kaiju), CCMetagen, etc.
+
+![](images/clipboard-2171130064.png)
+
+En el material suplementario del artículo de kaiju explican las diferencias de usar los diferentes modos de asignación:
+
+![](images/clipboard-2712580348.png)
+
+Usaremos [Kaiju](https://github.com/bioinformatics-centre/kaiju) con las lecturas como ejemplo de estas clasificaciones taxonómicas.
+
+::: callout-warning
+## Ejemplo de como correr kaiju para varias muestras
+
+El siguiente bloque no lo corras, es un ejemplo de como lo corrimos nosotros y al final puedes copiar los resultados
+:::
+
+``` bash
+conda activate kaiju
+
+db="Kaiu_db"
+out="results/07.kaiju"
+
+for sample in $(ls data | sed 's/_.*//g' | sort -u); do 
+    echo "## 1. Run Kaiju reads from sample: " $sample
+    date
+    CMD='kaiju -t '$db'/nodes.dmp \
+        -f '$db'/kaiju_db_nr_euk.fmi \
+        -i data/'$sample'_sm_R1.fastq \
+        -j data/'$sample'_sm_R2.fastq  \
+        -o '$out'/'$sample'.out \
+        -z 40 -a mem -m 13'
+    echo $CMD
+    $CMD
+    echo "## 2. Add taxnames"
+    CMDtxn='kaiju-addTaxonNames \
+          -t '$db'/nodes.dmp \
+          -n '$db'/names.dmp \
+          -i '$out'/'$sample'.out \
+          -u -p -o '$out'/'$sample'_names.out'
+        echo $CMDtxn
+    $CMDtxn
+done
+```
+
+Una vez que tenemos las salidas, podemos usar un script de Kaiju para generar una matriz resumida:
+
+``` bash
+kaiju2table -t Kaiu_db/nodes.dmp \
+ -n Kaiu_db/names.dmp -p -c 50 -r species \
+ -o results/07.kaiju/kaiju_summary.tsv \
+ results/07.kaiju/0hrs.out \
+ results/07.kaiju/9hrs.out \
+ results/07.kaiju/24hrs.out \
+ results/07.kaiju/48hrs.out 
+```
+
+Creamos un directorio de resultados para kaiju
+
+``` bash
+mkdir -p results/07.kaiju
+```
+
+El resultado de resumen lo puedes copiar de:
+
+``` bash
+# resumen tsv
+cp /home/alumno21/Metagenoma_pozol_respaldo/results/07.kaiju/kaiju_summary.tsv results/07.kaiju
+```
+
+Ahora copia un script de R para generar una matriz de conteos
+
+``` bash
+# rscript para hacer una matriz de conteos
+cp /home/alumno21/Metagenoma_pozol_respaldo/results/07.kaiju/generate_matrix.R results/07.kaiju
+```
+
+Y finalmente nuestra matriz de conteos
+
+``` bash
+cp /home/alumno21/Metagenoma_pozol_respaldo/results/07.kaiju/matrix.tsv results/07.kaiju
+```
+
+Vamos a revisar el archivo de resumen que creamos
+
+Entramos primero al directorio de kaiju
+
+``` bash
+cd results/07.kaiju/
+```
+
+Y ahora si lo vemos
+
+``` bash
+less -S kaiju_summary.tsv
+```
+
+El comando para generar la tabla de conteos fue:
+
+``` bash
+#Rscript generate_matrix.R kaiju_summary.tsv > matrix.tsv
+```
+
+Veamos ahora la matriz de conteos
+
+``` bash
+less -S matrix.tsv
+```
+
+Y ahora podemos hacer un plot de abundancias
+
+``` R
+# Cargar librerías
+library(tidyverse)
+library(readr)
+library(RColorBrewer)
+
+# Establecer directorio de trabajo
+setwd("Metagenoma_pozol_respaldo/results/07.kaiju/")
+
+# Cargar datos
+file_path <- "matrix.tsv"
+df <- read_tsv(file_path, col_types = cols(.default = "c"))
+
+# Cargar metadatos
+metadata <- read.delim("metadata.tsv", header = TRUE, row.names = 1)
+
+
+# Dividir la columna de taxonomía en rangos taxonómicos
+taxonomy_cols <- c("Domain","Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")
+df <- df %>%
+  separate(Taxonomy, into = taxonomy_cols, sep = ";", fill = "right", extra = "drop")
+
+# Convertir las columnas de conteo a tipo numérico
+count_columns <- setdiff(names(df), taxonomy_cols)
+df <- df %>% mutate(across(all_of(count_columns), as.numeric))
+
+
+# Transformar a abundancia relativa (porcentaje por muestra)
+df_rel <- df %>%
+  mutate(across(all_of(count_columns), ~ . / sum(.))) %>%
+  mutate(across(all_of(count_columns), ~ replace_na(., 0)))
+
+# Convertir a formato largo
+df_long <- df_rel %>%
+  pivot_longer(cols = all_of(count_columns), names_to = "Sample", values_to = "Abundance")
+
+# Unir con metadatos usando los rownames de metadata
+metadata <- metadata %>% mutate(sample_id = rownames(metadata))
+df_long <- df_long %>%
+  left_join(metadata, by = c("Sample" = "sample_id"))
+
+
+# Seleccionar nivel taxonómico para el gráfico
+taxon_level <- "Family"
+df_long[[taxon_level]] <- df_long[[taxon_level]] %>% replace_na("Unknown") %>% replace(. == "", "Unknown")
+
+# Opcional: Agrupar taxones raros
+top_taxa <- df_long %>%
+  group_by(.data[[taxon_level]]) %>%
+  summarise(max_abundance = max(Abundance)) %>%
+  filter(max_abundance > 0.01) %>%
+  pull(.data[[taxon_level]])
+df_long <- df_long %>%
+  mutate(!!taxon_level := if_else(.data[[taxon_level]] %in% top_taxa, 
+                                  .data[[taxon_level]], 
+                                  "Other"))
+
+# Crear una paleta de colores contrastantes
+# Contar el número de taxones únicos para ajustar la paleta
+n_taxa <- length(unique(df_long[[taxon_level]]))
+cat("Número de taxones únicos en el gráfico:", n_taxa, "\n")
+
+# Usar paleta Paired de RColorBrewer, repetir si hay más taxones que colores
+if (n_taxa <= 12) {
+  my_palette <- brewer.pal(min(n_taxa, 12), "Paired")
+} else {
+  my_palette <- colorRampPalette(brewer.pal(12, "Paired"))(n_taxa)
+}
+
+# Crear el gráfico de barras apiladas
+ggplot(df_long, aes(x = stages, y = Abundance, fill = .data[[taxon_level]])) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Abundancia relativa por género",
+       x = "Etapa",
+       y = "Abundancia relativa",
+       fill = "Family") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "right",
+        legend.text = element_text(size = 8)) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(values = my_palette)
+```
+
+![](images/clipboard-952969620.png)
+
+## 02.Kraken + Bracken
+
+Podríamos utilizar otros programas de asignación taxonómica por ejemplo Kraken
+
+![](images/clipboard-1850437980.png)
+
+::: callout-warning
+## Ejemplo de como correr kraken 
+
+El siguiente bloque no lo corras, es un ejemplo de como correr kraken2
+:::
+
+``` bash
+# Kraken2: clasificación y reporte (una muestra)
+kraken2 \
+  --db /ruta/kraken2db_full \
+  --paired data/sample_R1.fastq data/sample_R2.fastq \
+  --threads 8 \
+  --use-names \
+  --confidence 0.10 \
+  --report results/kraken2/sample.kreport \
+  --output results/kraken2/sample.kraken.reads.tsv
+
+# Bracken: reestimación al NIVEL CLASE (-l C) para comparación justa con Kaiju
+bracken \
+  -d /ruta/kraken2db_full \
+  -i results/kraken2/sample.kreport \
+  -o results/bracken/sample.bracken.C.tsv \
+  -l C \
+  -r 75
+```
+
+**Parámetros clave (Kraken/Bracken):**\
+- `--confidence`: umbral de confianza para decidir asignación.\
+- `--report`: tabla por clado y **rank** (col. `%`, reads en clado, reads asignados, rank, taxid, nombre).\
+- `-l`: nivel taxonómico objetivo de Bracken (**C**=Class, **G**=Genus, **S**=Species).\
+- `-r`: longitud de lectura usada en la construcción de la BD o aproximada (impacta la reestimación).
+
+---
+
+Vamos a copiar los resultados de kraken para explorarlos
+
+``` bash
+cp -r /home/alumno21/Metagenoma_pozol_respaldo/results/08.kraken results
+```
+
+Ahora vamos a descargarlos a nuestra computadora para subirlos a [Pavian](https://fbreitwieser.shinyapps.io/pavian/), una shinny app que lee estos archivos de salida de kraken y genera un sankey plot
+
+![Tiempo 0h](images/clipboard-2043909830.png)
+
+![Tiempo 9h](images/clipboard-2336490073.png){width="242"}
+
+![Tiempo 24h](images/clipboard-2543436394.png)
+
+![Tiempo 48h](images/clipboard-1505180863.png)
