@@ -168,10 +168,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#versión-1-de-ensamble" id="toc-versión-1-de-ensamble" class="nav-link" data-scroll-target="#versión-1-de-ensamble">01.1 Versión 1 de ensamble</a></li>
   </ul></li>
-  <li><a href="#comparación-de-ensambles" id="toc-comparación-de-ensambles" class="nav-link" data-scroll-target="#comparación-de-ensambles">02. Comparación de ensambles</a></li>
+  <li><a href="#la-diversión-ha-llegado" id="toc-la-diversión-ha-llegado" class="nav-link" data-scroll-target="#la-diversión-ha-llegado">La diversión ha llegado:</a></li>
+  <li><a href="#comparación-de-ensambles" id="toc-comparación-de-ensambles" class="nav-link" data-scroll-target="#comparación-de-ensambles">02. Comparación de ensambles</a>
+  <ul class="collapse">
   <li><a href="#mapeo-de-las-lecturas" id="toc-mapeo-de-las-lecturas" class="nav-link" data-scroll-target="#mapeo-de-las-lecturas">02.1 Mapeo de las lecturas</a></li>
   <li><a href="#longitud-de-los-contigs" id="toc-longitud-de-los-contigs" class="nav-link" data-scroll-target="#longitud-de-los-contigs">02.2 Longitud de los contigs</a></li>
-  <li><a href="#la-diversión-ha-llegado" id="toc-la-diversión-ha-llegado" class="nav-link" data-scroll-target="#la-diversión-ha-llegado">La diversión ha llegado:</a></li>
+  </ul></li>
+  <li><a href="#la-diversión-ha-vuelto" id="toc-la-diversión-ha-vuelto" class="nav-link" data-scroll-target="#la-diversión-ha-vuelto">La diversión ha vuelto:</a></li>
+  <li><a href="#profundidad" id="toc-profundidad" class="nav-link" data-scroll-target="#profundidad">03. Profundidad</a></li>
   </ul>
 </nav>
     </div>
@@ -197,8 +201,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="ensamble-de-las-secuencias" class="level2">
-<h2 class="anchored" data-anchor-id="ensamble-de-las-secuencias">01. Ensamble de las secuencias</h2>
+<section id="ensamble-de-las-secuencias" class="level1">
+<h1>01. Ensamble de las secuencias</h1>
 <p>Un vez teniendo las secuencias limpias ya podemos realizar el ensamble.<br>
 Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</strong></a> y <a href="https://github.com/voutcn/megahit"><strong>Megahit</strong></a>, después compararemos ambos ensambles basándonos en longitudes de los contigs con QUAST y el porcentaje de lecturas que dan lugar al coensamble, esto con bbmap de <a href="https://jgi.doe.gov/data-and-tools/software-tools/bbtools/"><strong>bbtools</strong></a>.</p>
 <p>Los ensambladores de metagenomas que actualmente se utilizan funcionan mediante la generación de gráficos de Bruijin:</p>
@@ -325,15 +329,34 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <hr>
 </section>
 </section>
-<section id="comparación-de-ensambles" class="level2">
-<h2 class="anchored" data-anchor-id="comparación-de-ensambles">02. Comparación de ensambles</h2>
+<section id="la-diversión-ha-llegado" class="level1">
+<h1>La diversión ha llegado:</h1>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Ejercicios
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Ahora a te toca tí</strong></p>
+<p>Les toca ensamblar la muestra del tiempo de fermentación que les tocó. En equipo discutan y <strong>sólo un miembro del equipo corra el script</strong> mientras los demás le ayudan a dictar las lineas de comandos.</p>
+<p>Tiempo 30 min</p>
+</div>
+</div>
+<hr>
 </section>
+<section id="comparación-de-ensambles" class="level1">
+<h1>02. Comparación de ensambles</h1>
 <section id="mapeo-de-las-lecturas" class="level2">
 <h2 class="anchored" data-anchor-id="mapeo-de-las-lecturas">02.1 Mapeo de las lecturas</h2>
 <p>Se usara <a href="https://jgi.doe.gov/data-and-tools/software-tools/bbtools/"><strong>bbtools</strong></a> para mapear las secuencias ensambladas.</p>
 <p>Vamos a crear el directorio que albergará los resultados de profundidad</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/04.compare/09h/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Vamos a mapear todos los ensambles que obtuvimos a las lecturas limpias, hagamos un script para esto:</p>
+<p>Vamos a mapear todos los ensambles que obtuvimos a las lecturas limpias,</p>
+<p>hagamos un script para esto:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> scripts/04.profundidad.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/bash</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Script que corre BBmap para mapear y obtener el numero de lecturas mapeadas a cada version de ensamble</span></span>
@@ -394,8 +417,9 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 </div>
 </div>
 </section>
-<section id="la-diversión-ha-llegado" class="level1">
-<h1>La diversión ha llegado:</h1>
+</section>
+<section id="la-diversión-ha-vuelto" class="level1">
+<h1>La diversión ha vuelto:</h1>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -407,7 +431,76 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Ahora a te toca tí</strong></p>
-<p>Les toca ensamblar la muestra del tiempo de fermentación que les tocó. En equipo discutan y <strong>sólo un miembro del equipo corra el script</strong> mientras los demás le ayudan a dictar las lineas de comandos, discutan los resultados y preparen una diapositiva para que la presenten.</p>
+<p>Les toca obtener los datos de profundidad de cada ensamble, reunanse en equipos y <strong>sólo un miembro del equipo corra el script</strong> mientras los demás le ayudan a dictar las lineas de comandos para construirlo, discutan los resultados y preparen una diapositiva para que la presenten.</p>
+<p>Tiempo 1 hora</p>
+</div>
+</div>
+<hr>
+<hr>
+</section>
+<section id="profundidad" class="level1">
+<h1>03. Profundidad</h1>
+<p>Ok, hasta a aquí ya aprendimos a evaluar la calidad de las lecturas, filtrarlas y ensamblarlas. Además, aprendimos como ejecutar diferentes versiones de ensamble, compararlas y seleccionar el de mejor calidad.</p>
+<p>Ahora es momento de obtener la profundidad. De acuerdo con el flujo de análisis debemos partir de un ensamble, mapear las lecturas y obtener un archivo de profundidad de cada contig en el ensamble, este archivo debe ser compatible con los programas de <em>binning</em>.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El proceso de mapeo es demandante en tiempo de ejecución y recursos. Así que nos dimos a la tarea de generar el archivo de profundidad para el tiempo 09 hrs y comenzar directamente con el <em>binning</em>.</p>
+<p>El mapeo lo corrimos con <a href="https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#introduction">bowtie2</a> que es una herramienta confiable y muy utilizada para alinear lecturas cortas a una referencia, en nuestro caso, la referencia es el ensamble metagenómico de la muestra de 09hrs.</p>
+<p>Bowtie2 genera un archivo de mapeo (SAM) que debe convertirse a un formato binario (BAM), para esta conversión usamos <a href="https://github.com/samtools/">samtools</a> que contiene multiples sub herramientas para trabajar con archivos de mapeos.</p>
+<p>Para generar este archivo se ejecutó el siguiente script:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> scripts/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/bash</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Diana Oaxaca 140826</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Script que ejecuta bowtie2, samtools y jgi para obtener la profundidad del ensamble</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Crear un directorio de resultados de profundidad</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/05.profundidad/09hrs</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">## Declaramos variables de archivos y directorios</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="va">fasta</span><span class="op">=</span><span class="st">"results/03.ensambles/09h/v2_megahit.fasta"</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="va">out</span><span class="op">=</span><span class="st">"results/05.profundidad/09hrs"</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="va">fastq</span><span class="op">=</span><span class="st">"results/02.trimgalore/09h"</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">## Formatear el ensamble</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2-build</span> <span class="va">$fasta</span> <span class="va">$out</span>/09hrs <span class="at">--threads</span> 6</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">## Mapear las lecturas al ensamble y generar un archivo bam ordenado</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> <span class="va">$out</span>/09hrs <span class="dt">\</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a> <span class="at">-1</span> <span class="va">$fastq</span>/09hrs_sm_R1_val_1.fq.gz <span class="dt">\</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a> <span class="at">-2</span> <span class="va">$fastq</span>/09hrs_sm_R2_val_2.fq.gz <span class="dt">\</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a> <span class="at">-p</span> 6 <span class="kw">|</span> <span class="ex">samtools</span> view <span class="at">-bS</span> <span class="at">-</span> <span class="dt">\</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a> <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> <span class="va">$out</span>/09hrs.sorted.bam</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co">## Indexar el archivo bam ordenado</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index <span class="va">$out</span>/09hrs.sorted.bam</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="co">## Generar un archivo de profundidad adecuado para binning</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="ex">jgi_summarize_bam_contig_depths</span> <span class="dt">\</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a> <span class="at">--outputDepth</span> <span class="va">$out</span>/09hrs_depth.txt <span class="dt">\</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a> <span class="va">$out</span>/09hrs.sorted.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Y lo ejecutamos:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">nohup</span> bash scripts/05.profundidad.sh <span class="op">&gt;</span> outs/05.profundidad.out <span class="kw">&amp;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Atención
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>No las ejecutes, sólo es un ejemplo para que lo puedas usar en los ejercicios y en tus proyectos.</p>
+</div>
+</div>
 </div>
 </div>
 

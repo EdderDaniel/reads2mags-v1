@@ -2,7 +2,7 @@
 title: "02.Ensambles"
 ---
 
-## 01. Ensamble de las secuencias
+# 01. Ensamble de las secuencias
 
 Un vez teniendo las secuencias limpias ya podemos realizar el ensamble.\
 Ensamblaremos con [**MetaSPAdes**](https://github.com/ablab/spades) y [**Megahit**](https://github.com/voutcn/megahit), después compararemos ambos ensambles basándonos en longitudes de los contigs con QUAST y el porcentaje de lecturas que dan lugar al coensamble, esto con bbmap de [**bbtools**](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/).
@@ -56,7 +56,7 @@ nohup bash scripts/03.1.ensamble_megahit_v1.sh > outs/03.1.ensambles_megahit.out
 Estamos utilizando la opción `--min-contig-len 1000` para efectos del curso y el tipo de datos que tenemos, sin embargo, esta opción podría estar demasiado laxa, hay estudios que han demostrado que el uso de contigs de longitud menor a 2000 pb puede producir malas agrupaciones de genomas (MAGs) .
 :::
 
----
+------------------------------------------------------------------------
 
 ::: callout-warning
 ## Precaución
@@ -69,7 +69,7 @@ El flujo y código para correr las otras dos versiones se depliega a continuaci�
 :::: {.callout-tip collapse="true"}
 ## Versiones 2 y 3 de ensambles
 
----
+------------------------------------------------------------------------
 
 ### 01.2 Versión 2 de ensamble
 
@@ -84,7 +84,7 @@ megahit -t 4 --min-contig-len 1000 \
  -o results/03.ensambles/09h/v2 
 ```
 
----
+------------------------------------------------------------------------
 
 ### 01.3 Versión 3 de ensamble
 
@@ -114,7 +114,7 @@ ls results/03.ensambles/
 
 Notarás que el ensamble filtrado de spades ya vive en este directorio
 
----
+------------------------------------------------------------------------
 
 ::: callout-note
 ## Una buena práctica
@@ -138,7 +138,21 @@ En el ejemplo de los ensambles, los archivos intermedios suelen ser muy pesados 
 
 ------------------------------------------------------------------------
 
-## 02. Comparación de ensambles
+# La diversión ha llegado:
+
+::: callout-tip
+## Ejercicios
+
+**Ahora a te toca tí**
+
+Les toca ensamblar la muestra del tiempo de fermentación que les tocó. En equipo discutan y **sólo un miembro del equipo corra el script** mientras los demás le ayudan a dictar las lineas de comandos.
+
+Tiempo 30 min
+:::
+
+---
+
+# 02. Comparación de ensambles
 
 ## 02.1 Mapeo de las lecturas
 
@@ -150,7 +164,9 @@ Vamos a crear el directorio que albergará los resultados de profundidad
 mkdir -p results/04.compare/09h/
 ```
 
-Vamos a mapear todos los ensambles que obtuvimos a las lecturas limpias, hagamos un script para esto:
+Vamos a mapear todos los ensambles que obtuvimos a las lecturas limpias,
+
+hagamos un script para esto:
 
 ``` bash
 nano scripts/04.profundidad.sh
@@ -225,12 +241,84 @@ metaquast.py --help
 ¿Qué importancia tiene probar diferentes pasos y tamaños de k-mers y diferentes ensambladores?
 :::
 
-# La diversión ha llegado:
+# La diversión ha vuelto:
 
 ::: callout-tip
 ## Ejercicios
 
 **Ahora a te toca tí**
 
-Les toca ensamblar la muestra del tiempo de fermentación que les tocó. En equipo discutan y **sólo un miembro del equipo corra el script** mientras los demás le ayudan a dictar las lineas de comandos, discutan los resultados y preparen una diapositiva para que la presenten.
+Les toca obtener los datos de profundidad de cada ensamble, reunanse en equipos y **sólo un miembro del equipo corra el script** mientras los demás le ayudan a dictar las lineas de comandos para construirlo, discutan los resultados y preparen una diapositiva para que la presenten.
+
+Tiempo 1 hora
 :::
+
+---
+
+---
+
+# 03. Profundidad
+
+Ok, hasta a aquí ya aprendimos a evaluar la calidad de las lecturas, filtrarlas y ensamblarlas. Además, aprendimos como ejecutar diferentes versiones de ensamble, compararlas y seleccionar el de mejor calidad.
+
+Ahora es momento de obtener la profundidad. De acuerdo con el flujo de análisis debemos partir de un ensamble, mapear las lecturas y obtener un archivo de profundidad de cada contig en el ensamble, este archivo debe ser compatible con los programas de *binning*.
+
+:::: callout-caution
+## Nota
+
+El proceso de mapeo es demandante en tiempo de ejecución y recursos. Así que nos dimos a la tarea de generar el archivo de profundidad para el tiempo 09 hrs y comenzar directamente con el *binning*.
+
+El mapeo lo corrimos con [bowtie2](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#introduction) que es una herramienta confiable y muy utilizada para alinear lecturas cortas a una referencia, en nuestro caso, la referencia es el ensamble metagenómico de la muestra de 09hrs.
+
+Bowtie2 genera un archivo de mapeo (SAM) que debe convertirse a un formato binario (BAM), para esta conversión usamos [samtools](https://github.com/samtools/) que contiene multiples sub herramientas para trabajar con archivos de mapeos.
+
+Para generar este archivo se ejecutó el siguiente script:
+
+``` bash
+nano scripts/
+```
+
+``` bash
+#!/usr/bin/bash
+#Diana Oaxaca 140826
+#Script que ejecuta bowtie2, samtools y jgi para obtener la profundidad del ensamble
+
+## Crear un directorio de resultados de profundidad
+mkdir -p results/05.profundidad/09hrs
+
+## Declaramos variables de archivos y directorios
+fasta="results/03.ensambles/09h/v2_megahit.fasta"
+out="results/05.profundidad/09hrs"
+fastq="results/02.trimgalore/09h"
+
+## Formatear el ensamble
+bowtie2-build $fasta $out/09hrs --threads 6
+
+## Mapear las lecturas al ensamble y generar un archivo bam ordenado
+bowtie2 -x $out/09hrs \
+ -1 $fastq/09hrs_sm_R1_val_1.fq.gz \
+ -2 $fastq/09hrs_sm_R2_val_2.fq.gz \
+ -p 6 | samtools view -bS - \
+ | samtools sort -o $out/09hrs.sorted.bam
+
+## Indexar el archivo bam ordenado
+samtools index $out/09hrs.sorted.bam
+
+## Generar un archivo de profundidad adecuado para binning
+jgi_summarize_bam_contig_depths \
+ --outputDepth $out/09hrs_depth.txt \
+ $out/09hrs.sorted.bam
+```
+
+Y lo ejecutamos:
+
+``` bash
+ nohup bash scripts/05.profundidad.sh > outs/05.profundidad.out &
+```
+
+::: callout-warning
+## Atención
+
+No las ejecutes, sólo es un ejemplo para que lo puedas usar en los ejercicios y en tus proyectos.
+:::
+::::

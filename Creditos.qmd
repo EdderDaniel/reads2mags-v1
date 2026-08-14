@@ -1,0 +1,29 @@
+---
+title: "Créditos"
+---
+
+LOGO DE LANDA LAB
+
+**Autores**:
+
+-   Yaxche Lona Tellez
+
+<!-- -->
+
+-   Frida Ruiz
+
+<!-- -->
+
+-   Diana Hernández Oaxaca [\@DianaOaxaca](https://github.com/DianaOaxaca)
+
+-   Mirna Rosas Vázquez Landa [\@MirnaVazquez](https://github.com/mirnavazquez) .
+
+**Agradecimientos:**
+
+-   Todos los miembros del laboratorio [LandaLab](https://github.com/landalab0) del [Departamento](https://www.icmyl.unam.mx/es/quienes_somos/personal_academico/vazquez-rosas-landa-mirna) de Ecología Molecular y genómica poblacional del ICMyL de la UNAM, por la sugerencias a la mejora de este tutorial.
+
+-   Al Dr. Francisco Balvino de landalab por su apoyo en la instalación de las herramientas usadas en este taller.
+
+------------------------------------------------------------------------
+
+PONER UNA LICENCIA DE USO

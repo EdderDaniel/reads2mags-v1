@@ -1,0 +1,32 @@
+---
+title: "Recursos extra"
+---
+
+### Metagenómica
+
+-   Lección de introducción a bash, R y metagenómica de [Software Carpentry](https://carpentries-lab.github.io/metagenomics-workshop/) que cubre los siguientes puntos:
+
+    -   Organización de un proyecto metagenómico: [link](https://carpentries-incubator.github.io/organization-metagenomics/)
+
+    -   Introducción a la línea de comandos: [link](https://carpentries-incubator.github.io/shell-metagenomics/)
+
+    -   Introducción a R: [link](https://carpentries-incubator.github.io/introduction-to-R-for-metagenomics/)
+
+    -   Preprocesamiento y visualización de datos metagenómicos: [link](https://carpentries-incubator.github.io/metagenomics/)
+
+```{=html}
+<!-- -->
+```
+-   Sitio web de [Anvio](https://anvio.org/), canal de [YouTube](https://www.youtube.com/watch?v=MqD4aN1p1qA&t=344s) y canal de [DIscord.](https://discord.gg/C6He6mSNY4)
+
+### R
+
+Rladies [Morelia](https://www.meetup.com/es-ES/rladies-morelia/)
+
+Rladies [Cuernavaca](https://www.youtube.com/channel/UCFT7Tgi7UAzR-eyzjoxBzxA)
+
+Rladies [Xalapa](https://www.meetup.com/es-ES/rladies-xalapa/?eventOrigin=event_home_page)
+
+### Discord
+
+Puedes unirte a nuestro [canal de discord](https://discord.gg/nfVRWBXYnJ) y postear dudas, proporcionar ayuda y en general armar comunidad.
