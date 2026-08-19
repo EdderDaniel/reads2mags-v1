@@ -4,7 +4,7 @@ project:
 
 
 website:
-  title: "De lecturas a MAGs:<br>Taller de Metagenómica Centrada en Genomas"
+  title: "De lecturas a MAGs"
   navbar:
     logo: "Figures/landalab.jpeg"
     logo-alt: "LandaLab"
@@ -13,31 +13,42 @@ website:
     left:
       - href: 00.Contenido.qmd
         text: Contenido
+        icon: list-ul
       - href: 01.Presentacion_pozol.qmd
         text: El pozol
+        icon: cup-straw
       - href: 02.Espacio_de_trabajo.qmd
         text: Preparación del proyecto
+        icon: folder2-open
       - href: 03.Filtrados.qmd
         text: Filtrados
+        icon: funnel
       - href: 04.Ensambles.qmd
         text: Ensambles
+        icon: puzzle
       - href: 05.Binning.qmd
         text: Binning
+        icon: boxes
       - href: 06.Taxonomy.qmd
         text: Taxonomía de MAGs
+        icon: diagram-3
       - href: 07.Metabolic.qmd
         text: Metabolismo
+        icon: lightning-charge
       - href: 08.ReadsTaxonomy.qmd
         text: Diversidad
+        icon: bezier2
       - href: 09.Rbims_Hidrocarburos.qmd
         text: Hidrocarburos
+        icon: droplet
+
 
 
   page-footer:
     right: "This page is built with ❤ Science 🦠 🧬 and [Quarto](https://quarto.org/)."
-    left: "Diana Hernández-Oaxaca, &copy; Copyright 2026"
-    center: "LandaLab"
-    background: "#dddaff"
+    left: "Taller de Metagenómica Centrada en Genomas <br> <span style='font-size:0.9rem; font-weight:600; '>Diana Oaxaca</span>, &copy; Copyright 2026"
+    center: "🧬 <span style='font-size:0.9rem; font-weight:600; letter-spacing:0.5px;'>LandaLab</span> 🧪"
+    background: "#4d7b93"
 
 editor: visual
 
@@ -56,4 +67,6 @@ format:
     citations-hover: true
     footnotes-hover: true
     toc: true
+    toc-expand: true
     code-link: true
+    include-after-body: back-to-top.html

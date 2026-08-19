@@ -160,9 +160,7 @@ conda deactivate
 
 [VAMB](https://vamb.readthedocs.io/en/latest/) (**Variational Autoencoder for Metagenomic Binning**) agrupa contigs principalmente según sus patrones de composición de secuencia (k-mers; por ejemplo, tetranucleótidos cuando k=4) y su abundancia relativa entre muestras. Utiliza un autoencoder variacional (**red neuronal que aprende a representar datos complejos en un espacio de menor dimensión**) para reducir estas características a un espacio latente donde los contigs con perfiles similares quedan próximos; posteriormente, un algoritmo de clustering agrupa esos contigs para generar los MAGs.
 
-
 ![VAMB](Figures/bin_vamb.svg){fig-align="center" width="438"}
-
 
 ::: callout-caution
 ## Activa el ambiente vamb
@@ -208,8 +206,6 @@ conda deactivate
 ![COMEBin](Figures/bin_comebin.svg){fig-align="center" width="438"}
 
 Este programa es muy demandante computacionalmente y por ende toma mucho más tiempo de ejecución, para esta muestra tardó 4:30 horas. Así que sólo te pondremos el ejemplo de como se ejecutó para que lo implementes en tus proyectos, pero no lo vamos a ejecutar durante el taller.
-
-
 
 :::::: {.callout-note collapse="true"}
 ## COMEBin
@@ -259,7 +255,6 @@ Para efectos del curso, estamos corriendo comebin en su forma más simple, sin e
 ## Explora
 
 ¿Cuántos bins hay en el directorio de resultados de COMEBin?
-
 :::
 
 ::: callout-note
@@ -356,7 +351,6 @@ Y ahora si, a refinar los *bins* ... 🥳
 
 [Binning_refiner](https://doi.org/10.1093/bioinformatics/btx086) combina los resultados de varios binneadores buscando dónde coinciden. Cuando distintos programas agrupan los mismos contigs juntos, esa **intersección** se conserva como un bin refinado; los contigs en los que los binneadores *no* coinciden se separan. Al quedarse solo con lo que varios métodos respaldan, **reduce la contaminación**, aunque los bins pueden quedar un poco menos completos. Su criterio es el acuerdo entre binneadores, no una evaluación de calidad propia.
 
-
 [![Binning_refiner](Figures/Binning_refiner.png){fig-align="center" width="444"}](https://doi.org/10.1093/bioinformatics/btx086)
 
 <https://doi.org/10.1093/bioinformatics/btx086>
@@ -428,8 +422,7 @@ Exploremos los resultados!
 cat results/10.binning_refiner/09h_Binning_refiner_outputs/09h_sources_and_length.txt 
 ```
 
-
-![Binning_refiner sankey plot](Figures/07.sankey.png){fig-align="center" width="223}
+![Binning_refiner sankey plot](Figures/07.sankey.png){fig-align="center" width="\"223"}
 
 ------------------------------------------------------------------------
 
