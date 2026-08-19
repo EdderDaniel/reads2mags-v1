@@ -71,6 +71,14 @@ Respuesta:
 :::
 ::::
 
+::: callout-warning
+## Piensen en equipo (3 min)
+
+1.  La muestra de 0 hrs tiene \~2.2 M de lecturas; las demás, \~15–20 M. ¿Qué hipótesis biológicas explicarían que el tiempo 0 tenga tan pocas? (pista: ¿cuánta biomasa microbiana hay antes de que arranque la fermentación?)
+2.  ¿Qué problema trae esa diferencia de profundidad al comparar muestras más adelante (ensamble, binning, abundancias)? ¿Cómo lo compensarían?
+3.  R1 y R2 tienen exactamente el mismo número de lecturas. ¿Por qué? ¿Qué significaría si no coincidieran?
+:::
+
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
@@ -112,6 +120,13 @@ Revisaremos la calidad con fastqc
 fastqc data/09hrs_sm_R* -o results/01.fastqc/09h
 ```
 
+::: callout-warning
+## Antes de "arreglar" nada
+
+-   ¿En qué extremo de la lectura cae la calidad y por qué es esperable en Illumina?
+-   FastQC suele marcar en rojo el "per base sequence content" en las primeras bases. En metagenómica esto es común por el cebado aleatorio/tagmentación: ¿lo tratarían como un problema real o no? ¿Por qué?
+:::
+
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
@@ -137,7 +152,7 @@ trim_galore --help
 ```
 
 ``` bash
-trim_galore --fastqc -j 4 --paired data/09h_1.fastq.gz data/09h_2.fastq.gz -o results/02.trimgalore/9h
+  trim_galore --fastqc -j 4 --paired data/09hrs_sm_R1.fastq.gz data/09hrs_sm_R2.fastq.gz -o results/02.trimgalore/09h
 ```
 
 ## 03. Revisemos la calidad de las lecturas antes y después de limpiar
@@ -174,13 +189,15 @@ scp dianao@[ip del servidor]:/home/dianao/reads2mags_pozol/results/02.trimgalore
 ![](images/clipboard-3590510204.png)
 
 ::: callout-warning
-## Reúnanse en equipo y resuelvan estas preguntas
+## Reúnanse en equipo y resuelvan estas preguntas (10 min)
 
 ¿Cambió la calidad?
 
 ¿Cuántas lecturas había y cuántas quedaron después del filtro?
 
-Tiempo: 15 min
+TrimGalore quitó adaptadores sin que le dijeras cuál. ¿Cómo lo supo? (autodetección examinando las primeras lecturas).
+
+¿Por qué `--paired`? Si una lectura se recorta mucho y su pareja no, ¿qué le pasa al par? (mantiene sincronía, descarta huérfanos).
 :::
 
 ------------------------------------------------------------------------
@@ -194,7 +211,7 @@ Como las muestras del pozol tienen DNA de maíz es necesario eliminar las lectur
 Cómo es un proceso largo, nos dimos a la tarea de ejecutarlo y las lecturas que estaremos trabajando ya no contienen el genoma del maiz. Este es el script que usamos para obtenerlas.
 
 ::: {.callout-tip collapse="true"}
-## Scrip de remoción de hospedero
+## Script de remoción de hospedero
 
 ``` bash
 #!/bin/bash
@@ -222,4 +239,14 @@ awk '{print "@"$1"\n"$10"\n+\n"$11}' > data/09hrs_sm_R1.fastq
 samtools view -f 141 mapping.sorted.bam | \
 awk '{print "@"$1"\n"$10"\n+\n"$11}' > data/09hrs_sm_R2.fastq
 ```
+:::
+
+::: callout-note
+## Reflexionemos
+
+-   El hospedero aquí es el maíz. ¿Cuál sería en un metagenoma de intestino humano? ¿Y en uno de suelo?
+
+-   ¿Qué le pasaría a tu ensamble y a tus MAGs si NO quitáramos el maíz?
+
+-   ¿Conviene remover hospedero antes o después del trimming?
 :::

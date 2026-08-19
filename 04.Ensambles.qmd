@@ -4,10 +4,10 @@ title: "02.Ensambles"
 
 # 01. Ensamble de las secuencias
 
-Un vez teniendo las secuencias limpias ya podemos realizar el ensamble.\
-Ensamblaremos con [**MetaSPAdes**](https://github.com/ablab/spades) y [**Megahit**](https://github.com/voutcn/megahit), después compararemos ambos ensambles basándonos en longitudes de los contigs con QUAST y el porcentaje de lecturas que dan lugar al coensamble, esto con bbmap de [**bbtools**](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/).
+Una vez teniendo las secuencias limpias ya podemos realizar el ensamble.\
+Ensamblaremos con [**MetaSPAdes**](https://github.com/ablab/spades) y [**Megahit**](https://github.com/voutcn/megahit), después compararemos ambos ensambles basándonos en longitudes de los contigs con QUAST y el porcentaje de lecturas que dan lugar al ensamble, esto con bbmap de [**bbtools**](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/).
 
-Los ensambladores de metagenomas que actualmente se utilizan funcionan mediante la generación de gráficos de Bruijin:
+Los ensambladores de metagenomas que actualmente se utilizan funcionan mediante la generación de gráficos de Bruijn:
 
 ![](images/clipboard-2589208043.png)
 
@@ -64,7 +64,7 @@ Estamos utilizando la opción `--min-contig-len 1000` para efectos del curso y e
 Las siguientes dos versiones de ensamble tardan todavía más tiempo que la primer versión, así que nos dimos a la tarea de correrlas y los resultados se encuentran en el directorio de resultados correspondiente. Exploremoslos!!!
 :::
 
-El flujo y código para correr las otras dos versiones se depliega a continuación, recuerda que **NO es para ejecutarse**, pero te lo dejamos como ejemplo para que lo puedas replicar más tarde en los ejercicios.
+El flujo y código para correr las otras dos versiones se despliega a continuación, recuerda que **NO es para ejecutarse**, pero te lo dejamos como ejemplo para que lo puedas replicar más tarde en los ejercicios.
 
 :::: {.callout-tip collapse="true"}
 ## Versiones 2 y 3 de ensambles
@@ -125,6 +125,7 @@ En el ejemplo de los ensambles, los archivos intermedios suelen ser muy pesados 
 
 ``` bash
  # cambiamos de lugar los ensambles de megahit y los renombramos
+ cd results/03.ensambles/09h/
  mv v1/v1_megahit.contigs.fa v1_megahit.fasta
  mv v2/v2_megahit.contigs.fa v2_megahit.fasta
  
@@ -132,6 +133,9 @@ En el ejemplo de los ensambles, los archivos intermedios suelen ser muy pesados 
  #eliminamos los directorios que contienen todos los archivos
  #intermedios de cada versión de ensamble 
  rm -r v1/ v2/ v3/
+ 
+ # y regresamos al directorio principal
+ cd && cd reads2mags
 ```
 :::
 ::::
@@ -143,7 +147,7 @@ En el ejemplo de los ensambles, los archivos intermedios suelen ser muy pesados 
 ::: callout-tip
 ## Ejercicios
 
-**Ahora a te toca tí**
+**Ahora a te toca a tí**
 
 Les toca ensamblar la muestra del tiempo de fermentación que les tocó. En equipo discutan y **sólo un miembro del equipo corra el script** mientras los demás le ayudan a dictar las lineas de comandos.
 
@@ -169,7 +173,7 @@ Vamos a mapear todos los ensambles que obtuvimos a las lecturas limpias,
 hagamos un script para esto:
 
 ``` bash
-nano scripts/04.profundidad.sh
+nano scripts/04.mapeo_comparacion.sh
 ```
 
 ``` bash
@@ -177,13 +181,13 @@ nano scripts/04.profundidad.sh
 #Script que corre BBmap para mapear y obtener el numero de lecturas mapeadas a cada version de ensamble
 
 # version 1
-bbmap.sh ref=results/03.ensambles/09h/v1_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz threads=10 scafstats=results/04.compare/09h/v1.stats
+bbmap.sh ref=results/03.ensambles/09h/v1_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/09h/v1.stats
 
 # version 2
-bbmap.sh ref=results/03.ensambles/09h/v2_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz threads=10 scafstats=results/04.compare/09h/v2.stats
+bbmap.sh ref=results/03.ensambles/09h/v2_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/09h/v2.stats
 
 # version 3
-bbmap.sh ref=results/03.ensambles/09h/v3_spades.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz threads=10 scafstats=results/04.compare/09h/v3.stats
+bbmap.sh ref=results/03.ensambles/09h/v3_spades.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/09h/v3.stats
 ```
 
 Y lo ejecutamos asi:
@@ -192,11 +196,11 @@ Y lo ejecutamos asi:
 nohup bash scripts/04.profundidad.sh > outs/04.bbmap.out &
 ```
 
-Vamos a explorar cuantas lecturas se mapearon en cada uno de los ensambles
+Vamos a explorar cuantas bases se mapearon en cada uno de los ensambles
 
 ``` bash
 for file in $(ls results/04.compare/09h/*.stats); do 
-  echo "El número de lecturas mapeadas al ensamble:  " $file "es: "
+  echo "El número de bases mapeadas al ensamble:  " $file "es: "
   cut -f9 $file | grep -v assignedBases | awk '{sum += $1;}END{print sum;}'
 done
 ```
@@ -208,7 +212,7 @@ Bien, ahora ya sabemos que ensamble se formó con una mayor cantidad de lecturas
 ::: callout-caution
 ## Preguntas
 
-¿Qué porcentaje de las lecturas se mapearon en todos los casos?
+¿Qué porcentaje de las lecturas se mapearon en todos los casos? (revisa el archivo `outs/04.bbmap.out`)
 
 ¿Qué pasó con las lecturas que no mapearon al ensamble?
 :::
@@ -232,11 +236,13 @@ metaquast.py --help
 ```
 
 ::: callout-caution
-## Preguntas
+## Preguntas (5 min)
 
 ¿Qué ensamble es el mejor?
 
-¿Porqué seleccionarlo?
+¿el ensamble con mayor N50 es siempre el mejor para recuperar MAGs, o puede un N50 alto esconder contigs quiméricos?
+
+¿por qué comparamos también total ensamblado y nº de contigs, y no solo N50?
 
 ¿Qué importancia tiene probar diferentes pasos y tamaños de k-mers y diferentes ensambladores?
 :::
@@ -246,9 +252,9 @@ metaquast.py --help
 ::: callout-tip
 ## Ejercicios
 
-**Ahora a te toca tí**
+**Ahora te toca a tí**
 
-Les toca obtener los datos de profundidad de cada ensamble, reunanse en equipos y **sólo un miembro del equipo corra el script** mientras los demás le ayudan a dictar las lineas de comandos para construirlo, discutan los resultados y preparen una diapositiva para que la presenten.
+Les toca obtener los datos de profundidad de cada ensamble de la muestra que les tocó, reunanse en equipos y **sólo un miembro del equipo corra el script** mientras los demás le ayudan a dictar las lineas de comandos para construirlo, discutan los resultados y preparen una diapositiva para que la presenten.
 
 Tiempo 1 hora
 :::
@@ -339,6 +345,8 @@ No lo ejecutes, sólo es un ejemplo para que lo puedas usar en los ejercicios y 
 De nuevo te toca
 
 En equipos armen el script de profundidad con la muestra que les tocó y dejelo corriendo para que mañana lo revisemos.
+
+**NOTA:** para el ejemplo del tiempo 09hrs seguimos con v2 (meta-sensitive); en tu proyecto y en el ejercicio usa el que selecciones como el de mejor calidad.
 
 Tiempo 15 min
 :::

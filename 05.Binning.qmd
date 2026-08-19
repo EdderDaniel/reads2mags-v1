@@ -33,9 +33,9 @@ Antes de comenzar, reúnete con tu equipo y juntos
 Tiempo: 5 min
 :::
 
----
+------------------------------------------------------------------------
 
----
+------------------------------------------------------------------------
 
 ## 01. Binning
 
@@ -44,8 +44,6 @@ Ahora si, vamos a agrupar los contigs en *bins* ...
 ### 01.1 Metabat2
 
 [Metabat2](https://bitbucket.org/berkeleylab/metabat/src/master/) es una herramienta que agrupa los contigs tomando la cobertura de cada contig y calcula su composición nucleotídica.
-
-Para correr metabat necesitamos activar el [ambiente conda](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#activating-an-environment) donde se aloja.
 
 ![Metabat2. Kang et al., 2015. DOI:10.7717/peerj.1165](Figures/04.Metabat.png){fig-align="center" width="473"}
 
@@ -80,9 +78,9 @@ Estamos utilizando la opción `-m 1500` para efectos del curso y el tipo de dato
 :::
 ::::
 
----
+------------------------------------------------------------------------
 
----
+------------------------------------------------------------------------
 
 ### 01.2 MaxBin2
 
@@ -135,9 +133,9 @@ conda deactivate
 ```
 :::
 
-### Vamb
+### 01.3 Vamb
 
-[VAMB](https://vamb.readthedocs.io/en/latest/) utiliza una combinación de enfoques de aprendizaje profundo y técnicas de agrupamiento basándose en sus patrones de composición de nucleótidos y en la co-ocurrencia de sus frecuencias de cobertura.
+[VAMB](https://vamb.readthedocs.io/en/latest/) (**Variational Autoencoder for Metagenomic Binning**) agrupa contigs principalmente según sus **patrones de composición de secuencia (k-mers; por ejemplo, tetranucleótidos cuando k=4)** y su **abundancia relativa entre muestras**. Utiliza un autoencoder variacional (**red neuronal que aprende a representar datos complejos en un espacio de menor dimensión**) para reducir estas características a un espacio latente donde los contigs con perfiles similares quedan próximos; posteriormente, un algoritmo de clustering agrupa esos contigs para generar los MAGs.
 
 ::: callout-caution
 ## Activa el ambiente vamb
@@ -162,27 +160,81 @@ vamb bin default --fasta results/03.ensambles/09h/v2_megahit.fasta \
  -p 6 -m 1500 --seed 123 --minfasta 200000
 ```
 
-::: callout-important
+::: callout-caution
+## Responde
+
 Si quisieras recuperar los genomas de virus ¿Qué cambiarías?
 :::
 
-::: callout-tip
-## Otros programas para binning
-
-Recientemente se publicó COMEBin, que utiliza un enfoque distinto a lo que hemos usado en este tutorial. En el siguiente [link](https://github.com/ziyewang/COMEBin) encontrarás el manual y una explicación general sobre su funcionamiento.
-:::
-
 ::: callout-caution
-## No olvides descatvar el ambiente
+## No olvides desactivar el ambiente
 
 ``` bash
 conda deactivate
 ```
 :::
 
-## Refinamiento
+### 01.4 COMEBin
 
-Ya corrimos tres programas de *binning*, pero, recordemos que los agrupamientos pueden tener errores:
+[**COMEBin**](https://github.com/ziyewang/COMEBin) **(Contrastive learning-based Metagenomic Binning)** agrupa contigs utilizando principalmente sus **patrones de composición de secuencia** y **abundancia/distribución entre muestras**. Emplea **aprendizaje contrastivo** (método que aprende a acercar representaciones de datos similares y a separar las diferentes) para generar un espacio latente donde contigs pertenecientes al mismo genoma tienden a agruparse; posteriormente, realiza clustering sobre estas representaciones para generar los bins.
+
+Este programa es muy demandante computancionalmente y por ende toma mucho más tiempo de ejecución, para esta muestra tardó 4:30 horas. Así que sólo te pondremos el ejemplo de como se ejecutó para que lo implementes en tus proyectos, pero no lo vamos a ejecutar durante el taller.
+
+:::::: {.callout-note collapse="true"}
+## COMEBin
+
+::: callout-caution
+## Activa el ambiente para COMEBin
+
+``` bash
+conda activate comebin_env
+```
+:::
+
+A COMEBin también le gusta crear un directorio parental, pero no le gusta crear los directorios superiores, así que debemos crear el directorio que contendrá los resultados.
+
+``` bash
+mkdir -p results/09.comebin
+```
+
+Corremos COMEBin:
+
+``` bash
+run_comebin.sh -a results/03.ensambles/09h/v2_megahit.fasta \
+ -o results/09.comebin/09hrs \
+ -p results/05.profundidad/09hrs/ -t 6
+```
+
+:::: callout-important
+## Nota importante
+
+Para efectos del curso, estamos corriendo comebin en su forma más simple, sin embargo en la ayuda podemos ver algunos argumentos que controlan **cómo aprende la representación de los contigs durante el aprendizaje contrastivo**. Lo importante es distinguir entre los parámetros que afectan el modelo y los que afectan principalmente el costo computacional.
+
+::: {.callout-tip collapse="true"}
+## Argumentos
+
+`-n INT` → **number of views**. Número de *views* (representaciones distintas de los mismos contigs) utilizadas en el aprendizaje contrastivo. Por defecto `6`. COMEBin genera múltiples vistas para que el modelo aprenda características robustas y no dependa de una única representación. **Más views → entrenamiento potencialmente más robusto, pero mayor costo computacional.**
+
+`-l FLOAT` → **temperature** de la función de pérdida contrastiva. Controla qué tan estrictamente el modelo diferencia entre representaciones similares y diferentes. El valor por defecto es `0.07` para ensamblajes con N50 \> 10,000 y `0.15` para N50 menores. **Temperaturas más bajas hacen que la comparación contrastiva sea más "estricta" o concentrada.**
+
+`-e INT` → **embedding size for COMEBin network**. Número de dimensiones del **espacio latente** generado por la red que aprende a partir de las características de los contigs. Por defecto `2048`. Un embedding más grande permite representar patrones más complejos, pero aumenta memoria y costo computacional.
+
+`-c INT` → **embedding size for coverage network**. Dimensionalidad de la representación latente asociada con la **cobertura/abundancia de los contigs**. Por defecto `2048`. Es decir, COMEBin mantiene una representación de la información de cobertura que posteriormente contribuye a distinguir contigs.
+:::
+::::
+::::::
+
+::: callout-caution
+## Explora
+
+¿Cuántos bins hay en el directorio de resultados de COMEBin?
+
+results/09.comebin/09hrs/comebin_res/cluster_res/unitem_profile/binning_methods/weight_seed_kmeans_k_14_result.tsv/checkm_bac/genome_quality.tsv
+:::
+
+## 02. Refinamiento
+
+Ya corrimos cuatro programas de *binning*, pero, recordemos que los agrupamientos pueden tener errores:
 
 ![Contaminación de bins](Figures/05.Refinamiento.png){fig-align="center" width="260"}
 
@@ -203,34 +255,36 @@ Vamos a correrlo sólo como ejemplo para los resultados de Vamb para que podamos
 Activamos el ambiente:
 
 ``` bash
-conda activate checkm
+conda activate checkm2
 ```
+
+Vamos a crear el directorio de resultados
 
 ``` bash
-nano src/06.1.checkm_48h.slurm
+mkdir -p results/08.vamb/09hrs/checkm2
 ```
+
+Y ahora si lo ejecutamos
 
 ``` bash
-#!/bin/bash
-#SBATHC -J checkm 
-#SBATCH -t 0
-#SBATCH -e outs/06.1.checkm.err
-#SBATCH -o outs/06.1.checkm.out
-#SBATCH --export=ALL
-#SBATCH -n 6
-#SBATCH -N 1
-#SBATCH -p q2
-#SBATCH --mem 64G
-
-
-# Ejemplo de como correrlo con los bins de vamb
-
-# 01. Indicamos la ubicación de la base de datos
-export CHECKM_DATA_PATH=/lustre/databases/metagenomica/checkM/
-
-# 02. Ejecutamos checkm
-checkm lineage_wf results/06.vamb/48h/bins/ results/06.vamb/48h/checkm -x fna -t 6 -f results/06.vamb/48h/checkm_vamb.tsv
+checkm2 predict --threads 6 -x fna --input results/08.vamb/09hrs/bins/ --output-directory results/08.vamb/09hrs/checkm2/
 ```
+
+::: callout-caution
+## Explora
+
+Vamos a explorar los resultados de checkm2
+
+``` bash
+less -S results/08.vamb/09hrs/checkm2/quality_report.tsv
+```
+
+Adicionalmente veamos uno de los resultados que genera comebin para comparar:
+
+``` bash
+less results/09.comebin/09hrs/comebin_res/cluster_res/unitem_profile/binning_methods/weight_seed_kmeans_k_14_result.tsv/checkm_bac/genome_quality.tsv
+```
+:::
 
 Y ahora si, a refinar los *bins* ... 🥳
 
@@ -245,106 +299,71 @@ Y ahora si, a refinar los *bins* ... 🥳
 Necesitamos crear el directorio de resultados para binning_refiner y un directorio con los bins generados por cada programa
 
 ``` bash
-mkdir -p results/07.binning_refiner/48hbins/{metabat,maxbin,vamb}
+mkdir -p results/10.binning_refiner/09hrsbins/{metabat,maxbin,vamb}
 ```
 
-**Ejercicio**. Crea ligas simbólicas de los *bins* generados por cada herramienta en el directorio que corresponde.
+Crea ligas simbólicas de los *bins* generados por cada herramienta en el directorio que corresponde.
 
-:::: callout-tip
-## Ejercicio: Prepara los datos
+::: callout-tip
+## Prepara los datos
 
 Crea ligas simbólicas de los *bins* generados por cada herramienta en el directorio que corresponde de acuerdo a los directorios que acabamos de crear.
 
-::: {.callout-note collapse="true"}
-#metabat
+``` bash
+# metabat
 
-`cd results/07.binning_refiner/48hbins/metabat/`
+cd results/10.binning_refiner/09hrsbins/metabat/
 
-`ln -s ../../../04.metabat/48h/*.fa .`
+ln -s ../../../06.metabat/09hrs/metabat.*.fa
 
-#maxbin
+# maxbin
 
-`cd ../maxbin/`
+cd ../maxbin/
+ln -s ../../../07.maxbin/09hrs/*.fasta .
 
-`ln -s ../../../05.maxbin/48h/*.fasta .`
+# vamb
 
-#vamb
+cd ../vamb
+ln -s ../../../08.vamb/09hrs/bins/*.fna .
 
-`cd ../vamb/`
+# comebin
 
-`ln -s ../../../06.vamb/48h/bins/*.fna .`
+ cd ../comebin
+ ln -s ../../../09.comebin/09hrs/comebin_res/comebin_res_bins/*.fa .
+```
 :::
-::::
 
 Regresa al directorio de resultados de Binning_refiner para ejecutar el programa dentro de ese directorio.
 
 ``` bash
-# usa pwd y cd para ubicarte
+cd ../../
 ```
 
 Activa el ambiente
 
 ``` bash
-conda activate mt-das-tool
+conda activate binning_refiner
 ```
 
 Ahora si, corramos Binning_refiner
 
 ``` bash
-srun --mem 1G -n1 -p q2 Binning_refiner -i 48hbins/ -m 200 -p 48h
+Binning_refiner -i 09hrsbins/ -m 200 -p 09h -plot
 ```
 
 Y regresemos a nuestro directorio principal
 
 ``` bash
-taller_metagenomica_pozol/
+cd && cd reads2mags_pozol/
 ```
 
 Exploremos los resultados!
 
 ``` bash
-cat results/07.binning_refiner/48h_Binning_refiner_outputs/48h_sources_and_length.txt
+cat results/10.binning_refiner/09h_Binning_refiner_outputs/09h_sources_and_length.txt 
 ```
 
-Copia y pega este contenido en la consola de Rscript
-
-``` r
-# Cargar las librerias
-library(dplyr)
-library(networkD3)
-
-# revisa tu ubicación
-getwd()
-
-# OJO
-setwd("/home/ELALUMNOQUEERES/taller_metagenomica_pozol")
-
-# Cargar los datos
-sankey_data <- read.csv("results/07.binning_refiner/48hrs_Binning_refiner_outputs/48hrs_sankey.csv")
-
-# Crear una lista de nodos únicos
-nodes <- data.frame(name = unique(c(sankey_data$C1, sankey_data$C2)))
-
-# Crear el dataframe de enlaces
-links <- sankey_data %>%
-  mutate(source = match(C1, nodes$name) - 1,
-         target = match(C2, nodes$name) - 1,
-         value = Length_Kbp) %>%
-  select(source, target, value)
-
-# Crear el gráfico Sankey
-sankey_plot <- sankeyNetwork(Links = links, Nodes = nodes,
-                             Source = "source", Target = "target",
-                             Value = "value", NodeID = "name",
-                             fontSize = 12, nodeWidth = 30)
-
-# Mostrar el gráfico
-sankey_plot
-
-# Guardar
-library(htmlwidgets)
-saveWidget(sankey_plot, file = "48hrs_sankey_plot.html")
-```
+![](images/clipboard-3835223447.png)
 
 ![Binning_refiner sankey plot](Figures/07.sankey.png){fig-align="center"}
 
@@ -359,33 +378,40 @@ saveWidget(sankey_plot, file = "48hrs_sankey_plot.html")
 Vamos a correr DASTool ... 🥳
 
 ``` bash
-nano src/08.dastool_48h.slurm
+conda activate dastool
 ```
 
 ``` bash
-#!/bin/bash
-#SBATHC -J dastool
-#SBATCH -t 0
-#SBATCH -e outs/08.dastool48h.err
-#SBATCH -o outs/08.dastool48h.out
-#SBATCH --export=ALL
-#SBATCH -n 6
-#SBATCH -N 1
-#SBATCH -p q2
-#SBATCH --mem 16G
+nano scripts/11.dastool_09h.sh
+```
 
-export LC_ALL=en_US.UTF-8
-
+``` bash
 # 01. Crear el directorio para los resultados
-mkdir -p results/08.dastool/48h/
+mkdir -p results/11.dastool/09hrs
 
 # 02. DASTool necesita como entrada un archivo tabular con información de los resultados de cada programa de binning.
-Fasta_to_Contig2Bin.sh -i results/04.metabat/48h/ -e fa > results/08.dastool/48h/48hrs_metabat.dastool.tsv
-Fasta_to_Contig2Bin.sh -i results/05.maxbin/48h/ -e fasta > results/08.dastool/48h/48hrs_maxbin.dastool.tsv
-Fasta_to_Contig2Bin.sh -i results/06.vamb/48h/bins/ -e fna > results/08.dastool/48h/48hrs_vamb.dastool.tsv
+Fasta_to_Contig2Bin.sh -i results/06.metabat/09hrs/ -e fa > results/11.dastool/09hrs/09hrs_metabat.dastool.tsv
 
-# 03. Ya que tenemos los archivos tsv podemos empezar con el refinamiento!!
-DAS_Tool -i results/08.dastool/48h/48hrs_metabat.dastool.tsv,results/08.dastool/48h/48hrs_maxbin.dastool.tsv,results/08.dastool/48h/48hrs_vamb.dastool.tsv -l metabat,maxbin,vamb -c results/02.ensambles/48hrs.fasta -o results/08.dastool/48h/48h -t 6 --write_bins
+Fasta_to_Contig2Bin.sh -i results/07.maxbin/09hrs/ -e fasta > results/11.dastool/09hrs/09hrs_maxbin.dastool.tsv
+
+Fasta_to_Contig2Bin.sh -i results/08.vamb/09hrs/bins/ -e fna > results/11.dastool/09hrs/09hrs_vamb.dastool.tsv
+
+Fasta_to_Contig2Bin.sh -i results/09.comebin/09hrs/comebin_res/comebin_res_bins/ -e fa > results/11.dastool/09hrs/09hrs_comebin.dastool.tsv
+
+# 03. arreglar formatos de vamb y metabat
+sed -i 's/ .*\t/\t/g' results/11.dastool/09hrs/09hrs_vamb.dastool.tsv
+
+cut -f1,4 results/11.dastool/09hrs/09hrs_metabat.dastool.tsv > results/11.dastool/09hrs/09hrs_metabat.dastool.tmp.tsv && mv results/11.dastool/09hrs/09hrs_metabat.dastool.tmp.tsv results/11.dastool/09hrs/09hrs_metabat.dastool.tsv
+
+
+# 04. Ya que tenemos los archivos tsv podemos empezar con el refinamiento!!
+DAS_Tool -i results/11.dastool/09hrs/09hrs_metabat.dastool.tsv,results/11.dastool/09hrs/09hrs_maxbin.dastool.tsv,results/11.dastool/09hrs/09hrs_vamb.dastool.tsv,results/11.dastool/09hrs/09hrs_comebin.dastool.tsv -l metabat,maxbin,vamb,comebin -c results/03.ensambles/09h/v2_megahit.fasta -o results/11.dastool/09hrs/09hrs -t 6 --write_bins
+```
+
+Y lo corremos
+
+``` bash
+nohup bash scripts/11.dastool_09h.sh > outs/11.dastool.out &
 ```
 
 ------------------------------------------------------------------------
