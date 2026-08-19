@@ -224,9 +224,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="ensamble-de-las-secuencias" class="level1">
 <h1>01. Ensamble de las secuencias</h1>
-<p>Un vez teniendo las secuencias limpias ya podemos realizar el ensamble.<br>
-Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</strong></a> y <a href="https://github.com/voutcn/megahit"><strong>Megahit</strong></a>, después compararemos ambos ensambles basándonos en longitudes de los contigs con QUAST y el porcentaje de lecturas que dan lugar al coensamble, esto con bbmap de <a href="https://jgi.doe.gov/data-and-tools/software-tools/bbtools/"><strong>bbtools</strong></a>.</p>
-<p>Los ensambladores de metagenomas que actualmente se utilizan funcionan mediante la generación de gráficos de Bruijin:</p>
+<p>Una vez teniendo las secuencias limpias ya podemos realizar el ensamble.<br>
+Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</strong></a> y <a href="https://github.com/voutcn/megahit"><strong>Megahit</strong></a>, después compararemos ambos ensambles basándonos en longitudes de los contigs con QUAST y el porcentaje de lecturas que dan lugar al ensamble, esto con bbmap de <a href="https://jgi.doe.gov/data-and-tools/software-tools/bbtools/"><strong>bbtools</strong></a>.</p>
+<p>Los ensambladores de metagenomas que actualmente se utilizan funcionan mediante la generación de gráficos de Bruijn:</p>
 <p><img src="images/clipboard-2589208043.png" class="img-fluid"></p>
 <p>Manos a la obra, vamos a ensamblar diferentes versiones de ensambles.</p>
 <p>Vamos a crear el directorio de resultados</p>
@@ -278,7 +278,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <p>Las siguientes dos versiones de ensamble tardan todavía más tiempo que la primer versión, así que nos dimos a la tarea de correrlas y los resultados se encuentran en el directorio de resultados correspondiente. Exploremoslos!!!</p>
 </div>
 </div>
-<p>El flujo y código para correr las otras dos versiones se depliega a continuación, recuerda que <strong>NO es para ejecutarse</strong>, pero te lo dejamos como ejemplo para que lo puedas replicar más tarde en los ejercicios.</p>
+<p>El flujo y código para correr las otras dos versiones se despliega a continuación, recuerda que <strong>NO es para ejecutarse</strong>, pero te lo dejamos como ejemplo para que lo puedas replicar más tarde en los ejercicios.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -334,13 +334,17 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <p>Cómo todo en la ciencia, la ejecución de proyectos bioinformáticos requieren de buenas prácticas, una de tantas es eliminar archivos intermedios que dejan de ser útiles después de la exploración.</p>
 <p>En el ejemplo de los ensambles, los archivos intermedios suelen ser muy pesados y esto ocasiona saturación del servidor, así que vamos a limpiar nuestro directorio de ensambles.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a> <span class="co"># cambiamos de lugar los ensambles de megahit y los renombramos</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">mv</span> v1/v1_megahit.contigs.fa v1_megahit.fasta</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">mv</span> v2/v2_megahit.contigs.fa v2_megahit.fasta</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a> <span class="co"># ya que tenemos los resultados en el directorio results/03.ensambles, </span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a> <span class="co">#eliminamos los directorios que contienen todos los archivos</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a> <span class="co">#intermedios de cada versión de ensamble </span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a> <span class="fu">rm</span> <span class="at">-r</span> v1/ v2/ v3/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a> <span class="bu">cd</span> results/03.ensambles/09h/</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">mv</span> v1/v1_megahit.contigs.fa v1_megahit.fasta</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">mv</span> v2/v2_megahit.contigs.fa v2_megahit.fasta</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># ya que tenemos los resultados en el directorio results/03.ensambles, </span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a> <span class="co">#eliminamos los directorios que contienen todos los archivos</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a> <span class="co">#intermedios de cada versión de ensamble </span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a> <span class="fu">rm</span> <span class="at">-r</span> v1/ v2/ v3/</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a> <span class="co"># y regresamos al directorio principal</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a> <span class="bu">cd</span> <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> reads2mags</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -362,7 +366,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Ahora a te toca tí</strong></p>
+<p><strong>Ahora a te toca a tí</strong></p>
 <p>Les toca ensamblar la muestra del tiempo de fermentación que les tocó. En equipo discutan y <strong>sólo un miembro del equipo corra el script</strong> mientras los demás le ayudan a dictar las lineas de comandos.</p>
 <p>Tiempo 30 min</p>
 </div>
@@ -378,23 +382,23 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/04.compare/09h/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Vamos a mapear todos los ensambles que obtuvimos a las lecturas limpias,</p>
 <p>hagamos un script para esto:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> scripts/04.profundidad.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> scripts/04.mapeo_comparacion.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/bash</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Script que corre BBmap para mapear y obtener el numero de lecturas mapeadas a cada version de ensamble</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># version 1</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/09h/v1_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz threads=10 scafstats=results/04.compare/09h/v1.stats</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/09h/v1_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/09h/v1.stats</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># version 2</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/09h/v2_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz threads=10 scafstats=results/04.compare/09h/v2.stats</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/09h/v2_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/09h/v2.stats</span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># version 3</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/09h/v3_spades.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz threads=10 scafstats=results/04.compare/09h/v3.stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/09h/v3_spades.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/09h/v3.stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Y lo ejecutamos asi:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> bash scripts/04.profundidad.sh <span class="op">&gt;</span> outs/04.bbmap.out <span class="kw">&amp;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Vamos a explorar cuantas lecturas se mapearon en cada uno de los ensambles</p>
+<p>Vamos a explorar cuantas bases se mapearon en cada uno de los ensambles</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="va">$(</span><span class="fu">ls</span> results/04.compare/09h/<span class="pp">*</span>.stats<span class="va">)</span><span class="kw">;</span> <span class="cf">do</span> </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"El número de lecturas mapeadas al ensamble:  "</span> <span class="va">$file</span> <span class="st">"es: "</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"El número de bases mapeadas al ensamble:  "</span> <span class="va">$file</span> <span class="st">"es: "</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cut</span> <span class="at">-f9</span> <span class="va">$file</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> assignedBases <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{sum += $1;}END{print sum;}'</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><img src="images/clipboard-488604145.png" class="img-fluid"></p>
@@ -409,7 +413,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>¿Qué porcentaje de las lecturas se mapearon en todos los casos?</p>
+<p>¿Qué porcentaje de las lecturas se mapearon en todos los casos? (revisa el archivo <code>outs/04.bbmap.out</code>)</p>
 <p>¿Qué pasó con las lecturas que no mapearon al ensamble?</p>
 </div>
 </div>
@@ -428,12 +432,13 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Preguntas
+<span class="screen-reader-only">Caution</span>Preguntas (5 min)
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>¿Qué ensamble es el mejor?</p>
-<p>¿Porqué seleccionarlo?</p>
+<p>¿el ensamble con mayor N50 es siempre el mejor para recuperar MAGs, o puede un N50 alto esconder contigs quiméricos?</p>
+<p>¿por qué comparamos también total ensamblado y nº de contigs, y no solo N50?</p>
 <p>¿Qué importancia tiene probar diferentes pasos y tamaños de k-mers y diferentes ensambladores?</p>
 </div>
 </div>
@@ -451,8 +456,8 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Ahora a te toca tí</strong></p>
-<p>Les toca obtener los datos de profundidad de cada ensamble, reunanse en equipos y <strong>sólo un miembro del equipo corra el script</strong> mientras los demás le ayudan a dictar las lineas de comandos para construirlo, discutan los resultados y preparen una diapositiva para que la presenten.</p>
+<p><strong>Ahora te toca a tí</strong></p>
+<p>Les toca obtener los datos de profundidad de cada ensamble de la muestra que les tocó, reunanse en equipos y <strong>sólo un miembro del equipo corra el script</strong> mientras los demás le ayudan a dictar las lineas de comandos para construirlo, discutan los resultados y preparen una diapositiva para que la presenten.</p>
 <p>Tiempo 1 hora</p>
 </div>
 </div>
@@ -556,6 +561,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <div class="callout-body-container callout-body">
 <p>De nuevo te toca</p>
 <p>En equipos armen el script de profundidad con la muestra que les tocó y dejelo corriendo para que mañana lo revisemos.</p>
+<p><strong>NOTA:</strong> para el ejemplo del tiempo 09hrs seguimos con v2 (meta-sensitive); en tu proyecto y en el ejercicio usa el que selecciones como el de mejor calidad.</p>
 <p>Tiempo 15 min</p>
 </div>
 </div>

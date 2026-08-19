@@ -21,6 +21,17 @@ Para obtener MAGs podemos seguir el siguiente flujo de análisis:
 
 ![Figura 2. Metagenómica Centrada en Genomas](Figures/02.MAGs_workflow.png){fig-align="center"}
 
+Antes de correr las herramientas, vale la pena entender **por qué** es posible agrupar contigs en genomas. La idea común a todos los binneadores, es que los contigs que provienen de un **mismo genoma** comparten dos propiedades:
+
+-   **Cobertura parecida.** Cada organismo está presente en cierta abundancia dentro de la muestra, así que las lecturas se mapean a *todos* sus contigs a una profundidad similar. La cobertura funciona como una huella de "cuánto hay" de ese organismo.
+-   **Composición parecida.** Cada genoma tiene una firma característica en su **frecuencia de tetranucleótidos** (el patrón de k-mers, ligado a su GC y a sesgos propios), y esa firma se conserva a lo largo de todos sus contigs, sin importar qué genes lleven.
+
+Ninguna señal basta por sí sola, dos genomas distintos pueden coincidir en abundancia, o en composición, pero combinando ambas los genomas se separan bastante bien. Por eso el archivo de profundidad que generamos antes es clave: aporta justo la señal de cobertura que el ensamble por sí solo no tiene.
+
+A partir de aquí, **todos los binneadores usan estas mismas dos señales; lo que cambia es *cómo* las explotan** para formar los grupos. Vamos a correr cuatro, MetaBAT2, MaxBin2, VAMB y COMEBin, y a comparar sus resultados.
+
+![Frecuencia de tetranucleótidos](Figures/tetranucleotidos.svg){fig-align="center" width="637"}
+
 ::: callout-caution
 ## Exploren
 
@@ -43,9 +54,9 @@ Ahora si, vamos a agrupar los contigs en *bins* ...
 
 ### 01.1 Metabat2
 
-[Metabat2](https://bitbucket.org/berkeleylab/metabat/src/master/) es una herramienta que agrupa los contigs tomando la cobertura de cada contig y calcula su composición nucleotídica.
+[MetaBAT2](https://bitbucket.org/berkeleylab/metabat/src/master/) agrupa los contigs usando dos señales: su **cobertura** (la profundidad a la que se secuenció cada contig) y su **composición nucleotídica** (la frecuencia de tetranucleótidos). Lo que lo distingue es *cómo* los agrupa: combina esas dos señales en una sola **distancia** entre cada par de contigs y, sobre ese grafo de distancias, aplica un **agrupamiento** que reúne en un mismo bin a los contigs cercanos. Es el enfoque clásico basado en distancias, rápido y muy usado, y por eso suele tomarse como punto de comparación.
 
-![Metabat2. Kang et al., 2015. DOI:10.7717/peerj.1165](Figures/04.Metabat.png){fig-align="center" width="473"}
+![MetaBAT2](Figures/bin_metabat2.svg){fig-align="center" width="438"}
 
 Ejecutemos Metabat2, pero antes vamos a crear el directorio de resultados:
 
@@ -69,7 +80,7 @@ Estamos utilizando la opción `-m 1500` para efectos del curso y el tipo de dato
 
 ------------------------------------------------------------------------
 
-:::: {.callout-caution collapse="true" title="Responde:"}
+:::: {.callout-caution title="Responde:"}
 ¿Cuántos bins se formaron?
 
 ::: {.callout-tip collapse="true" title="Ayuda"}
@@ -84,7 +95,13 @@ Estamos utilizando la opción `-m 1500` para efectos del curso y el tipo de dato
 
 ### 01.2 MaxBin2
 
-[MaxBin2](https://sourceforge.net/projects/maxbin/files/) agrupa los contigs de acuerdo a la información de cobertura, composición nucleotídica, contenido de GC y genes **marcadores de copia única**.
+[MaxBin2](https://sourceforge.net/projects/maxbin/files/) agrupa los contigs usando su **cobertura**, su **composición nucleotídica** (frecuencia de tetranucleótidos) y su **contenido de GC**, pero lo que lo distingue es *cómo* los agrupa: con un algoritmo de Expectation–Maximization **(EM)** sembrado con **genes marcadores de copia única**.
+
+EM resuelve el problema de no poder asignar cada contig a un bin sin saber cómo es cada bin y no poder describir cada bin sin saber qué contigs lo forman. Para romper ese círculo itera dos pasos: en el paso **E** calcula la *probabilidad* de que cada contig pertenezca a cada bin y en el paso **M** recalcula el perfil de cada bin (su cobertura y composición) ponderando cada contig por esa probabilidad. Repite E→M hasta que las asignaciones se estabilizan.
+
+Aquí entran los **genes marcadores de copia única**: como se espera una sola copia por genoma, MaxBin los usa como semilla para estimar **cuántos genomas hay** y desde dónde arrancar la iteración; esos mismos marcadores le permiten además reportar la **completitud** de cada bin.
+
+![MaxBin2](Figures/bin_maxbin2.svg){fig-align="center" width="438"}
 
 Vamos a ejecutarlo, activemos el [ambiente conda](#0) donde se encuentra maxbin.
 
@@ -96,19 +113,25 @@ conda activate maxbin2
 ```
 :::
 
-[![MaxBin2. Wu et al., 2014. https://doi.org/10.1186/2049-2618-2-26](Figures/03.Maxbin.png){width="471"}](https://doi.org/10.1186/2049-2618-2-26)
-
 Ahora si, vamos a ejecutarlo, pero primero creamos el lugar donde se alojaran los resultados
 
 ``` bash
 mkdir -p results/07.maxbin/09hrs
 ```
 
+Debemos formatear el archivo de abundancia para MaxBin:
+
+``` bash
+cut -f1,4 results/05.profundidad/09hrs/09hrs_depth.txt  > results/05.profundidad/09hrs/09hrs_depth_maxbin.txt
+```
+
+Y ahora si, corramos MaxBin
+
 ``` bash
 run_MaxBin.pl -thread 4 -min_contig_length 1500 \
  -contig results/03.ensambles/09h/v2_megahit.fasta \
- -abund results/05.profundidad/09hrs/09hrs_depth.txt \
- -out results/07.maxbin/09hrs/09hrs
+ -abund results/05.profundidad/09hrs/09hrs_depth_maxbin.txt \
+ -out results/07.maxbin/09hrs/v2/09hrs
 ```
 
 :::: {.callout-caution title="Explora"}
@@ -135,7 +158,11 @@ conda deactivate
 
 ### 01.3 Vamb
 
-[VAMB](https://vamb.readthedocs.io/en/latest/) (**Variational Autoencoder for Metagenomic Binning**) agrupa contigs principalmente según sus **patrones de composición de secuencia (k-mers; por ejemplo, tetranucleótidos cuando k=4)** y su **abundancia relativa entre muestras**. Utiliza un autoencoder variacional (**red neuronal que aprende a representar datos complejos en un espacio de menor dimensión**) para reducir estas características a un espacio latente donde los contigs con perfiles similares quedan próximos; posteriormente, un algoritmo de clustering agrupa esos contigs para generar los MAGs.
+[VAMB](https://vamb.readthedocs.io/en/latest/) (**Variational Autoencoder for Metagenomic Binning**) agrupa contigs principalmente según sus patrones de composición de secuencia (k-mers; por ejemplo, tetranucleótidos cuando k=4) y su abundancia relativa entre muestras. Utiliza un autoencoder variacional (**red neuronal que aprende a representar datos complejos en un espacio de menor dimensión**) para reducir estas características a un espacio latente donde los contigs con perfiles similares quedan próximos; posteriormente, un algoritmo de clustering agrupa esos contigs para generar los MAGs.
+
+
+![VAMB](Figures/bin_vamb.svg){fig-align="center" width="438"}
+
 
 ::: callout-caution
 ## Activa el ambiente vamb
@@ -156,7 +183,7 @@ Corramos vamb:
 ``` bash
 vamb bin default --fasta results/03.ensambles/09h/v2_megahit.fasta \
  --bamfiles results/05.profundidad/09hrs/09hrs.sorted.bam \
- --outdir results/08.vamb/09hrsls \
+ --outdir results/08.vamb/09hrs \
  -p 6 -m 1500 --seed 123 --minfasta 200000
 ```
 
@@ -176,9 +203,13 @@ conda deactivate
 
 ### 01.4 COMEBin
 
-[**COMEBin**](https://github.com/ziyewang/COMEBin) **(Contrastive learning-based Metagenomic Binning)** agrupa contigs utilizando principalmente sus **patrones de composición de secuencia** y **abundancia/distribución entre muestras**. Emplea **aprendizaje contrastivo** (método que aprende a acercar representaciones de datos similares y a separar las diferentes) para generar un espacio latente donde contigs pertenecientes al mismo genoma tienden a agruparse; posteriormente, realiza clustering sobre estas representaciones para generar los bins.
+[**COMEBin**](https://github.com/ziyewang/COMEBin) **(Contrastive learning-based Metagenomic Binning)** agrupa contigs utilizando principalmente sus patrones de composición de secuencia y abundancia/distribución entre muestras. Emplea **aprendizaje contrastivo** (método que aprende a acercar representaciones de datos similares y a separar las diferentes) para generar un espacio latente donde contigs pertenecientes al mismo genoma tienden a agruparse; posteriormente, realiza clustering sobre estas representaciones para generar los bins.
 
-Este programa es muy demandante computancionalmente y por ende toma mucho más tiempo de ejecución, para esta muestra tardó 4:30 horas. Así que sólo te pondremos el ejemplo de como se ejecutó para que lo implementes en tus proyectos, pero no lo vamos a ejecutar durante el taller.
+![COMEBin](Figures/bin_comebin.svg){fig-align="center" width="438"}
+
+Este programa es muy demandante computacionalmente y por ende toma mucho más tiempo de ejecución, para esta muestra tardó 4:30 horas. Así que sólo te pondremos el ejemplo de como se ejecutó para que lo implementes en tus proyectos, pero no lo vamos a ejecutar durante el taller.
+
+
 
 :::::: {.callout-note collapse="true"}
 ## COMEBin
@@ -229,7 +260,14 @@ Para efectos del curso, estamos corriendo comebin en su forma más simple, sin e
 
 ¿Cuántos bins hay en el directorio de resultados de COMEBin?
 
-results/09.comebin/09hrs/comebin_res/cluster_res/unitem_profile/binning_methods/weight_seed_kmeans_k_14_result.tsv/checkm_bac/genome_quality.tsv
+:::
+
+::: callout-note
+## Comparativa entre binneadores
+
+Cada programa dio un número distinto de bins. ¿Por qué?
+
+Recordemos lo que usa cada uno: cobertura + tetranucleótidos (MetaBAT), + marcadores de copia única (MaxBin), autoencoder (VAMB), aprendizaje contrastivo (COMEBin).
 :::
 
 ## 02. Refinamiento
@@ -240,17 +278,24 @@ Ya corrimos cuatro programas de *binning*, pero, recordemos que los agrupamiento
 
 Para disminuir la contaminación e incrementar la completitud hay algunos programas que pueden ayudarnos. Entre ellos están Binning_refiner y DASTool.
 
-### CheckM
+### 02.1 CheckM2
 
-Antes de proceder al refinamiento es necesario tener claro cómo se evalúa la completitud y contaminación de los *bins.* Para esta evaluación se usa [CheckM](https://github.com/Ecogenomics/CheckM/wiki/Workflows#lineage-specific-workflow) que se ha convertido en una herramienta estándar para la evaluación de la [calidad de genomas](https://genome.cshlp.org/content/25/7/1043/T3.expansion.html) y MAGs, y es usada por la mayoría de programas de refinamiento.
+Antes de refinar necesitamos una forma de medir qué tan buenos son los *bins* que vamos obteniendo. Dos números resumen su calidad: la **completitud** (qué fracción del genoma esperado está presente) y la **contaminación** o redundancia (cuánto material de *otros* genomas se coló en el mismo *bin*). Para estimar ambas usaremos [CheckM2](https://github.com/chklovski/CheckM2), que se ha vuelto el estándar para evaluar la [calidad de genomas y MAGs](https://genome.cshlp.org/content/25/7/1043/T3.expansion.html).
 
-Para hacer esta evaluación, CheckM utiliza una serie de herramientas: `tree` organiza los genomas en un árbol de referencia. `tree_qa` evalúa la cantidad de genes marcadores filogenéticos y su ubicación en el árbol. El comando `lineage_set` crea un archivo de marcadores específicos de linaje, que se usa en el comando `analyze` para evaluar la integridad y contaminación de los genomas. Finalmente, el comando `qa` genera tablas que resumen la calidad de los genomas.
+A diferencia de su antecesor **CheckM1** —que colocaba cada genoma en un **árbol de referencia** y contaba **genes marcadores de copia única específicos de cada linaje** (su presencia estima la completitud y su duplicación, la contaminación)— **CheckM2** estima la calidad con **modelos de aprendizaje automático** entrenados sobre miles de genomas. En lugar de depender de marcadores por linaje, predice la completitud y la contaminación a partir de las características del propio genoma. Esto lo hace:
 
-![CheckM Workflow](Figures/CheckM_workflow.png){fig-align="center" width="444"}
+-   **más rápido y mucho más ligero en memoria**, porque no construye árboles filogenéticos ni usa `pplacer`;
+-   **más preciso en organismos poco representados** en las bases de datos o con **genomas reducidos** y biología inusual (p. ej. Patescibacteria, Nanoarchaeota), donde CheckM1 subestimaba la calidad por falta de marcadores.
 
-En este taller no vamos a correr CheckM para los resultados de cada *binneador* porque uno de los programas de refinamiento que usaremos ya lo corren de forma interna, sin embargo, es útil correrlo y recomendamos hacerlo en la vida real para tener una idea clara sobre la calidad de los bins que vamos obteniendo.
+Por dentro, CheckM2 predice los genes con **Prodigal**, los anota con **DIAMOND** contra una base de referencia y con esas características alimenta sus modelos: uno de **contaminación** y uno de **completitud** que elige automáticamente entre un modelo *general* (para organismos novedosos) y uno *específico* (para organismos cercanos al set de entrenamiento). Por eso, en la salida verás una columna que indica qué modelo se usó para cada MAG.
 
-Vamos a correrlo sólo como ejemplo para los resultados de Vamb para que podamos conocerlo.
+![CheckM2: evaluación de calidad de MAGs con aprendizaje automático](Figures/checkm2_flujo.svg){fig-align="center" width="938"}
+
+::: callout-tip
+## Sobre correr CheckM2 en cada binneador
+
+En el taller **no** correremos CheckM2 sobre los cuatro binneadores, solo por tiempo. Lo ejecutaremos como ejemplo sobre los *bins* de **Metabat** para conocer la herramienta y su salida. Más adelante volveremos a usarlo sobre el conjunto **ya refinado**, y esa salida nos servirá además como insumo para **dRep**. En tus proyectos sí es muy recomendable evaluar la calidad de los *bins* de cada binneador para ir teniendo una idea clara conforme avanzas.
+:::
 
 Activamos el ambiente:
 
@@ -261,13 +306,15 @@ conda activate checkm2
 Vamos a crear el directorio de resultados
 
 ``` bash
-mkdir -p results/08.vamb/09hrs/checkm2
+mkdir -p results/06.metabat/09hrs/checkm2
 ```
 
 Y ahora si lo ejecutamos
 
 ``` bash
-checkm2 predict --threads 6 -x fna --input results/08.vamb/09hrs/bins/ --output-directory results/08.vamb/09hrs/checkm2/
+checkm2 predict --threads 6 -x fa \
+ --input results/06.metabat/09hrs/ \
+ --output-directory results/06.metabat/09hrs/checkm2
 ```
 
 ::: callout-caution
@@ -276,21 +323,39 @@ checkm2 predict --threads 6 -x fna --input results/08.vamb/09hrs/bins/ --output-
 Vamos a explorar los resultados de checkm2
 
 ``` bash
-less -S results/08.vamb/09hrs/checkm2/quality_report.tsv
+less -S results/06.metabat/09hrs/checkm2/quality_report.tsv
 ```
 
-Adicionalmente veamos uno de los resultados que genera comebin para comparar:
+Es un archivo tabular con una fila por *bin*. Las columnas clave son **`Completeness`** y **`Contamination`** (en porcentaje); también trae `Completeness_Model_Used`, densidad de codificación, N50, tamaño del genoma y GC.
+
+Adicionalmente, veamos uno de los resultados que genera COMEBin para comparar:
 
 ``` bash
 less results/09.comebin/09hrs/comebin_res/cluster_res/unitem_profile/binning_methods/weight_seed_kmeans_k_14_result.tsv/checkm_bac/genome_quality.tsv
 ```
+
+Nota: esta linea de comebin es especifica para esta corrida de comebin, los kmeans son especificos de cada análisis.
+:::
+
+::: callout-note
+## Criterios MIMAG
+
+Los criterios **MIMAG (Minimum Information about a Metagenome-Assembled Genome)** establecen estándares para evaluar la calidad de los MAGs, considerando principalmente la **completitud**, que representa el porcentaje estimado del genoma recuperado, y la **contaminación**, que indica la proporción de secuencias provenientes de otros genomas; además, se considera la consistencia del MAG y la presencia de genes esenciales. De manera general, los MAGs se clasifican como **alta calidad** cuando presentan ≥90% de completitud y ≤5% de contaminación, **calidad media** cuando presentan ≥50% de completitud y ≤10% de contaminación, y **baja calidad** cuando tienen \<50% de completitud. Para considerar un MAG de **alta calidad** bajo MIMAG también se requiere evidencia adicional, como la presencia de los rRNA 5S, 16S y 23S y un conjunto suficiente de tRNAs. Herramientas como **CheckM** permiten estimar principalmente la completitud y contaminación, pero la clasificación MIMAG completa requiere evaluar también estos marcadores genéticos.
+:::
+
+::: callout-caution
+## Responde
+
+1.  Clasifica los *bins* de Metabat según los estándares **MIMAG**: alta calidad (\>90 % completitud, \<5 % contaminación) y media calidad (≥50 %, \<10 %). ¿Cuántos hay de cada uno?
+2.  ¿Por qué una contaminación alta es más problemática que una completitud baja para los análisis que siguen (taxonomía, metabolismo)?
 :::
 
 Y ahora si, a refinar los *bins* ... 🥳
 
-### Binning_refiner
+### 2.2 Binning_refiner
 
-[Binning_refiner](https://doi.org/10.1093/bioinformatics/btx086) se enfoca en refinar y fusionar los bins para mejorar la integridad y reducir la contaminación. Identifica *bins* que pueden representar el mismo genoma y los fusiona. Después elimina posibles contaminaciones, durante el proceso, Binning_refiner evalúa la calidad de los bins.
+[Binning_refiner](https://doi.org/10.1093/bioinformatics/btx086) combina los resultados de varios binneadores buscando dónde coinciden. Cuando distintos programas agrupan los mismos contigs juntos, esa **intersección** se conserva como un bin refinado; los contigs en los que los binneadores *no* coinciden se separan. Al quedarse solo con lo que varios métodos respaldan, **reduce la contaminación**, aunque los bins pueden quedar un poco menos completos. Su criterio es el acuerdo entre binneadores, no una evaluación de calidad propia.
+
 
 [![Binning_refiner](Figures/Binning_refiner.png){fig-align="center" width="444"}](https://doi.org/10.1093/bioinformatics/btx086)
 
@@ -299,7 +364,7 @@ Y ahora si, a refinar los *bins* ... 🥳
 Necesitamos crear el directorio de resultados para binning_refiner y un directorio con los bins generados por cada programa
 
 ``` bash
-mkdir -p results/10.binning_refiner/09hrsbins/{metabat,maxbin,vamb}
+mkdir -p results/10.binning_refiner/09hrsbins/{metabat,maxbin,vamb,comebin}
 ```
 
 Crea ligas simbólicas de los *bins* generados por cada herramienta en el directorio que corresponde.
@@ -314,7 +379,7 @@ Crea ligas simbólicas de los *bins* generados por cada herramienta en el direct
 
 cd results/10.binning_refiner/09hrsbins/metabat/
 
-ln -s ../../../06.metabat/09hrs/metabat.*.fa
+ln -s ../../../06.metabat/09hrs/metabat.*.fa .
 
 # maxbin
 
@@ -363,17 +428,16 @@ Exploremos los resultados!
 cat results/10.binning_refiner/09h_Binning_refiner_outputs/09h_sources_and_length.txt 
 ```
 
-![](images/clipboard-3835223447.png)
 
-![Binning_refiner sankey plot](Figures/07.sankey.png){fig-align="center"}
+![Binning_refiner sankey plot](Figures/07.sankey.png){fig-align="center" width="223}
 
 ------------------------------------------------------------------------
 
-### DASTool
+### 2.3 DASTool
 
-[DASTool](https://github.com/cmks/DAS_Tool) es una herramienta utilizada para mejorar la calidad de los *bins*. Evalúa la integridad, combina los resultados de diferentes *bineadores* y por consenso selecciona los mejores *bins* de cada herramienta. Una vez que DASTool ha seleccionado los mejores bins, realiza un proceso de refinamiento para optimizar los resultados.
+[DAS_Tool](https://github.com/cmks/DAS_Tool) toma los bins de todos los binneadores y **puntúa cada candidato** según sus **genes de copia única**, con lo que estima su completitud y contaminación (por eso no depende de CheckM). Después selecciona un conjunto **no redundante**, quedándose con la mejor versión de cada genoma entre todas las herramientas, e incluso ajusta los bins añadiendo contigs para mejorar ese puntaje. A diferencia de Binning_refiner, que conserva la intersección, DAS_Tool **elige y optimiza** los bins de mayor puntaje.
 
-![DASTool](Figures/06.DASTool.png){fig-alt="Sieber et al. 2018. Recovery of genomes from metagenomes via a dereplication, aggregation and scoring strategy. Nat. Micro." fig-align="center" width="935"}
+![DASTool](Figures/06.DASTool.png){fig-alt="Sieber et al. 2018. Recovery of genomes from metagenomes via a dereplication, aggregation and scoring strategy. Nat. Micro." fig-align="center" width="535"}
 
 Vamos a correr DASTool ... 🥳
 
@@ -414,13 +478,15 @@ Y lo corremos
 nohup bash scripts/11.dastool_09h.sh > outs/11.dastool.out &
 ```
 
+No olvides desactivar el ambiente
+
 ------------------------------------------------------------------------
 
 ## Desreplicación
 
-### dRep
+### 2.4 dRep
 
-La desreplicación es el proceso de identificar conjuntos de genomas que son "iguales" en una lista de genomas y eliminar todos los genomas excepto el "mejor" de cada conjunto redundante. [dRep](https://drep.readthedocs.io/en/latest/overview.html) es una herramienta útil para esto.
+La desreplicación es el proceso de identificar conjuntos de genomas que son "iguales" en una lista de genomas y eliminar todos los genomas excepto el "mejor" de cada conjunto redundante. [dRep](https://drep.readthedocs.io/en/latest/overview.html) es una herramienta útil para esto. Para decidir qué genomas son "iguales", dRep los agrupa por **ANI** (identidad promedio de nucleótidos) por encima de un umbral; y para elegir el "mejor" de cada grupo usa una **puntuación de calidad** (completitud, contaminación, N50). Por eso los argumentos `-comp`, `-con` y el umbral de ANI son los que deciden qué entra y qué gana.
 
 [![dRep](Figures/dRep.png){fig-align="center" width="423"}](https://drep.readthedocs.io/en/latest/overview.html)
 
@@ -429,50 +495,77 @@ Ya que tenemos los resultados de los dos refinadores ejecutaremos dRep para desr
 Primero vamos a crear el directorio de resultados para dRep.
 
 ``` bash
-mkdir -p results/09.drep/48h/bins
+ mkdir -p results/12.drep/09hrs/bins
 ```
 
-Copia los bins que queremos comparar dentro del directorio que acabamos de crear. En este caso los generados por ambos refinadores.
+Copia los bins que queremos comparar dentro del directorio que acabamos de crear. A dRep le tenemos que dar como entrada un directorio con todos los bins y la misma extensión.
 
-Con las siguientes lineas podemos copiar los bins:
+Con las siguientes lineas podemos copiar los bins resultantes de cada refinamiento:
 
 ``` bash
-DASTOOL="results/08.dastool/48h/48h_DASTool_bins"
-BR_BINS="results/07.binning_refiner/48h_Binning_refiner_outputs/48h_refined_bins"
-DREP_BINS="results/09.drep/48h/bins"
 
-for i in $(ls $DASTOOL/*.fa); do
+BR="results/10.binning_refiner/09h_Binning_refiner_outputs/09h_refined_bins"
+DT="results/11.dastool/09hrs/09hrs_DASTool_bins"
+
+out="results/12.drep/09hrs/bins"
+
+for i in $(ls $DT/*.fa); do
     name=$(basename $i .fa)
-    cp $i $DREP_BINS/$name".fasta"
+    cp $i $out/$name".fasta"
 done
 
-cp $BR_BINS/*.fasta $DREP_BINS
+cp $BR/*.fasta $out
+```
+
+Preparemos el insumo de dRep, para ello corramos checkm2
+
+``` bash
+checkm2 predict --threads 6 -x fasta --input results/12.drep/09hrs/bins/ --output-directory results/12.drep/09hrs/checkm2/
+```
+
+``` bash
+conda deactivate
+```
+
+::: callout-caution
+## Comparemos
+
+Antes de correr dRep, hagamos una exploración rápida sobre como cambió la calidad de los *bins* de metabat después del refinamiento con DASTool.
+:::
+
+Y ahora toca construir el archivo de información que dRep necesita.
+
+``` bash
+cq="results/12.drep/09hrs/checkm2/quality_report.tsv"
+echo "genome,completeness,contamination" > results/12.drep/09hrs/genomeInfo.csv
+tail -n +2 $cq | awk -F'\t' '{print $1".fasta,"$2","$3}' \
+  >> results/12.drep/09hrs/genomeInfo.csv
+```
+
+Activemos el ambiente de dRep
+
+``` bash
+conda activate drep
 ```
 
 Y ahora si, vamos a correr dRep ...
 
 ``` bash
-nano src/09.drep_48h.slurm
+dRep dereplicate results/12.drep/09hrs/ \
+  -p 6 -comp 50 -con 10 \
+  --genomeInfo results/12.drep/09hrs/genomeInfo.csv \
+  -g results/12.drep/09hrs/bins/*.fasta
 ```
 
-``` bash
-#!/bin/bash
-#SBATHC -J drep
-#SBATCH -t 0
-#SBATCH -e outs/09.drep48h.err
-#SBATCH -o outs/09.drep48h.out
-#SBATCH --export=ALL
-#SBATCH -n 10
-#SBATCH -N 1
-#SBATCH -p q2
-#SBATCH --mem 160G
+::: callout-caution
+## Reflexionemos
 
-export LC_ALL=en_US.UTF-8
-export CHECKM_DATA_PATH=/lustre/apps/spack/opt/spack/linux-centos8-ivybridge/gcc-8.3.1/miniconda3-4.7.12.1-ubp7tlghaseisza4pqufq6sbehwa4pog/envs/mt-das-tool/db
+¿Qué pasaría si no cambiamos los valores de los argumentos `-comp` y `-con`?
 
+¿Y, si aumentamos el valor de `-con`?
 
-dRep dereplicate results/09.drep/48h/ --debug -p 10 -comp 50 -con 10 -g results/09.drep/48h/bins/*.fasta
-```
+¿Qué pasa con el porcentaje de ANI? ¿Asumimos el valor que está por defecto?
+:::
 
 Este es uno de los plots generados por dRep, que representa los mejores bins desreplicados.
 
@@ -495,7 +588,7 @@ conda deactivate
 
 Propondrías alguna manera para quedarte con este bin y curarlo para reducir su contaminación?
 
-Por suerte hay más programas que pueden ayudarnos a curar nuestros bins manualmente, una herramienta útil para esto es [**mmgenome2**](https://kasperskytte.github.io/mmgenome2/articles/mmgenome2.html)
+Por suerte hay más programas que pueden ayudarnos a curar nuestros bins manualmente, una herramienta muy útil y cada vez mas utilizada es para esto es [MAGpurify2](https://apcamargo.github.io/magpurify2/docs/) pero también está [**mmgenome2**](https://kasperskytte.github.io/mmgenome2/articles/mmgenome2.html)
 :::
 
 ::: callout-tip
@@ -508,20 +601,22 @@ Aunque en muchos reportes verás que los autores reensamblan sus MAGs, en otros 
 
 ------------------------------------------------------------------------
 
-Ahora te toca a tí
+Ahora te toca a ti
 
 ::: callout-warning
 ## Ejercicio 2
 
-Ahora te toca a tí.
+Ahora te toca a ti.
 
--   Reúnanse en equipos y repliquen todo el flujo hasta este punto con la muestra que les toca.
+-   Reúnanse en equipos y repliquen todo el flujo hasta este punto con la muestra que les toca. No ejecuten COMEBin, sólo Metabat, Maxbin y Vamb.
 
 -   Discutan cada resultado obtenido.
 
+-   Clasifica tus bins según MIMAG. ¿Cuántos de cada uno?
+
 -   En la [carpeta compartida de Drive](https://docs.google.com/presentation/d/1f4vaJ_fV_8-i-dja2wtFx55vRkgeAB5Y4s-opCvFI1k/edit?usp=sharing) busquen la presentación para el Ejercicio 2, en la diapositiva correspondiente resuman sus resultados obtenidos para que los presenten.
 
-Tiempo de actividad (1.5 hr)
+Tiempo de actividad (1 hr)
 
 Tiempo de presentación de resultados (5 min por equipo)
 :::

@@ -318,6 +318,23 @@ Tip
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Piensen en equipo (3 min)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>La muestra de 0 hrs tiene ~2.2 M de lecturas; las demás, ~15–20 M. ¿Qué hipótesis biológicas explicarían que el tiempo 0 tenga tan pocas? (pista: ¿cuánta biomasa microbiana hay antes de que arranque la fermentación?)</li>
+<li>¿Qué problema trae esa diferencia de profundidad al comparar muestras más adelante (ensamble, binning, abundancias)? ¿Cómo lo compensarían?</li>
+<li>R1 y R2 tienen exactamente el mismo número de lecturas. ¿Por qué? ¿Qué significaría si no coincidieran?</li>
+</ol>
+</div>
+</div>
 <hr>
 <hr>
 </section>
@@ -350,6 +367,22 @@ Tip
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/01.fastqc/09h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Revisaremos la calidad con fastqc</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> data/09hrs_sm_R<span class="pp">*</span> <span class="at">-o</span> results/01.fastqc/09h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Antes de “arreglar” nada
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>¿En qué extremo de la lectura cae la calidad y por qué es esperable en Illumina?</li>
+<li>FastQC suele marcar en rojo el “per base sequence content” en las primeras bases. En metagenómica esto es común por el cebado aleatorio/tagmentación: ¿lo tratarían como un problema real o no? ¿Por qué?</li>
+</ul>
+</div>
+</div>
 <hr>
 <hr>
 </section>
@@ -366,7 +399,7 @@ Tip
 <p>Ahora si vamos a filtrar las lecturas</p>
 <p>Antes de ejecutarlo veamos la ayuda de trim_galore</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--help</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--fastqc</span> <span class="at">-j</span> 4 <span class="at">--paired</span> data/09h_1.fastq.gz data/09h_2.fastq.gz <span class="at">-o</span> results/02.trimgalore/9h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="ex">trim_galore</span> <span class="at">--fastqc</span> <span class="at">-j</span> 4 <span class="at">--paired</span> data/09hrs_sm_R1.fastq.gz data/09hrs_sm_R2.fastq.gz <span class="at">-o</span> results/02.trimgalore/09h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="revisemos-la-calidad-de-las-lecturas-antes-y-después-de-limpiar" class="level2">
 <h2 class="anchored" data-anchor-id="revisemos-la-calidad-de-las-lecturas-antes-y-después-de-limpiar">03. Revisemos la calidad de las lecturas antes y después de limpiar</h2>
@@ -395,13 +428,14 @@ Tip
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Reúnanse en equipo y resuelvan estas preguntas
+<span class="screen-reader-only">Warning</span>Reúnanse en equipo y resuelvan estas preguntas (10 min)
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>¿Cambió la calidad?</p>
 <p>¿Cuántas lecturas había y cuántas quedaron después del filtro?</p>
-<p>Tiempo: 15 min</p>
+<p>TrimGalore quitó adaptadores sin que le dijeras cuál. ¿Cómo lo supo? (autodetección examinando las primeras lecturas).</p>
+<p>¿Por qué <code>--paired</code>? Si una lectura se recorta mucho y su pareja no, ¿qué le pasa al par? (mantiene sincronía, descarta huérfanos).</p>
 </div>
 </div>
 <hr>
@@ -412,16 +446,16 @@ Tip
 <p>Como las muestras del pozol tienen DNA de maíz es necesario eliminar las lecturas de éste para quedarnos con las secuencias pertenecientes al microbioma. Para hacer este proceso se necesita hacer un mapeo global, existen diferentes herramientas que nos permiten realizarlo, como bwa, bowtie2, bbmap o minimap (este último para lecturas largas).</p>
 <p>Cómo es un proceso largo, nos dimos a la tarea de ejecutarlo y las lecturas que estaremos trabajando ya no contienen el genoma del maiz. Este es el script que usamos para obtenerlas.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Scrip de remoción de hospedero
+<span class="screen-reader-only">Tip</span>Script de remoción de hospedero
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Script que corre bwa para mapear lecturas metagenomas al genoma del hospedero, en este caso maiz utilizando BWA y Samtools</span></span>
@@ -448,6 +482,23 @@ Tip
 <span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-f</span> 141 mapping.sorted.bam <span class="kw">|</span> <span class="dt">\</span></span>
 <span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print "@"$1"\n"$10"\n+\n"$11}'</span> <span class="op">&gt;</span> data/09hrs_sm_R2.fastq</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Reflexionemos
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>El hospedero aquí es el maíz. ¿Cuál sería en un metagenoma de intestino humano? ¿Y en uno de suelo?</p></li>
+<li><p>¿Qué le pasaría a tu ensamble y a tus MAGs si NO quitáramos el maíz?</p></li>
+<li><p>¿Conviene remover hospedero antes o después del trimming?</p></li>
+</ul>
 </div>
 </div>
 
