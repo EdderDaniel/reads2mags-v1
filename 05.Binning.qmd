@@ -179,11 +179,16 @@ mkdir -p results/08.vamb
 Corramos vamb:
 
 ``` bash
-vamb bin default --fasta results/03.ensambles/09h/v2_megahit.fasta \
- --bamfiles results/05.profundidad/09hrs/09hrs.sorted.bam \
- --outdir results/08.vamb/09hrs \
- -p 6 -m 1500 --seed 123 --minfasta 200000
+vamb bin default --fasta results/03.ensambles/0h/v3.spades.fasta  --bamfiles results/05.profundidad/0h/0h.sorted.bam  --outdir results/08.vamb/0h  -p 6 -m 1000 --seed 123 --minfasta 50000
 ```
+
+::: callout-warning
+## ¿Por qué bajamos los umbrales aquí? (y por qué tú no deberías)
+
+La muestra de 0 h es de **baja biomasa**: la fermentación apenas comienza, hay poco ADN microbiano y el ensamble produce pocos contigs y cortos. VAMB entrena una red neuronal y, con tan pocos datos, con los umbrales normales no logra escribir ni un bin. **Solo para que el taller corra rápido y puedan ver el flujo completo de refinamiento**, relajamos dos parámetros de VAMB en esta muestra: `-m 1000` (longitud mínima de contig) y `--minfasta 50000` (tamaño mínimo de bin a escribir).
+
+**Esto no debe hacerse en un análisis real.** Usar contigs de \~1000 pb degrada el binning: incluir contigs menores a \~2500 pb produce agrupaciones de peor calidad y menor precisión \[AUTOR, AÑO\]. La razón ya la vimos en la figura de tetranucleótidos: un contig corto reparte sus \~1000 ventanas entre cientos de tetranucleótidos posibles, así que hay muy pocas cuentas de cada uno y su **firma de composición es ruidosa** — el binneador lo ubica mal en el espacio y contamina los grupos. En tus proyectos, mantén el mínimo en **1500–2500 pb o más**, y reserva los umbrales bajos para casos como este: una demostración con datos pequeños.
+:::
 
 ::: callout-caution
 ## Responde
@@ -292,24 +297,18 @@ Por dentro, CheckM2 predice los genes con **Prodigal**, los anota con **DIAMOND*
 En el taller **no** correremos CheckM2 sobre los cuatro binneadores, solo por tiempo. Lo ejecutaremos como ejemplo sobre los *bins* de **Metabat** para conocer la herramienta y su salida. Más adelante volveremos a usarlo sobre el conjunto **ya refinado**, y esa salida nos servirá además como insumo para **dRep**. En tus proyectos sí es muy recomendable evaluar la calidad de los *bins* de cada binneador para ir teniendo una idea clara conforme avanzas.
 :::
 
-Activamos el ambiente:
-
-``` bash
-conda activate checkm2
-```
-
 Vamos a crear el directorio de resultados
 
 ``` bash
-mkdir -p results/06.metabat/09hrs/checkm2
+mkdir -p results/06.metabat/0h/checkm2
 ```
 
 Y ahora si lo ejecutamos
 
 ``` bash
 checkm2 predict --threads 6 -x fa \
- --input results/06.metabat/09hrs/ \
- --output-directory results/06.metabat/09hrs/checkm2
+ --input results/06.metabat/0h/ \
+ --output-directory results/06.metabat/0h/checkm2
 ```
 
 ::: callout-caution
@@ -318,18 +317,10 @@ checkm2 predict --threads 6 -x fa \
 Vamos a explorar los resultados de checkm2
 
 ``` bash
-less -S results/06.metabat/09hrs/checkm2/quality_report.tsv
+less -S results/06.metabat/0h/checkm2/quality_report.tsv
 ```
 
 Es un archivo tabular con una fila por *bin*. Las columnas clave son **`Completeness`** y **`Contamination`** (en porcentaje); también trae `Completeness_Model_Used`, densidad de codificación, N50, tamaño del genoma y GC.
-
-Adicionalmente, veamos uno de los resultados que genera COMEBin para comparar:
-
-``` bash
-less results/09.comebin/09hrs/comebin_res/cluster_res/unitem_profile/binning_methods/weight_seed_kmeans_k_14_result.tsv/checkm_bac/genome_quality.tsv
-```
-
-Nota: esta linea de comebin es especifica para esta corrida de comebin, los kmeans son especificos de cada análisis.
 :::
 
 ::: callout-note
@@ -358,7 +349,7 @@ Y ahora si, a refinar los *bins* ... 🥳
 Necesitamos crear el directorio de resultados para binning_refiner y un directorio con los bins generados por cada programa
 
 ``` bash
-mkdir -p results/10.binning_refiner/09hrsbins/{metabat,maxbin,vamb,comebin}
+mkdir -p results/10.binning_refiner/0hbins/{metabat,maxbin,vamb,comebin}
 ```
 
 Crea ligas simbólicas de los *bins* generados por cada herramienta en el directorio que corresponde.
@@ -371,24 +362,24 @@ Crea ligas simbólicas de los *bins* generados por cada herramienta en el direct
 ``` bash
 # metabat
 
-cd results/10.binning_refiner/09hrsbins/metabat/
+cd results/10.binning_refiner/0hbins/metabat/
 
-ln -s ../../../06.metabat/09hrs/metabat.*.fa .
+ln -s ../../../06.metabat/0h/metabat.*.fa .
 
 # maxbin
 
 cd ../maxbin/
-ln -s ../../../07.maxbin/09hrs/*.fasta .
+ln -s ../../../07.maxbin/0h/*.fasta .
 
 # vamb
 
 cd ../vamb
-ln -s ../../../08.vamb/09hrs/bins/*.fna .
+ln -s ../../../08.vamb/0h/bins/*.fna .
 
 # comebin
 
  cd ../comebin
- ln -s ../../../09.comebin/09hrs/comebin_res/comebin_res_bins/*.fa .
+ ln -s ../../../09.comebin/0h/comebin_res/comebin_res_bins/*.fa .
 ```
 :::
 
@@ -398,16 +389,10 @@ Regresa al directorio de resultados de Binning_refiner para ejecutar el programa
 cd ../../
 ```
 
-Activa el ambiente
-
-``` bash
-conda activate binning_refiner
-```
-
 Ahora si, corramos Binning_refiner
 
 ``` bash
-Binning_refiner -i 09hrsbins/ -m 200 -p 09h -plot
+Binning_refiner -i 0hbins/ -m 200 -p 0h -plot
 ```
 
 Y regresemos a nuestro directorio principal
@@ -444,25 +429,25 @@ nano scripts/11.dastool_09h.sh
 
 ``` bash
 # 01. Crear el directorio para los resultados
-mkdir -p results/11.dastool/09hrs
+mkdir -p results/11.dastool/0h
 
 # 02. DASTool necesita como entrada un archivo tabular con información de los resultados de cada programa de binning.
-Fasta_to_Contig2Bin.sh -i results/06.metabat/09hrs/ -e fa > results/11.dastool/09hrs/09hrs_metabat.dastool.tsv
+Fasta_to_Contig2Bin.sh -i results/06.metabat/0h/ -e fa > results/11.dastool/0h/0h_metabat.dastool.tsv
 
-Fasta_to_Contig2Bin.sh -i results/07.maxbin/09hrs/ -e fasta > results/11.dastool/09hrs/09hrs_maxbin.dastool.tsv
+Fasta_to_Contig2Bin.sh -i results/07.maxbin/0h/ -e fasta > results/11.dastool/0h/0h_maxbin.dastool.tsv
 
-Fasta_to_Contig2Bin.sh -i results/08.vamb/09hrs/bins/ -e fna > results/11.dastool/09hrs/09hrs_vamb.dastool.tsv
+Fasta_to_Contig2Bin.sh -i results/08.vamb/0h/bins/ -e fna > results/11.dastool/0h/0h_vamb.dastool.tsv
 
-Fasta_to_Contig2Bin.sh -i results/09.comebin/09hrs/comebin_res/comebin_res_bins/ -e fa > results/11.dastool/09hrs/09hrs_comebin.dastool.tsv
+Fasta_to_Contig2Bin.sh -i results/09.comebin/0h/comebin_res/comebin_res_bins/ -e fa > results/11.dastool/0h/0h_comebin.dastool.tsv
 
 # 03. arreglar formatos de vamb y metabat
-sed -i 's/ .*\t/\t/g' results/11.dastool/09hrs/09hrs_vamb.dastool.tsv
+sed -i 's/ .*\t/\t/g' results/11.dastool/0h/0h_vamb.dastool.tsv
 
-cut -f1,4 results/11.dastool/09hrs/09hrs_metabat.dastool.tsv > results/11.dastool/09hrs/09hrs_metabat.dastool.tmp.tsv && mv results/11.dastool/09hrs/09hrs_metabat.dastool.tmp.tsv results/11.dastool/09hrs/09hrs_metabat.dastool.tsv
+cut -f1,4 results/11.dastool/0h/0h_metabat.dastool.tsv > results/11.dastool/0h/0h_metabat.dastool.tmp.tsv && mv results/11.dastool/0h/0h_metabat.dastool.tmp.tsv results/11.dastool/0h/0h_metabat.dastool.tsv
 
 
 # 04. Ya que tenemos los archivos tsv podemos empezar con el refinamiento!!
-DAS_Tool -i results/11.dastool/09hrs/09hrs_metabat.dastool.tsv,results/11.dastool/09hrs/09hrs_maxbin.dastool.tsv,results/11.dastool/09hrs/09hrs_vamb.dastool.tsv,results/11.dastool/09hrs/09hrs_comebin.dastool.tsv -l metabat,maxbin,vamb,comebin -c results/03.ensambles/09h/v2_megahit.fasta -o results/11.dastool/09hrs/09hrs -t 6 --write_bins
+DAS_Tool -i results/11.dastool/0h/0h_metabat.dastool.tsv,results/11.dastool/0h/0h_maxbin.dastool.tsv,results/11.dastool/0h/0h_vamb.dastool.tsv,results/11.dastool/0h/0h_comebin.dastool.tsv -l metabat,maxbin,vamb,comebin -c results/03.ensambles/0h/v3.spades.fasta -o results/11.dastool/0h/0h -t 6 --write_bins
 ```
 
 Y lo corremos
