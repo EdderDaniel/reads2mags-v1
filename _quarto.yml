@@ -29,11 +29,11 @@ website:
       - href: 05.Binning.qmd
         text: Binning
         icon: boxes
-      - href: 06.Taxonomy.qmd
-        text: Taxonomía de MAGs
+      - href: 06.Anotacion.qmd
+        text: Anotación
         icon: diagram-3
-      - href: 07.Metabolic.qmd
-        text: Metabolismo
+      - href: 07.Global.qmd
+        text: Analisis global
         icon: lightning-charge
       - href: 08.ReadsTaxonomy.qmd
         text: Diversidad

@@ -1,0 +1,73 @@
+---
+title: "Anotación"
+---
+
+## 01. Asignación taxonómica
+
+### GTDB-tk
+
+GTDB-Tk es una herramienta que asigna taxonomía a genomas utilizando la base de datos [GTDB](https://gtdb.ecogenomic.org/) (Genome Taxonomy Database). Basado en árboles filogenéticos y medidas de ANI (Average Nucleotide Identity), GTDB-Tk clasifica genomas bacterianos y arqueanos, proporciona una taxonomía coherente y actualizada. Se utiliza mucho en el análisis de genomas y metagenomas.
+
+![GTDB-tk Workflow](Figures/GTDB-tk_worflow.png){fig-align="center" width="944"}
+
+Recordemos que ya tenemo un *bin* refinado y desreplicado. Ahora vamos a asignarle identidad taxonómica, para ello vamos a correr GTDB-tk
+
+Creamos el directorio de resultados para GTDB-tk
+
+``` bash
+mkdir -p results/13.gtdbtk/0h/bins
+```
+
+Y copiamos con un nuevo nombre
+
+``` bash
+cp results/12.drep/0h/dereplicated_genomes/0h_cleanbin_000001.fasta  results/13.gtdbtk/0h/bins/0hBin01.fasta
+```
+
+::: {.callout-tip collapse="true"}
+## Script para más de un MAG
+
+Si tienes más de un MAG, que así será en las muestras de mayor tiempo de fermentación, puedes generar un ciclo for para copiar y renombrar todos.
+
+``` bash
+nano src/copiar_renombrarbins.sh
+```
+
+``` bash
+#!/usr/bin/bash
+destination_dir="results/13.gtdbtk/0h/bins"
+count=1
+
+for file in $(ls results/12.drep/0h/dereplicated_genomes/*.fasta); do
+  new_name=$(printf "0hBin%02d.fasta" "$count")
+  cp "$file" "$destination_dir/$new_name"
+  count=$((count + 1))
+done
+```
+:::
+
+Y ahora si, ejecutamos gtdbtk
+
+``` bash
+nohup gtdbtk classify_wf \
+    --genome_dir results/13.gtdbtk/0h/bins/ \
+    --out_dir results/13.gtdbtk/0h/ \
+    --cpus 12 \
+    -x fasta > outs/13.gtdbtk0h.out &
+```
+
+## 02. Anotación funcional
+
+### 02.1 Bakta
+
+``` bash
+conda activate bakta
+```
+
+``` bash
+mkdir -p results/14.bakta/0h
+```
+
+``` bash
+bakta --db /data/BD/bakta_db/db --locus-tag 0hBin01_Scaffold --prefix 0hBin01 --threads 10 --output results/14.bakta/0h/0hBin01/ results/13.gtdbtk/0h/bins/0hBin01.fasta 
+```

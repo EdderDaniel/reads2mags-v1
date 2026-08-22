@@ -61,15 +61,15 @@ Ahora si, vamos a agrupar los contigs en *bins* ...
 Ejecutemos Metabat2, pero antes vamos a crear el directorio de resultados:
 
 ``` bash
-mkdir -p results/06.metabat/09hrs
+mkdir -p results/06.metabat/0h
 ```
 
 Y ahora vamos a correrlo
 
 ``` bash
-metabat2 -i results/03.ensambles/09h/v2_megahit.fasta \
- -a results/05.profundidad/09hrs/09hrs_depth.txt \
- -o results/06.metabat/09hrs/metabat -m 1500 -t 6 --seed 123
+metabat2 -i results/03.ensambles/0h/v2_megahit.fasta \
+ -a results/05.profundidad/0h/0h_depth.txt \
+ -o results/06.metabat/0h/metabat -m 1500 -t 6 --seed 123
 ```
 
 ::: callout-important
@@ -116,22 +116,22 @@ conda activate maxbin2
 Ahora si, vamos a ejecutarlo, pero primero creamos el lugar donde se alojaran los resultados
 
 ``` bash
-mkdir -p results/07.maxbin/09hrs
+mkdir -p results/07.maxbin/0h
 ```
 
 Debemos formatear el archivo de abundancia para MaxBin:
 
 ``` bash
-cut -f1,4 results/05.profundidad/09hrs/09hrs_depth.txt  > results/05.profundidad/09hrs/09hrs_depth_maxbin.txt
+cut -f1,4 results/05.profundidad/0h/0h_depth.txt  > results/05.profundidad/0h/0h_depth_maxbin.txt
 ```
 
 Y ahora si, corramos MaxBin
 
 ``` bash
 run_MaxBin.pl -thread 4 -min_contig_length 1500 \
- -contig results/03.ensambles/09h/v2_megahit.fasta \
- -abund results/05.profundidad/09hrs/09hrs_depth_maxbin.txt \
- -out results/07.maxbin/09hrs/v2/09hrs
+ -contig results/03.ensambles/0h/v2_megahit.fasta \
+ -abund results/05.profundidad/0h/0h_depth_maxbin.txt \
+ -out results/07.maxbin/0h/v2/0h
 ```
 
 :::: {.callout-caution title="Explora"}
@@ -232,9 +232,9 @@ mkdir -p results/09.comebin
 Corremos COMEBin:
 
 ``` bash
-run_comebin.sh -a results/03.ensambles/09h/v2_megahit.fasta \
- -o results/09.comebin/09hrs \
- -p results/05.profundidad/09hrs/ -t 6
+run_comebin.sh -a results/03.ensambles/0h/v2_megahit.fasta \
+ -o results/09.comebin/0h \
+ -p results/05.profundidad/0h/ -t 6
 ```
 
 :::: callout-important
@@ -338,80 +338,9 @@ Los criterios **MIMAG (Minimum Information about a Metagenome-Assembled Genome)*
 
 Y ahora si, a refinar los *bins* ... 🥳
 
-### 2.2 Binning_refiner
-
-[Binning_refiner](https://doi.org/10.1093/bioinformatics/btx086) combina los resultados de varios binneadores buscando dónde coinciden. Cuando distintos programas agrupan los mismos contigs juntos, esa **intersección** se conserva como un bin refinado; los contigs en los que los binneadores *no* coinciden se separan. Al quedarse solo con lo que varios métodos respaldan, **reduce la contaminación**, aunque los bins pueden quedar un poco menos completos. Su criterio es el acuerdo entre binneadores, no una evaluación de calidad propia.
-
-[![Binning_refiner](Figures/Binning_refiner.png){fig-align="center" width="444"}](https://doi.org/10.1093/bioinformatics/btx086)
-
-<https://doi.org/10.1093/bioinformatics/btx086>
-
-Necesitamos crear el directorio de resultados para binning_refiner y un directorio con los bins generados por cada programa
-
-``` bash
-mkdir -p results/10.binning_refiner/0hbins/{metabat,maxbin,vamb,comebin}
-```
-
-Crea ligas simbólicas de los *bins* generados por cada herramienta en el directorio que corresponde.
-
-::: callout-tip
-## Prepara los datos
-
-Crea ligas simbólicas de los *bins* generados por cada herramienta en el directorio que corresponde de acuerdo a los directorios que acabamos de crear.
-
-``` bash
-# metabat
-
-cd results/10.binning_refiner/0hbins/metabat/
-
-ln -s ../../../06.metabat/0h/metabat.*.fa .
-
-# maxbin
-
-cd ../maxbin/
-ln -s ../../../07.maxbin/0h/*.fasta .
-
-# vamb
-
-cd ../vamb
-ln -s ../../../08.vamb/0h/bins/*.fna .
-
-# comebin
-
- cd ../comebin
- ln -s ../../../09.comebin/0h/comebin_res/comebin_res_bins/*.fa .
-```
-:::
-
-Regresa al directorio de resultados de Binning_refiner para ejecutar el programa dentro de ese directorio.
-
-``` bash
-cd ../../
-```
-
-Ahora si, corramos Binning_refiner
-
-``` bash
-Binning_refiner -i 0hbins/ -m 200 -p 0h -plot
-```
-
-Y regresemos a nuestro directorio principal
-
-``` bash
-cd && cd reads2mags_pozol/
-```
-
-Exploremos los resultados!
-
-``` bash
-cat results/10.binning_refiner/09h_Binning_refiner_outputs/09h_sources_and_length.txt 
-```
-
-![Binning_refiner sankey plot](Figures/07.sankey.png){fig-align="center" width="\"223"}
-
 ------------------------------------------------------------------------
 
-### 2.3 DASTool
+### 2.2 DASTool
 
 [DAS_Tool](https://github.com/cmks/DAS_Tool) toma los bins de todos los binneadores y **puntúa cada candidato** según sus **genes de copia única**, con lo que estima su completitud y contaminación (por eso no depende de CheckM). Después selecciona un conjunto **no redundante**, quedándose con la mejor versión de cada genoma entre todas las herramientas, e incluso ajusta los bins añadiendo contigs para mejorar ese puntaje. A diferencia de Binning_refiner, que conserva la intersección, DAS_Tool **elige y optimiza** los bins de mayor puntaje.
 
@@ -424,45 +353,123 @@ conda activate dastool
 ```
 
 ``` bash
-nano scripts/11.dastool_09h.sh
+nano scripts/10.dastool_0h.sh
 ```
 
 ``` bash
 # 01. Crear el directorio para los resultados
-mkdir -p results/11.dastool/0h
+mkdir -p results/10.dastool/0h
 
 # 02. DASTool necesita como entrada un archivo tabular con información de los resultados de cada programa de binning.
-Fasta_to_Contig2Bin.sh -i results/06.metabat/0h/ -e fa > results/11.dastool/0h/0h_metabat.dastool.tsv
+Fasta_to_Contig2Bin.sh -i results/06.metabat/0h/ -e fa > results/10.dastool/0h/0h_metabat.dastool.tsv
 
-Fasta_to_Contig2Bin.sh -i results/07.maxbin/0h/ -e fasta > results/11.dastool/0h/0h_maxbin.dastool.tsv
+Fasta_to_Contig2Bin.sh -i results/07.maxbin/0h/ -e fasta > results/10.dastool/0h/0h_maxbin.dastool.tsv
 
-Fasta_to_Contig2Bin.sh -i results/08.vamb/0h/bins/ -e fna > results/11.dastool/0h/0h_vamb.dastool.tsv
+Fasta_to_Contig2Bin.sh -i results/08.vamb/0h/bins/ -e fna > results/10.dastool/0h/0h_vamb.dastool.tsv
 
-Fasta_to_Contig2Bin.sh -i results/09.comebin/0h/comebin_res/comebin_res_bins/ -e fa > results/11.dastool/0h/0h_comebin.dastool.tsv
+Fasta_to_Contig2Bin.sh -i results/09.comebin/0h/comebin_res/comebin_res_bins/ -e fa > results/10.dastool/0h/0h_comebin.dastool.tsv
 
 # 03. arreglar formatos de vamb y metabat
-sed -i 's/ .*\t/\t/g' results/11.dastool/0h/0h_vamb.dastool.tsv
+sed -i 's/ .*\t/\t/g' results/10.dastool/0h/0h_vamb.dastool.tsv
 
-cut -f1,4 results/11.dastool/0h/0h_metabat.dastool.tsv > results/11.dastool/0h/0h_metabat.dastool.tmp.tsv && mv results/11.dastool/0h/0h_metabat.dastool.tmp.tsv results/11.dastool/0h/0h_metabat.dastool.tsv
+cut -f1,4 results/10.dastool/0h/0h_metabat.dastool.tsv > results/10.dastool/0h/0h_metabat.dastool.tmp.tsv && mv results/10.dastool/0h/0h_metabat.dastool.tmp.tsv results/10.dastool/0h/0h_metabat.dastool.tsv
 
 
 # 04. Ya que tenemos los archivos tsv podemos empezar con el refinamiento!!
-DAS_Tool -i results/11.dastool/0h/0h_metabat.dastool.tsv,results/11.dastool/0h/0h_maxbin.dastool.tsv,results/11.dastool/0h/0h_vamb.dastool.tsv,results/11.dastool/0h/0h_comebin.dastool.tsv -l metabat,maxbin,vamb,comebin -c results/03.ensambles/0h/v3.spades.fasta -o results/11.dastool/0h/0h -t 6 --write_bins
+DAS_Tool -i results/10.dastool/0h/0h_metabat.dastool.tsv,results/10.dastool/0h/0h_maxbin.dastool.tsv,results/10.dastool/0h/0h_vamb.dastool.tsv,results/10.dastool/0h/0h_comebin.dastool.tsv -l metabat,maxbin,vamb,comebin -c results/03.ensambles/0h/v3.spades.fasta -o results/10.dastool/0h/0h -t 6 --write_bins
 ```
 
 Y lo corremos
 
 ``` bash
-nohup bash scripts/11.dastool_09h.sh > outs/11.dastool.out &
+nohup bash scripts/10.dastool_0h.sh > outs/10.dastool.out &
 ```
-
-No olvides desactivar el ambiente
 
 ------------------------------------------------------------------------
 
-## Desreplicación
+### 2.2 MAGScoT
 
-### 2.4 dRep
+Como segundo refinador usaremos [MAGScoT](https://github.com/ikmb/MAGScoT), una herramienta más reciente y ligera. Comparte la misma filosofía que DAS_Tool, puntúa cada bin candidato usando **genes marcadores de copia única** y selecciona de forma iterativa el mejor conjunto **no redundante**, sin depender de CheckM, pero agrega un paso propio: **fusiona bins que se solapan** entre binneadores para formar *bins híbridos* y los mete también a la competencia. A veces ese híbrido resulta mejor que cualquiera de los bins originales.
+
+::: callout-note
+## ¿Por qué correr *dos* refinadores?
+
+DAS_Tool y MAGScoT hacen algo parecido, pero no idéntico (MAGScoT además fusiona bins). Correr ambos sobre la misma muestra nos deja **compararlos** Antes usábamos Binning_refiner para esto, pero es la herramienta más antigua del grupo y cada vez se usa menos.
+:::
+
+Todo el flujo de MAGScoT está en un solo script, que hace cinco cosas: (1) predice los ORFs del ensamble con **Prodigal**, (2) los anota contra los marcadores de **GTDB r207** con **HMMER**, (3) arma la tabla contig-a-bin reutilizando las de DAS_Tool, (4) puntúa y refina con MAGScoT, y (5) extrae los MAGs a FASTA (porque MAGScoT entrega solo el mapeo, no los genomas).
+
+Todo el flujo de MAGScoT está en un solo script, que hace cinco cosas: (1) predice los ORFs del ensamble con **Prodigal**, (2) los anota contra los marcadores de **GTDB r207** con **HMMER**, (3) arma la tabla contig-a-bin reutilizando las de DAS_Tool, (4) puntúa y refina con MAGScoT, y (5) extrae los MAGs a FASTA (porque MAGScoT entrega solo el mapeo, no los genomas).
+
+``` bash
+#!/usr/bin/bash
+
+# Diana Oaxaca
+# Refinamiento de bins con MAGScoT (predice ORFs, anota marcadores GTDB,
+# puntua y selecciona MAGs, y extrae los FASTA para dRep)
+
+
+
+#Variables
+MAGSCOT=/ruta/a/MAGScoT                           
+asm=results/03.ensambles/0h/v3.spades.fasta     
+DT=results/10.dastool/0h                         
+out=results/11.magscot/0h                        
+threads=6
+
+mkdir -p $out/bins
+
+# 1. Prediccion de ORFs con Prodigal 
+prodigal -p meta -i $asm -a $out/0h.faa -d $out/0h.ffn -o /dev/null
+
+# 2. Anotacion de marcadores de copia unica (HMMER vs GTDB r207)
+
+hmmsearch -o $out/tigr.out --tblout $out/tigr.hit --noali --notextw --cut_nc --cpu $threads \
+  $MAGSCOT/hmm/gtdbtk_rel207_tigrfam.hmm $out/0h.faa
+hmmsearch -o $out/pfam.out --tblout $out/pfam.hit --noali --notextw --cut_nc --cpu $threads \
+  $MAGSCOT/hmm/gtdbtk_rel207_Pfam-A.hmm $out/0h.faa
+
+grep -v "^#" $out/tigr.hit | awk '{print $1"\t"$3"\t"$5}' >  $out/0h.hmm
+grep -v "^#" $out/pfam.hit | awk '{print $1"\t"$4"\t"$5}' >> $out/0h.hmm
+
+# 3. Tabla contig-a-bin
+awk '{print $2"\t"$1"\tmetabat2"}' $DT/0h_metabat.dastool.tsv  >  $out/contigs_to_bin.tsv
+awk '{print $2"\t"$1"\tmaxbin2"}'  $DT/0h_maxbin.dastool.tsv   >> $out/contigs_to_bin.tsv
+awk '{print $2"\t"$1"\tvamb"}'     $DT/0h_vamb.dastool.tsv     >> $out/contigs_to_bin.tsv
+awk '{print $2"\t"$1"\tcomebin"}'  $DT/0h_comebin.dastool.tsv  >> $out/contigs_to_bin.tsv
+
+# 4. Puntaje y refinamiento con MAGScoT
+python3 $MAGSCOT/MAGScoT.py -i $out/contigs_to_bin.tsv --hmm $out/0hrs.hmm -o $out/0hrs
+
+# 5. Extraccion de los FASTA (MAGScoT solo da el mapeo)
+
+tail -n +2 $out/0h.refined.contig_to_bin.out | \
+  awk -v d="$out/bins" '{b=$1; sub(/.*\//,"",b); print $2 >> d"/"b".ctg"}'
+
+for f in $out/bins/*.ctg; do
+  b=$(basename $f .ctg)
+  seqkit grep -f $f $asm > $out/bins/$b.fasta
+done
+rm $out/bins/*.ctg
+```
+
+``` bash
+nohup bash scripts/12.magscot_0hrs.sh > outs/12.magscot.out &
+```
+
+::: callout-caution
+## Explora y compara (5 min)
+
+Ya tienes las salidas de **DAS_Tool** y **MAGScoT** sobre la misma muestra. Compáralas:
+
+1.  ¿Cuántos MAGs recuperó cada refinador? ¿Coinciden?
+2.  Revisa la columna `is_magscot` en `0hrs.scores.out`: ¿alguno de los MAGs finales es un **bin híbrido** (fusionado por MAGScoT), o todos venían tal cual de un binneador?
+3.  Si ambos parten de los mismos bins, ¿por qué no dan exactamente el mismo resultado?
+:::
+
+## 03. Desreplicación
+
+### dRep
 
 La desreplicación es el proceso de identificar conjuntos de genomas que son "iguales" en una lista de genomas y eliminar todos los genomas excepto el "mejor" de cada conjunto redundante. [dRep](https://drep.readthedocs.io/en/latest/overview.html) es una herramienta útil para esto. Para decidir qué genomas son "iguales", dRep los agrupa por **ANI** (identidad promedio de nucleótidos) por encima de un umbral; y para elegir el "mejor" de cada grupo usa una **puntuación de calidad** (completitud, contaminación, N50). Por eso los argumentos `-comp`, `-con` y el umbral de ANI son los que deciden qué entra y qué gana.
 
@@ -473,7 +480,7 @@ Ya que tenemos los resultados de los dos refinadores ejecutaremos dRep para desr
 Primero vamos a crear el directorio de resultados para dRep.
 
 ``` bash
- mkdir -p results/12.drep/09hrs/bins
+ mkdir -p results/12.drep/0h/bins
 ```
 
 Copia los bins que queremos comparar dentro del directorio que acabamos de crear. A dRep le tenemos que dar como entrada un directorio con todos los bins y la misma extensión.
@@ -481,58 +488,40 @@ Copia los bins que queremos comparar dentro del directorio que acabamos de crear
 Con las siguientes lineas podemos copiar los bins resultantes de cada refinamiento:
 
 ``` bash
-
-BR="results/10.binning_refiner/09h_Binning_refiner_outputs/09h_refined_bins"
-DT="results/11.dastool/09hrs/09hrs_DASTool_bins"
-
-out="results/12.drep/09hrs/bins"
+DT="results/10.dastool/0h/0h_DASTool_bins"
+MS="results/11.magscot/0h/bins"
+out="results/12.drep/0h/bins"
 
 for i in $(ls $DT/*.fa); do
     name=$(basename $i .fa)
     cp $i $out/$name".fasta"
 done
 
-cp $BR/*.fasta $out
+cp $MS/*.fasta $out
 ```
 
 Preparemos el insumo de dRep, para ello corramos checkm2
 
 ``` bash
-checkm2 predict --threads 6 -x fasta --input results/12.drep/09hrs/bins/ --output-directory results/12.drep/09hrs/checkm2/
+checkm2 predict --threads 6 -x fasta --input results/12.drep/0h/bins/ --output-directory results/12.drep/0h/checkm2/
 ```
-
-``` bash
-conda deactivate
-```
-
-::: callout-caution
-## Comparemos
-
-Antes de correr dRep, hagamos una exploración rápida sobre como cambió la calidad de los *bins* de metabat después del refinamiento con DASTool.
-:::
 
 Y ahora toca construir el archivo de información que dRep necesita.
 
 ``` bash
-cq="results/12.drep/09hrs/checkm2/quality_report.tsv"
-echo "genome,completeness,contamination" > results/12.drep/09hrs/genomeInfo.csv
+cq="results/12.drep/0h/checkm2/quality_report.tsv"
+echo "genome,completeness,contamination" > results/12.drep/0h/genomeInfo.csv
 tail -n +2 $cq | awk -F'\t' '{print $1".fasta,"$2","$3}' \
-  >> results/12.drep/09hrs/genomeInfo.csv
-```
-
-Activemos el ambiente de dRep
-
-``` bash
-conda activate drep
+  >> results/12.drep/0h/genomeInfo.csv
 ```
 
 Y ahora si, vamos a correr dRep ...
 
 ``` bash
-dRep dereplicate results/12.drep/09hrs/ \
+dRep dereplicate results/12.drep/0h/ \
   -p 6 -comp 50 -con 10 \
-  --genomeInfo results/12.drep/09hrs/genomeInfo.csv \
-  -g results/12.drep/09hrs/bins/*.fasta
+  --genomeInfo results/12.drep/0h/genomeInfo.csv \
+  -g results/12.drep/0h/bins/*.fasta
 ```
 
 ::: callout-caution
@@ -545,22 +534,12 @@ dRep dereplicate results/12.drep/09hrs/ \
 ¿Qué pasa con el porcentaje de ANI? ¿Asumimos el valor que está por defecto?
 :::
 
-Este es uno de los plots generados por dRep, que representa los mejores bins desreplicados.
-
-![dRepWinningGenomes](Figures/09.dRepWinningGenomes.png){fig-align="center"}
-
-Vamos a desactivar el ambiente de dRep
-
-``` bash
-conda deactivate
-```
-
 ------------------------------------------------------------------------
 
 ::: callout-important
 ## Para tomar en cuenta
 
--   En la vida real, si el proyecto de metagenómica que estás desarrollando tiene librerías de diferentes muestras usarías dRep entre todos los conjuntos de *bins* ya refinados para no tener redundancia de genomas.
+-   En la vida real, si el proyecto de metagenómica que estás desarrollando tiene **librerías de diferentes muestras** usarías dRep entre todos los conjuntos de *bins* ya refinados para **eliminar redundancia de genomas.**
 
 -   Qué harías si antes de desreplicar tienes un bin que tiene 98 % de completitud y 11 % de contaminación?. dRep en automático lo descartaría.
 

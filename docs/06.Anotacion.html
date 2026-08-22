@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Asignación taxonómica – De lecturas a MAGs</title>
+<title>Anotación – De lecturas a MAGs</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -159,14 +159,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Binning</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./06.Taxonomy.html" aria-current="page"> <i class="bi bi-diagram-3" role="img">
+    <a class="nav-link active" href="./06.Anotacion.html" aria-current="page"> <i class="bi bi-diagram-3" role="img">
 </i> 
-<span class="menu-text">Taxonomía de MAGs</span></a>
+<span class="menu-text">Anotación</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./07.Metabolic.html"> <i class="bi bi-lightning-charge" role="img">
+    <a class="nav-link" href="./07.Global.html"> <i class="bi bi-lightning-charge" role="img">
 </i> 
-<span class="menu-text">Metabolismo</span></a>
+<span class="menu-text">Analisis global</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./08.ReadsTaxonomy.html"> <i class="bi bi-bezier2" role="img">
@@ -194,7 +194,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#gtdb-tk" id="toc-gtdb-tk" class="nav-link active" data-scroll-target="#gtdb-tk">GTDB-tk</a></li>
+  <li><a href="#asignación-taxonómica" id="toc-asignación-taxonómica" class="nav-link active" data-scroll-target="#asignación-taxonómica">01. Asignación taxonómica</a>
+  <ul class="collapse">
+  <li><a href="#gtdb-tk" id="toc-gtdb-tk" class="nav-link" data-scroll-target="#gtdb-tk">GTDB-tk</a></li>
+  </ul></li>
+  <li><a href="#anotación-funcional" id="toc-anotación-funcional" class="nav-link" data-scroll-target="#anotación-funcional">02. Anotación funcional</a>
+  <ul class="collapse">
+  <li><a href="#bakta" id="toc-bakta" class="nav-link" data-scroll-target="#bakta">02.1 Bakta</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -203,7 +210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Asignación taxonómica</h1>
+<h1 class="title">Anotación</h1>
 </div>
 
 
@@ -220,6 +227,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<section id="asignación-taxonómica" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="asignación-taxonómica">01. Asignación taxonómica</h2>
 <section id="gtdb-tk" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="gtdb-tk">GTDB-tk</h3>
 <p>GTDB-Tk es una herramienta que asigna taxonomía a genomas utilizando la base de datos <a href="https://gtdb.ecogenomic.org/">GTDB</a> (Genome Taxonomy Database). Basado en árboles filogenéticos y medidas de ANI (Average Nucleotide Identity), GTDB-Tk clasifica genomas bacterianos y arqueanos, proporciona una taxonomía coherente y actualizada. Se utiliza mucho en el análisis de genomas y metagenomas.</p>
@@ -229,121 +238,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption class="margin-caption">GTDB-tk Workflow</figcaption>
 </figure>
 </div>
-<p>Recordemos que ya tenemos un set de <em>bins</em> refinados y desreplicados. Ahora vamos a asignarles identidad taxonómica, para ello vamos a correr GTDB-tk</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Activa el ambiente de gtdbtk
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate gtdbtk-2.4.0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-<p>El directorio de resultados para gtdbtk ya lo tienes en tu carpeta de resultados. Para colocar los <em>bins</em> refinados y renombrados ejecuta el script `src/copiar_renombrarbins.sh` :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> src/copiar_renombrarbins.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/bash</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/10.gtdbtk/48h/bins</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="va">destination_dir</span><span class="op">=</span><span class="st">"results/10.gtdbtk/bins"</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span>1</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="va">$(</span><span class="fu">ls</span> results/09.drep/dereplicated_genomes/<span class="pp">*</span>.fasta<span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="va">new_name</span><span class="op">=</span><span class="va">$(</span><span class="bu">printf</span> <span class="st">"48hBin%02d.fasta"</span> <span class="st">"</span><span class="va">$count</span><span class="st">"</span><span class="va">)</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cp</span> <span class="st">"</span><span class="va">$file</span><span class="st">"</span> <span class="st">"</span><span class="va">$destination_dir</span><span class="st">/</span><span class="va">$new_name</span><span class="st">"</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="va">count</span><span class="op">=</span><span class="va">$((count</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Resultado de GTDB-Tk
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>gtdbtk toma aprox 1 h 15 min por lo que el resultado final se encuentra en el directorio y archivo: <code>results/10.gtdbtk/48h/gtdbtk.bac120.summary.tsv</code> que se copió desde el inicio.</p>
-<p>El siguiente script de slurm es sólo el ejemplo de como se corrió y te será útil para tu ejercicio más adelante o para tus propios datos</p>
-</div>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> src/10.gtdbtk_48h.slurm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATHC -J gtdbtk</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -t 0</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -n 6</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -N 1</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -e outs/10.gtdbtk48.err</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -o outs/10.gtdbtk48.out</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --export=ALL</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -p q2</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#cuando le pongo limite de memoria me marca slurmstepd: error: Exceeded job memory limit </span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">LC_ALL</span><span class="op">=</span>en_US.UTF-8</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 01. Definimos el directorio de entrada y salida</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="va">out</span><span class="op">=</span><span class="st">"results/10.gtdbtk/48h/"</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="va">input</span><span class="op">=</span><span class="st">"results/10.gtdbtk/48h/bins/"</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 02. Definimos el directorio donde se escribe una subsalida de mash</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="va">db</span><span class="op">=</span><span class="st">"</span><span class="va">$out</span><span class="st">/classify/ani_screen/intermediate_results/mash/"</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># ahora si corremos gtdbtk</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="ex">gtdbtk</span> classify_wf <span class="at">--genome_dir</span> <span class="va">$input</span> <span class="at">--out_dir</span> <span class="va">$out</span> <span class="at">--cpus</span> 6 <span class="at">-x</span> fasta <span class="at">--mash_db</span> <span class="va">$db</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Explora:
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><p>Revisen la tabla de resultados de GTDB-Tk (<code>gtdbtk.bac120.summary.tsv</code>). Identifiquen el MAG con la <strong>mayor calidad</strong> (mayor completitud y menor contaminación). ¿Qué taxonomía tiene?</p></li>
-<li><p>Ahora, busquen el MAG con la <strong>taxonomía más interesante o inesperada</strong>. ¿Hay algún género o familia que no esperarían encontrar en el pozol?</p></li>
-</ul>
-</div>
-</div>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Ejercicio:
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Crea una tabla que se llame <code>Metadatos.tsv</code> dentro del directorio de resultados de GTDB-tk que incluya el nombre del bin y la clasificación taxonómica.</p>
-<p>1) Cambia el encabezado del nombre del bin: <code>user_genome</code> por <code>Bin_name</code></p>
-<p>2) Elimina <code>classification</code> y asegurate de que los niveles taxonómicos estén separados por tabulador. A cada columna de los niveles taxonómicos agregale su encabezado correspondiente: <code>Domain, Phylum, Class, Order, Family, Genus, Species</code></p>
+<p>Recordemos que ya tenemo un <em>bin</em> refinado y desreplicado. Ahora vamos a asignarle identidad taxonómica, para ello vamos a correr GTDB-tk</p>
+<p>Creamos el directorio de resultados para GTDB-tk</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/13.gtdbtk/0h/bins</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Y copiamos con un nuevo nombre</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> results/12.drep/0h/dereplicated_genomes/0h_cleanbin_000001.fasta  results/13.gtdbtk/0h/bins/0hBin01.fasta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Solución
+<span class="screen-reader-only">Tip</span>Script para más de un MAG
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse show">
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>echo -e Bin_name”\t”Domain”\t”Phylum”\t”Class”\t”Order”\t”Family”\t”Genus”\t”Species &gt; Metadatos.tsv</p>
-<p>cut -f1,2 gtdbtk.bac120.summary.tsv | grep -v “classification” | sed ‘s/;/\t/g’ &gt;&gt; Metadatos.tsv&nbsp;</p>
+<p>Si tienes más de un MAG, que así será en las muestras de mayor tiempo de fermentación, puedes generar un ciclo for para copiar y renombrar todos.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> src/copiar_renombrarbins.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/bash</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">destination_dir</span><span class="op">=</span><span class="st">"results/13.gtdbtk/0h/bins"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span>1</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="va">$(</span><span class="fu">ls</span> results/12.drep/0h/dereplicated_genomes/<span class="pp">*</span>.fasta<span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="va">new_name</span><span class="op">=</span><span class="va">$(</span><span class="bu">printf</span> <span class="st">"0hBin%02d.fasta"</span> <span class="st">"</span><span class="va">$count</span><span class="st">"</span><span class="va">)</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cp</span> <span class="st">"</span><span class="va">$file</span><span class="st">"</span> <span class="st">"</span><span class="va">$destination_dir</span><span class="st">/</span><span class="va">$new_name</span><span class="st">"</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="va">count</span><span class="op">=</span><span class="va">$((count</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
-</div>
-</div>
+<p>Y ahora si, ejecutamos gtdbtk</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> gtdbtk classify_wf <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--genome_dir</span> results/13.gtdbtk/0h/bins/ <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--out_dir</span> results/13.gtdbtk/0h/ <span class="dt">\</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">--cpus</span> 12 <span class="dt">\</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">-x</span> fasta <span class="op">&gt;</span> outs/13.gtdbtk0h.out <span class="kw">&amp;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="anotación-funcional" class="level2">
+<h2 class="anchored" data-anchor-id="anotación-funcional">02. Anotación funcional</h2>
+<section id="bakta" class="level3">
+<h3 class="anchored" data-anchor-id="bakta">02.1 Bakta</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate bakta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/14.bakta/0h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bakta</span> <span class="at">--db</span> /data/BD/bakta_db/db <span class="at">--locus-tag</span> 0hBin01_Scaffold <span class="at">--prefix</span> 0hBin01 <span class="at">--threads</span> 10 <span class="at">--output</span> results/14.bakta/0h/0hBin01/ results/13.gtdbtk/0h/bins/0hBin01.fasta </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
