@@ -250,8 +250,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><img src="images/clipboard-1725959684.png" class="img-fluid"></p>
 <p>Veamos cuántas lecturas tiene la muestra del tiempo 0 hrs:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> 09hrs_sm_R1.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END {print NR/4}'</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> 09hrs_sm_R2.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END {print NR/4}'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> 0h_sm_R1.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END {print NR/4}'</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> 0h_sm_R2.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END {print NR/4}'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -374,9 +374,9 @@ Tip
 </div>
 </div>
 <p>Vamos a crear el directorio que albergará los resultados de fastqc y multiqc</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/01.fastqc/09h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/01.fastqc/0h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Revisaremos la calidad con fastqc</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> data/09hrs_sm_R<span class="pp">*</span> <span class="at">-o</span> results/01.fastqc/09h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> data/0hrs_sm_R<span class="pp">*</span> <span class="at">-o</span> results/01.fastqc/0h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -405,11 +405,11 @@ Tip
 </div>
 <p>Usaremos <a href="https://github.com/FelixKrueger/TrimGalore"><strong>TrimGalore</strong></a> que nos permite eliminar lecturas de baja calidad, adaptadores, duplicados, etc. Existen otros programas para limpiar las lecturas como <a href="https://github.com/usadellab/Trimmomatic"><strong>Trimmomatic</strong></a>, Fastp, etc.</p>
 <p>Creamos el directorio de resultados</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/02.trimgalore/09h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/02.trimgalore/0h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Ahora si vamos a filtrar las lecturas</p>
 <p>Antes de ejecutarlo veamos la ayuda de trim_galore</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--help</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="ex">trim_galore</span> <span class="at">--fastqc</span> <span class="at">-j</span> 4 <span class="at">--paired</span> data/09hrs_sm_R1.fastq.gz data/09hrs_sm_R2.fastq.gz <span class="at">-o</span> results/02.trimgalore/09h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="ex">trim_galore</span> <span class="at">--fastqc</span> <span class="at">-j</span> 4 <span class="at">--paired</span> data/0hrs_sm_R1.fastq.gz data/0hrs_sm_R2.fastq.gz <span class="at">-o</span> results/02.trimgalore/0h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="revisemos-la-calidad-de-las-lecturas-antes-y-después-de-limpiar" class="level2">
 <h2 class="anchored" data-anchor-id="revisemos-la-calidad-de-las-lecturas-antes-y-después-de-limpiar">03. Revisemos la calidad de las lecturas antes y después de limpiar</h2>
@@ -421,16 +421,16 @@ Tip
 <li><p>Identificar como están las lecturas y los posibles problemas para planear futuros análisis si son necesarios.</p></li>
 </ul>
 <p>Revisemos la calidad con multiqc</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> results/01.fastqc/09h/ results/02.trimgalore/09h/ <span class="at">-o</span> results/02.trimgalore/09h/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> results/01.fastqc/0h/ results/02.trimgalore/0h/ <span class="at">-o</span> results/02.trimgalore/0h/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Descarguemos el resultado de multiqc para evaluarlo</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Descubramos cual es la ruta absoluta del resultado de multiqc</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">realpath</span> results/02.trimgalore/09h/multiqc_report.html</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">realpath</span> results/02.trimgalore/0h/multiqc_report.html</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#en mi caso es:</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># /home/dianao/reads2mags_pozol/results/02.trimgalore/09h/multiqc_report.html</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># /home/dianao/reads2mags_pozol/results/02.trimgalore/0h/multiqc_report.html</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Ahora vamos a una terminal de nuestra computadora para poder descargar el archivo</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">scp</span> dianao@[ip del servidor]:/home/dianao/reads2mags_pozol/results/02.trimgalore/09h/multiqc_report.html</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">scp</span> dianao@[ip del servidor]:/home/dianao/reads2mags_pozol/results/02.trimgalore/0h/multiqc_report.html</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><img src="images/clipboard-3590510204.png" class="img-fluid"></p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -477,8 +477,8 @@ Tip
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 02. Ya que creamos el índice haremos un alineamiento de las lecturas del pozol para mapear las correspondientes al genoma del maíz</span></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> mem <span class="at">-t</span> 10 maize_index data/09hrs_R1.fastq.gz <span class="dt">\</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a> data/09hrs_R2.fastq.gz <span class="dt">\</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> mem <span class="at">-t</span> 10 maize_index data/0hrs_R1.fastq.gz <span class="dt">\</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a> data/0hrs_R2.fastq.gz <span class="dt">\</span></span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a> <span class="kw">|</span> <span class="ex">samtools</span> view <span class="at">-Sb</span> <span class="at">-</span> <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> data/mapping.sorted.bam</span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"INFO: Pipeline finalizado. El resultado está en mapping.sorted.bam"</span></span>
@@ -487,10 +487,10 @@ Tip
 <span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">#Primero en R1</span></span>
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-f</span> 77 mapping.sorted.bam <span class="kw">|</span> <span class="dt">\</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print "@"$1"\n"$10"\n+\n"$11}'</span> <span class="op">&gt;</span> data/09hrs_sm_R1.fastq</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print "@"$1"\n"$10"\n+\n"$11}'</span> <span class="op">&gt;</span> data/0hrs_sm_R1.fastq</span>
 <span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Ahora en R2</span></span>
 <span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-f</span> 141 mapping.sorted.bam <span class="kw">|</span> <span class="dt">\</span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print "@"$1"\n"$10"\n+\n"$11}'</span> <span class="op">&gt;</span> data/09hrs_sm_R2.fastq</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print "@"$1"\n"$10"\n+\n"$11}'</span> <span class="op">&gt;</span> data/0hrs_sm_R2.fastq</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>

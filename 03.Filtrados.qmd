@@ -31,8 +31,8 @@ Un archivo **FASTQ** contiene secuencias de ADN/ARN obtenidas mediante secuencia
 Veamos cuántas lecturas tiene la muestra del tiempo 0 hrs:
 
 ``` bash
-zcat 09hrs_sm_R1.fastq.gz | awk 'END {print NR/4}'
-zcat 09hrs_sm_R2.fastq.gz | awk 'END {print NR/4}'
+zcat 0h_sm_R1.fastq.gz | awk 'END {print NR/4}'
+zcat 0h_sm_R2.fastq.gz | awk 'END {print NR/4}'
 ```
 
 :::: callout-warning
@@ -111,13 +111,13 @@ cd reads2mags_pozol
 Vamos a crear el directorio que albergará los resultados de fastqc y multiqc
 
 ``` bash
-mkdir -p results/01.fastqc/09h
+mkdir -p results/01.fastqc/0h
 ```
 
 Revisaremos la calidad con fastqc
 
 ``` bash
-fastqc data/09hrs_sm_R* -o results/01.fastqc/09h
+fastqc data/0hrs_sm_R* -o results/01.fastqc/0h
 ```
 
 ::: callout-warning
@@ -140,7 +140,7 @@ Usaremos [**TrimGalore**](https://github.com/FelixKrueger/TrimGalore) que nos pe
 Creamos el directorio de resultados
 
 ``` bash
-mkdir -p results/02.trimgalore/09h
+mkdir -p results/02.trimgalore/0h
 ```
 
 Ahora si vamos a filtrar las lecturas
@@ -152,7 +152,7 @@ trim_galore --help
 ```
 
 ``` bash
-  trim_galore --fastqc -j 4 --paired data/09hrs_sm_R1.fastq.gz data/09hrs_sm_R2.fastq.gz -o results/02.trimgalore/09h
+  trim_galore --fastqc -j 4 --paired data/0hrs_sm_R1.fastq.gz data/0hrs_sm_R2.fastq.gz -o results/02.trimgalore/0h
 ```
 
 ## 03. Revisemos la calidad de las lecturas antes y después de limpiar
@@ -170,20 +170,20 @@ trim_galore --help
 Revisemos la calidad con multiqc
 
 ``` bash
-multiqc results/01.fastqc/09h/ results/02.trimgalore/09h/ -o results/02.trimgalore/09h/
+multiqc results/01.fastqc/0h/ results/02.trimgalore/0h/ -o results/02.trimgalore/0h/
 ```
 
 Descarguemos el resultado de multiqc para evaluarlo
 
 ``` bash
 # Descubramos cual es la ruta absoluta del resultado de multiqc
-realpath results/02.trimgalore/09h/multiqc_report.html
+realpath results/02.trimgalore/0h/multiqc_report.html
 
 #en mi caso es:
-# /home/dianao/reads2mags_pozol/results/02.trimgalore/09h/multiqc_report.html
+# /home/dianao/reads2mags_pozol/results/02.trimgalore/0h/multiqc_report.html
 
 # Ahora vamos a una terminal de nuestra computadora para poder descargar el archivo
-scp dianao@[ip del servidor]:/home/dianao/reads2mags_pozol/results/02.trimgalore/09h/multiqc_report.html
+scp dianao@[ip del servidor]:/home/dianao/reads2mags_pozol/results/02.trimgalore/0h/multiqc_report.html
 ```
 
 ![](images/clipboard-3590510204.png)
@@ -224,8 +224,8 @@ bwa index -p maize_index -a bwtsw data/zeamays.fa
 
 # 02. Ya que creamos el índice haremos un alineamiento de las lecturas del pozol para mapear las correspondientes al genoma del maíz
 
-bwa mem -t 10 maize_index data/09hrs_R1.fastq.gz \
- data/09hrs_R2.fastq.gz \
+bwa mem -t 10 maize_index data/0hrs_R1.fastq.gz \
+ data/0hrs_R2.fastq.gz \
  | samtools view -Sb - | samtools sort -o data/mapping.sorted.bam
  
 echo "INFO: Pipeline finalizado. El resultado está en mapping.sorted.bam"
@@ -234,10 +234,10 @@ echo "INFO: Pipeline finalizado. El resultado está en mapping.sorted.bam"
 
 #Primero en R1
 samtools view -f 77 mapping.sorted.bam | \
-awk '{print "@"$1"\n"$10"\n+\n"$11}' > data/09hrs_sm_R1.fastq
+awk '{print "@"$1"\n"$10"\n+\n"$11}' > data/0hrs_sm_R1.fastq
 # Ahora en R2
 samtools view -f 141 mapping.sorted.bam | \
-awk '{print "@"$1"\n"$10"\n+\n"$11}' > data/09hrs_sm_R2.fastq
+awk '{print "@"$1"\n"$10"\n+\n"$11}' > data/0hrs_sm_R2.fastq
 ```
 :::
 
