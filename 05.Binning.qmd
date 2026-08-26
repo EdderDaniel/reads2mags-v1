@@ -443,14 +443,12 @@ python3 $MAGSCOT/MAGScoT.py -i $out/contigs_to_bin.tsv --hmm $out/0hrs.hmm -o $o
 
 # 5. Extraccion de los FASTA (MAGScoT solo da el mapeo)
 
-tail -n +2 $out/0h.refined.contig_to_bin.out | \
-  awk -v d="$out/bins" '{b=$1; sub(/.*\//,"",b); print $2 >> d"/"b".ctg"}'
-
+shopt -s nullglob
 for f in $out/bins/*.ctg; do
   b=$(basename $f .ctg)
   seqkit grep -f $f $asm > $out/bins/$b.fasta
 done
-rm $out/bins/*.ctg
+rm -f $out/bins/*.ctg
 ```
 
 ``` bash

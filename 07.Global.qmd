@@ -1,6 +1,98 @@
 ---
-title: "Análisis global"
+title: "Análisis global: del MAG individual al catálogo del pozol"
 ---
+
+Hasta aquí, cada equipo trabajó **una** muestra: ensambló, hizo binning, refinó y anotó los MAGs de su tiempo de fermentación. En esta última parte damos el paso que convierte esos esfuerzos individuales en una sola historia: **juntamos los MAGs de todos los tiempos (0, 9, 24 y 48 h) en un catálogo común** y lo exploramos como comunidad.
+
+-   La **desreplicación** por fin desreplica de verdad. Cuando corrimos dRep por muestra, casi no había nada que quitar. Pero entre muestras sí: es muy probable que el *mismo* organismo se haya recuperado en varios tiempos, y dRep se queda con el mejor representante de cada uno para darnos un catálogo **no redundante** del pozol.
+-   La **anotación funcional** se vuelve comparativa. Un mapa de rutas de un solo MAG es una columna; el de todo el catálogo es una figura que responde ¿quién hace qué en la fermentación?.
+
+::: callout-note
+## Resultados listos
+
+La desreplicación global y las anotaciones de todas las muestras ya están **pre-computadas** (correrlas requiere los MAGs de todos los equipos y toma tiempo). En esta sesión nos concentramos en: **construir una tabla de metadatos y explorar el catálogo con RbiMs**. En tu directorio ya tienes:
+
+-   Los `.txt` de **KofamScan** de todos los MAGs del catálogo.
+-   La tabla de **GTDB-Tk** (taxonomía) y el `quality_report` de **CheckM2** (calidad) de todo el catálogo.
+:::
+
+## 01. El catálogo de MAGs del pozol
+
+::: {.callout-note collapse="true"}
+## Así se generó el catálogo (referencia, no lo ejecutes)
+
+\[BLOQUE DE CÓDIGO: dRep global — pool de los DAS_Tool + MAGScoT de todas las muestras con prefijo por muestra, y dRep dereplicate con --genomeInfo. Es el bloque que ya tienes del cierre colaborativo.\]
+:::
+
+## 02. Construye la tabla de metadatos
+
+Las anotaciones no significan nada solas: para leerlas necesitamos saber, de cada MAG, **de dónde viene, qué es y qué tan bueno es**. Esa tabla que une origen + taxonomía + calidad es la **metadata**, y es la columna vertebral de cualquier figura comparativa. La vas a construir tú, porque saber armarla es una habilidad que usarás en todos tus proyectos.
+
+Tienes tres fuentes, y el **nombre del MAG es la llave** que las une:
+
+-   **Origen (muestra):** sale directo del nombre. De `24hBin03` sabes que se recuperó de la muestra de 24 h.
+-   **Taxonomía:** de la tabla de GTDB-Tk (`gtdbtk.bac120.summary.tsv`), columna de clasificación.
+-   **Calidad:** del `quality_report.tsv` de CheckM2 (completitud y contaminación).
+
+::: callout-important
+## Cuidado: "origen" no es "distribución"
+
+El nombre te dice de qué muestra **se ensambló** el MAG, no en qué muestras **está presente**. Un organismo recuperado desde 0 h probablemente también esté en 9, 24 y 48 h; nuestro metadato solo registra de dónde lo sacamos. Volveremos a esto al final.
+:::
+
+::: callout-tip
+## Ahora tú: arma tu tabla de metadatos
+
+Construye una tabla con una fila por MAG y, al menos, estas columnas: `Bin`, `Muestra` (del nombre), `Taxonomia` (de GTDB-Tk) y `Completitud` / `Contaminacion` (de CheckM2). Puedes hacerlo en R, en la terminal, o incluso a mano si son pocos MAGs — lo importante es entender que estás **uniendo tres fuentes por el nombre del bin**.
+:::
+
+\[BLOQUE DE CÓDIGO: ejemplo de construcción de la tabla de metadatos — leer nombres de bins para extraer la muestra, hacer join con el summary de GTDB-Tk y con el quality_report de CheckM2. Puede ser en R (recomendado, porque enseguida entra a RbiMs) o en bash. Deja el resultado como un data frame / tsv de metadatos.\]
+
+## 03. RbiMs: explora el metabolismo del catálogo
+
+\[Breve descripción de RbiMs: paquete de R que toma los resultados de anotación (aquí, los KO de KofamScan) y los organiza en una matriz de presencia/abundancia de funciones por genoma, para visualizar y comparar el potencial metabólico entre MAGs. Enlace al repo de RbiMs.\]
+
+Activamos R (o abrimos RStudio) y cargamos RbiMs:
+
+\[BLOQUE DE CÓDIGO R: library(rbims) y las dependencias; lectura de los .txt de KofamScan de todo el catálogo con la función de RbiMs correspondiente para construir la matriz de KOs.\]
+
+Ahora incorporamos la tabla de metadatos que construiste, para poder colorear y agrupar por muestra y taxonomía:
+
+\[BLOQUE DE CÓDIGO R: cargar la tabla de metadatos y unirla al objeto de RbiMs por el nombre del MAG.\]
+
+### Visualizaciones
+
+Con eso ya puedes generar las figuras que resumen el potencial metabólico del catálogo:
+
+\[BLOQUE DE CÓDIGO R: bubble plot / heatmap de RbiMs — abundancia de KOs o rutas por MAG, anotado con la metadata (muestra + taxonomía).\]
+
+::: callout-tip
+## Explora libremente
+
+Ya tienes el objeto completo (funciones + metadatos). Prueba distintas vistas:
+
+-   Agrupa los MAGs por **taxonomía**: ¿los organismos emparentados comparten repertorio metabólico?
+-   Enfócate en una **ruta o categoría** de interés (por ejemplo, fermentación, metabolismo de carbohidratos, biosíntesis de aminoácidos o vitaminas).
+-   Colorea por **muestra de origen**: ¿los MAGs de tiempos tempranos se ven distintos a los de tiempos tardíos?
+:::
+
+## 04. Lectura biológica: ¿quién hace qué en el pozol?
+
+\[Aquí la interpretación, el pago de todo el taller. Conecta las funciones con la biología del pozol: qué grupos dominan (p. ej. bacterias lácticas), qué rutas de fermentación aparecen, biosíntesis de aminoácidos y vitaminas que enriquecen el sustrato de maíz, CAZymes que degradan el almidón. Deja que los MAGs cuenten la historia de la fermentación.\]
+
+::: callout-caution
+## La pregunta que queda abierta
+
+Coloreamos los MAGs por la muestra de la que los **recuperamos**, pero eso no nos dice en qué tiempos cada organismo realmente **está presente ni en qué abundancia**. Para responder eso, mapearíamos las lecturas de cada muestra contra el catálogo completo —por ejemplo con [CoverM](https://github.com/wwood/CoverM)— y obtendríamos la abundancia de cada MAG en cada tiempo de fermentación. Esa es la extensión natural de este análisis, y con ella podrías seguir la **sucesión** de la comunidad a lo largo del pozol.
+:::
+
+::: callout-tip
+## Para cerrar (reflexión)
+
+1.  ¿Cuántos MAGs quedaron en el catálogo tras la desreplicación global, y a qué grupos taxonómicos pertenecen?
+2.  ¿Qué funciones metabólicas parecen compartidas por casi todos, y cuáles son exclusivas de unos pocos?
+3.  Si tuvieras que elegir **un** MAG para estudiar a fondo el rol de un organismo en la fermentación del pozol, ¿cuál elegirías y por qué (taxonomía, calidad, repertorio funcional)?
+:::
 
 ::: callout-caution
 ## Exploremos:
@@ -30,168 +122,7 @@ cut -f1,2 gtdbtk.bac120.summary.tsv \| grep -v "classification" \| sed 's/;/\\t/
 
 Ahora que ya tenemos los *bins* refinados, queremos saber qué capacidades metabólicas poseen. Para ello es necesario predecir sus genes y asignarles función.
 
-## PROKKA
-
-[Prokka](https://training.galaxyproject.org/training-material/topics/genome-annotation/tutorials/annotation-with-prokka/slides-plain.html) es una herramienta útil, usa diferentes programas para predecir genes, secuencias codificantes, tRNAs, rRNAs. Hace la traducción de CDS a aminoácidos y asigna funciones usando varias bases de datos.
-
-[![](Figures/Prokka_workflow.png){fig-align="center" width="460"}](https://training.galaxyproject.org/training-material/topics/genome-annotation/tutorials/annotation-with-prokka/slides-plain.html)
-
-Para correrlo vamos a activar el ambiente en el que se aloja.
-
-::: callout-warning
-## Activa el ambiente para PROKKA
-
-``` bash
-conda activate mt-prokka
-```
-:::
-
-Tenemos el ambiente activo, ahora vamos a crear un directorio de resultados para prokka.
-
-``` bash
-mkdir -p results/11.prokka/48h
-```
-
-Para correrlo, podemos hacer un ciclo que nos permita anotar todos los *bins.*
-
-::: callout-caution
-## No lo corras
-
-Este ciclo sólo es un ejemplo de cómo correrlo para todos los bins que tengas y lo podrás usar más adelante en un ejercicio o en los bins o genomas que estés estudiando.
-
-Recuerda ... No lo corras!!!
-:::
-
-``` bash
-#!/bin/bash
-#SBATHC -J prokka
-#SBATCH -t 0
-#SBATCH -n 6
-#SBATCH -N 1
-#SBATCH -e outs/11.prokka48.err
-#SBATCH -o outs/11.prokka48.out
-#SBATCH --export=ALL
-#SBATCH -p q2
-
-# 01. Definimos variables de ubicacion de directorios de entrada y de salida
-input="results/10.gtdbtk/48h/bins"
-out="results/11.prokka/48h"
-
-# 02. Ejecutamos prokka en todos los fasta
-for FASTA in $(ls $input/); do
-  LOCUSTAG=$(basename $FASTA .fasta)
-  prokka --locustag "${LOCUSTAG}_Scaffold" \
-  --prefix $LOCUSTAG --addgenes --addmrn \
-  --cpus 6 --outdir "${out}/${LOCUSTAG}" \
-  "${input}/${FASTA}" ;
-done
-```
-
-::: callout-tip
-## Explora
-
-Para tener una idea de lo que ocurre cuando ejecutas prokka, toma el ejemplo anterior y anota uno de los bins obtenidos en la muestra que le tocó a tu equipo, el que más te guste, procuren elegir bins distintos. Corre prokka con una linea interactiva.
-:::
-
-Desactivemos el ambiente:
-
-``` bash
-conda deactivate
-```
-
-Ahora que tenemos las proteínas predichas vamos a obtener más anotaciones útiles.
-
-------------------------------------------------------------------------
-
-## antiSMASH
-
-Dentro de los genomas microbianos, podemos encontrar algunas regiones específicas que participan en la biosíntesis de metabolitos secundarios, estas secciones se conocen como Clústeres de Genes Biosintéticos, que son relevantes debido a las posibles aplicaciones que pueden tener, por ejemplo: actividades antimicrobianas, antitumorales, reductoras del colesterol, antivirales, etc.
-
-[antiSMASH](https://antismash.secondarymetabolites.org/#!/start) usa modelos ocultos de Markov que permiten identificar los grupos de genes contenidos en las secuencias genómicas que codifican metabolitos secundarios de todas las clases químicas conocidas.
-
-Si te interesa buscar BGCs en los genomas de tu interés puedes aprender siguiendo el flujo de análisis propuestos en la lección de [Minería Genómica](#0) de Software Carpentry.
-
-------------------------------------------------------------------------
-
-## CAZy
-
-[Cazy](https://www.cazy.org/) es una base de datos especializada en enzimas que actúan sobre carbohidratos, esta base de datos se actualiza constantemente y es curada por una comunidad científica que busca dominios funcionales basados en evidencia experimental. Cuentan con [CAZypedia](https://www.cazypedia.org/index.php/Main_Page) para informar especificidades de cada familia cazy.
-
-En el cluster para ejecutar esta búsqueda se encuentra instalado un ambiente de conda que se llama `run_dbcan4`
-
-::: callout-important
-## Ejercicio
-
-Crea un script que corra dbcan en el archivo de proteinas que creaste con prokka. Ojo, la ruta y nombre del archivo pues en este ejemplo se corre con las proteinas del bin 48hbin04
-:::
-
-``` bash
-#!/bin/bash
-#SBATHC -J gtdbtk
-#SBATCH -t 0
-#SBATCH -n 6
-#SBATCH -N 1
-#SBATCH -e outs/13.cazy48.err
-#SBATCH -o outs/13.cazy48.out
-#SBATCH --export=ALL
-#SBATCH -p q2
-#SBATCH --mem 8G
-
-db="/lustre/apps/spack/opt/spack/linux-centos8-ivybridge/gcc-8.3.1/miniconda3-4.7.12.1-ubp7tlghaseisza4pqufq6sbehwa4pog/envs/run_dbcan4/database/db/"
-
-run_dbcan results/11.prokka/48h/48hBin04/48hBin04.faa protein --dia_cpu 6 --hmm_cpu 6 --tf_cpu 6 --stp_cpu 6 --out_pre 48hbin04 --out_dir results/13.cazy/ --db_dir $db --tools all
-```
-
-------------------------------------------------------------------------
-
-## KofamScan
-
-[KofamScan](https://github.com/takaram/kofam_scan) es una herramienta de anotación, usa la base de datos KOfam de [KEGG](https://www.genome.jp/kegg/pathway.html) para obtener información sobre los genes que participan en diferentes rutas metabólicas.
-
-Puedes mapear los resultados de kofam en [KEGGMapper](https://www.genome.jp/kegg/mapper/search.html)
-
-Creamos el script para kofam
-
-``` bash
-nano src/12.kofam_48h.slurm
-```
-
-``` bash
-#!/bin/bash
-#SBATHC -J kofam
-#SBATCH -t 0
-#SBATCH -n 6
-#SBATCH -N 1
-#SBATCH -e outs/12.kofam48h.err
-#SBATCH -o outs/12.kofam48h.out
-#SBATCH --export=ALL
-#SBATCH -p q2
-#SBATCH --mem 32G
-
-# 01. Limpiamos por si las moscas :P
-module purge
-
-# 02. Cargamos el modulo para kofam
-module load kofam-scan/1.3.0/gcc/8.3.1-n3v4
-
-# 03. Creamos el directorio para alojar los resultados
-mkdir -p results/12.kofam/48h/
-
-# 04. Lo corremos
-for FAA in $(ls results/11.prokka/48h/*/*.faa); do
-    name=$(basename $FAA .faa)
-    exec_annotation $FAA \
-        -o results/12.kofam/48h/"$name.txt" \
-        --report-unannotated \
-        --cpu 6 \
-        --tmp-dir results/12.kofam/48h/"tmp$name" \
-        -p /tmp/databases/KOfam/profiles/ \
-        -k /tmp/databases/KOfam/ko_list
-done
-
-# 05. remover los directorios temporales
-rm -r results/12.kofam/48h/tmp*
-```
+## 
 
 Estos resultados ya los tienes en el directorio `results/12.kofam/48h`
 

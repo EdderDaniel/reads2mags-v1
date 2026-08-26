@@ -200,7 +200,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#anotación-funcional" id="toc-anotación-funcional" class="nav-link" data-scroll-target="#anotación-funcional">02. Anotación funcional</a>
   <ul class="collapse">
-  <li><a href="#bakta" id="toc-bakta" class="nav-link" data-scroll-target="#bakta">02.1 Bakta</a></li>
+  <li><a href="#prokka" id="toc-prokka" class="nav-link" data-scroll-target="#prokka">02.1 PROKKA</a></li>
+  <li><a href="#bakta" id="toc-bakta" class="nav-link" data-scroll-target="#bakta">02.2 Bakta</a></li>
+  <li><a href="#kofamscan" id="toc-kofamscan" class="nav-link" data-scroll-target="#kofamscan">02.3 KofamScan</a></li>
+  <li><a href="#eggnog" id="toc-eggnog" class="nav-link" data-scroll-target="#eggnog">02.4 EggNOG</a></li>
+  <li><a href="#cazy" id="toc-cazy" class="nav-link" data-scroll-target="#cazy">02.5 CAZy</a></li>
+  <li><a href="#antismash" id="toc-antismash" class="nav-link" data-scroll-target="#antismash">02.6 antiSMASH</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -238,7 +243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption class="margin-caption">GTDB-tk Workflow</figcaption>
 </figure>
 </div>
-<p>Recordemos que ya tenemo un <em>bin</em> refinado y desreplicado. Ahora vamos a asignarle identidad taxonómica, para ello vamos a correr GTDB-tk</p>
+<p>Recordemos que ya tenemos un <em>bin</em> refinado y desreplicado. Ahora vamos a asignarle identidad taxonómica, para ello vamos a correr GTDB-tk</p>
 <p>Creamos el directorio de resultados para GTDB-tk</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/13.gtdbtk/0h/bins</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Y copiamos con un nuevo nombre</p>
@@ -279,11 +284,291 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="anotación-funcional" class="level2">
 <h2 class="anchored" data-anchor-id="anotación-funcional">02. Anotación funcional</h2>
+<section id="prokka" class="level3">
+<h3 class="anchored" data-anchor-id="prokka">02.1 PROKKA</h3>
+<p><a href="https://training.galaxyproject.org/training-material/topics/genome-annotation/tutorials/annotation-with-prokka/slides-plain.html">Prokka</a> es una herramienta útil, usa diferentes programas para predecir genes, secuencias codificantes, tRNAs, rRNAs. Hace la traducción de CDS a aminoácidos y asigna funciones usando diferentes bases de datos.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Figures/Prokka_workflow.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="460"></p>
+</figure>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Sólo para entender la predicción y anotación
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En el taller vamos a correr prokka para entender como es el proceso de predicción genica y anotación, sin embargo cada vez se usa menos puesto que no tiene actualizaciones en su base de datos.</p>
+</div>
+</div>
+<p>Para correrlo vamos a activar el ambiente en el que se aloja.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Activa el ambiente para PROKKA
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate prokka</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>Tenemos el ambiente activo, ahora vamos a crear un directorio de resultados para prokka.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/14.prokka/0h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Y ahora si le pedimos a prokka que haga a predicción y anotación del MAG que obtuvimos</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">prokka</span> <span class="at">--locustag</span> 0hBin01_Scaffold <span class="dt">\</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--prefix</span> 0hBin01 <span class="at">--addgenes</span> <span class="at">--addmrna</span> <span class="dt">\</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--cpus</span> 6 <span class="at">--outdir</span> results/14.prokka/0h/0hBin01 <span class="dt">\</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  results/13.gtdbtk/0h/bins/0hBin01.fasta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>¿Y si tuvieras más de un MAG?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Podemos hacer un ciclo que nos permita anotar todos los <em>bins.</em></p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>No lo corras
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Este ciclo sólo es un ejemplo de cómo correrlo para todos los bins que tengas y lo podrás usar más adelante en un ejercicio o en los bins o genomas que estés estudiando.</p>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 01. Definimos variables de ubicacion de directorios de entrada y de salida</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="va">input</span><span class="op">=</span><span class="st">"results/13.gtdbtk/0h/bins"</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="va">out</span><span class="op">=</span><span class="st">"results/14.prokka/0h"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 02. Ejecutamos prokka en todos los fasta</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> FASTA <span class="kw">in</span> <span class="va">$(</span><span class="fu">ls</span> <span class="va">$input</span>/<span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="va">LOCUSTAG</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="va">$FASTA</span> .fasta<span class="va">)</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">prokka</span> <span class="at">--locustag</span> <span class="st">"</span><span class="va">${LOCUSTAG}</span><span class="st">_Scaffold"</span> <span class="dt">\</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">--prefix</span> <span class="va">$LOCUSTAG</span> <span class="at">--addgenes</span> <span class="at">--addmrn</span> <span class="dt">\</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">--cpus</span> 6 <span class="at">--outdir</span> <span class="st">"</span><span class="va">${out}</span><span class="st">/</span><span class="va">${LOCUSTAG}</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"</span><span class="va">${input}</span><span class="st">/</span><span class="va">${FASTA}</span><span class="st">"</span> <span class="kw">;</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Explora
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Para tener una idea de lo que ocurre cuando ejecutas prokka, toma el ejemplo anterior y anota uno de los bins obtenidos en la muestra que le tocó a tu equipo, el que más te guste, procuren elegir bins distintos.</p>
+</div>
+</div>
+<p>Desactivemos el ambiente:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> deactivate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
 <section id="bakta" class="level3">
-<h3 class="anchored" data-anchor-id="bakta">02.1 Bakta</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate bakta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/14.bakta/0h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bakta</span> <span class="at">--db</span> /data/BD/bakta_db/db <span class="at">--locus-tag</span> 0hBin01_Scaffold <span class="at">--prefix</span> 0hBin01 <span class="at">--threads</span> 10 <span class="at">--output</span> results/14.bakta/0h/0hBin01/ results/13.gtdbtk/0h/bins/0hBin01.fasta </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<h3 class="anchored" data-anchor-id="bakta">02.2 Bakta</h3>
+<p><a href="https://github.com/oschwengers/bakta">Bakta</a> hace el mismo trabajo que Prokka —predice genes (CDS, tRNA, rRNA, ncRNA, CRISPR…) y les asigna función—, pero es una herramienta <strong>actual y activamente mantenida</strong> (Prokka lleva años prácticamente sin actualizarse), y su enfoque cambia en un punto clave. En vez de depender solo de búsquedas por homología, Bakta compara primero las proteínas contra una <strong>base de datos versionada de secuencias proteicas únicas pre-computadas</strong> (identificadas por su hash MD5): si una proteína ya está ahí, hereda de inmediato una anotación de alta confianza con sus referencias cruzadas (KEGG, COG, EC, GO, UniRef); las que no aparecen, pasan a una búsqueda por homología con Diamond.</p>
+<p>Las ventajas sobre Prokka son:</p>
+<ul>
+<li><p><strong>Menos “hypothetical protein”:</strong> al apoyarse en una base curada y grande, más genes reciben una función informativa en lugar de quedar como “proteína hipotética”.</p></li>
+<li><p><strong>Anotación más rica y trazable:</strong> cada gen trae identificadores estables y referencias cruzadas a varias bases, así que puedes ver anotaciones de KEGG, COG o EC directo en la salida.</p></li>
+<li><p><strong>Más tipos de elementos y salidas listas para downstream</strong> (<code>.faa</code>, <code>.gff3</code>, <code>.gbff</code>, <code>.tsv</code>, <code>.json</code>, además de un resumen legible).</p></li>
+</ul>
+<p>El costo es que Bakta necesita una <strong>base de datos grande</strong> (la completa pesa decenas de GB) y <strong>tarda más</strong>: en este MAG de 0 h corrió en ~15 minutos. Por eso en el taller <strong>no lo vamos a correr en vivo</strong>, ya dejamos sus resultados en el directorio de cada quien; de ahí tomaremos el <code>.faa</code> (las proteínas predichas) como insumo para las anotaciones que siguen, por ser la anotación más completa y actual.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Asi se corrió (No lo ejecutes)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate bakta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/15.bakta/0h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bakta</span> <span class="dt">\</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--db</span> /data/BD/bakta_db/db <span class="dt">\</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--locus-tag</span> 0hBin01_Scaffold <span class="dt">\</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">--prefix</span> 0hBin01 <span class="dt">\</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">--threads</span> 6 <span class="dt">\</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output</span> results/15.bakta/0h/0hBin01/ <span class="dt">\</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    results/13.gtdbtk/0h/bins/0hBin01.fasta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Compara (2 min)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ya tienes el mismo MAG anotado con Prokka (que corriste) y con Bakta (en tu directorio de resultados). En sus resúmenes, ¿cuántos genes quedaron como <em>hypothetical protein</em> en cada uno? ¿Por qué crees que difieren, y qué le cuesta a Bakta esa mejora?</p>
+</div>
+</div>
+<hr>
+<hr>
+<p>Con las proteínas predichas por Bakta ya podemos hacerles preguntas más específicas. Existen varias bases de datos especializadas, y <strong>cada una responde algo distinto</strong>; conviene tener claro el mapa antes de correrlas:</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>¿Qué pregunta responde cada herramienta?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p><strong>KofamScan (KEGG):</strong> ¿qué <strong>rutas metabólicas</strong> puede llevar a cabo este organismo? (asigna números KO, que se mapean a rutas)</p></li>
+<li><p><strong>EggNOG-mapper:</strong> ¿a qué <strong>ortólogos / categorías COG</strong> pertenecen sus genes? Función amplia y <strong>comparable entre genomas</strong>.</p></li>
+<li><p><strong>CAZy / dbCAN:</strong> ¿qué <strong>enzimas activas sobre carbohidratos</strong> tiene? Clave en un fermento de maíz, donde degradar el almidón es central.</p></li>
+<li><p><strong>antiSMASH:</strong> ¿tiene <strong>clústeres de genes biosintéticos</strong> para metabolitos secundarios (antibióticos, bacteriocinas…)?</p></li>
+</ul>
+<p>En el taller correremos <strong>KofamScan</strong> en vivo; las demás las platicamos.</p>
+</div>
+</div>
+<hr>
+<hr>
+</section>
+<section id="kofamscan" class="level3">
+<h3 class="anchored" data-anchor-id="kofamscan">02.3 KofamScan</h3>
+<p><a href="https://github.com/takaram/kofam_scan">KofamScan</a> es una herramienta de anotación, usa la base de datos KOfam de <a href="https://www.genome.jp/kegg/pathway.html">KEGG</a> para obtener información sobre los genes que participan en diferentes rutas metabólicas.</p>
+<p>Puedes mapear los resultados de kofam en <a href="https://www.genome.jp/kegg/mapper/search.html">KEGGMapper</a></p>
+<p>Para correrlo necesitamos activar el ambiente donde vive kofam</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate annot_fun</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Y ahora si correrlo</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/16.kofam/0h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">exec_annotation</span> results/15.bakta/0h/0hBin01/0hBin01.faa <span class="at">-o</span> results/16.kofam/0h/0hBin01.txt <span class="at">--report-unannotated</span> <span class="at">--cpu</span> 6 <span class="at">--tmp-dir</span> results/16.kofam/0h/tmp <span class="at">-p</span>  /data/BD/kofam/profiles/ <span class="at">-k</span>  /data/BD/kofam/ko_list</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Borramos el directorio temporal para liberar espacio</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> results/16.kofam/0h/tmp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Y desactivamos el ambiente</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> deactivate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Veamos los resultados
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Descarga el resultado de esta anotación y explorémoslos en <a href="https://www.genome.jp/kegg/mapper/search.html">KEGGMapper</a></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Para correrlo con muchos genomas
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Creamos el script para kofam</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 01. Creamos el directorio para alojar los resultados</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/16.kofam/0h/</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 02. Lo corremos</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> FAA <span class="kw">in</span> <span class="va">$(</span><span class="fu">ls</span> results/15.bakta/0h/<span class="pp">*</span>/<span class="pp">*</span>.faa<span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">name</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="va">$FAA</span> .faa<span class="va">)</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">exec_annotation</span> <span class="va">$FAA</span> <span class="dt">\</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">-o</span> results/16.kofam/0h/<span class="st">"</span><span class="va">$name</span><span class="st">.txt"</span> <span class="dt">\</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">--report-unannotated</span> <span class="dt">\</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">--cpu</span> 6 <span class="dt">\</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">--tmp-dir</span> results/16.kofam/0h/<span class="st">"tmp</span><span class="va">$name</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">-p</span> /data/BD/kofam/profiles/ <span class="dt">\</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">-k</span> /data/BD/kofam/ko_list</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 03. remover los directorios temporales</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> results/16.kofam/0h/tmp<span class="pp">*</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Ahora tú: anota todos tus MAGs con KofamScan</strong></p>
+<p>Ya corriste Kofam sobre un MAG. Ahora genera los <code>.txt</code> de <strong>todos los bins de la muestra de tu equipo</strong> — los vas a necesitar en el análisis global. Usa el <code>.faa</code> de <strong>Bakta</strong> (pre-computado en tu directorio) como entrada. Apóyate en el script del callout <em>“Para correrlo con muchos genomas”</em> de arriba.</p>
+<p>Al terminar, deberías tener un <code>.txt</code> por cada MAG en <code>results/16.kofam/&lt;tu_muestra&gt;/</code>. Verifica con <code>ls</code> que estén todos antes de seguir.</p>
+</div>
+</div>
+</section>
+<section id="eggnog" class="level3">
+<h3 class="anchored" data-anchor-id="eggnog">02.4 EggNOG</h3>
+<p><a href="http://eggnog-mapper.embl.de/">EggNOG-mapper</a> asigna función a las proteínas a partir de <strong>ortólogos</strong>: genes que descienden de un ancestro común y que, por lo tanto, tienden a conservar la misma función. La herramienta compara cada proteína contra la base <strong>eggNOG</strong>, que agrupa genes en familias de ortólogos (<strong>COG</strong> y sus equivalentes) a distintos niveles taxonómicos, y le transfiere la anotación desde el ortólogo más específico que encuentra.</p>
+<p>Genera una anotación <strong>amplia y comparable entre genomas</strong>: además de una descripción funcional, cada gen recibe su categoría <strong>COG</strong>, y referencias cruzadas a <strong>GO, KEGG, EC, CAZy y Pfam</strong>, entre otras. Por eso es una de las anotaciones más usadas cuando quieres comparar el repertorio funcional de varios organismos bajo un mismo marco.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Así se corre (no lo ejecutes)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/17.eggnog/0h</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> emapper.py <span class="at">--cpu</span> 10 <span class="at">-m</span> diamond <span class="at">--itype</span> proteins <span class="at">--evalue</span> 0.00001 <span class="dt">\</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">-i</span> results/15.bakta/0h/0hBin01/0hBin01.faa <span class="dt">\</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">--output_dir</span> results/17.eggnog/0h <span class="at">-o</span> 0hBin01 <span class="dt">\</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">--decorate_gff</span> yes <span class="at">--report_orthologs</span> <span class="dt">\</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">--data_dir</span> /data/BD/eggnog/emapperdb-5.0.2/ <span class="kw">&amp;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="cazy" class="level3">
+<h3 class="anchored" data-anchor-id="cazy">02.5 CAZy</h3>
+<p><a href="https://www.cazy.org/">Cazy</a> es una base de datos especializada en enzimas que actúan sobre carbohidratos, esta base de datos se actualiza constantemente y es curada por una comunidad científica que busca dominios funcionales basados en evidencia experimental. Cuentan con <a href="https://www.cazypedia.org/index.php/Main_Page">CAZypedia</a> para informar especificidades de cada familia cazy.</p>
+<p>En el pozol, las CAZymes que degradan almidón del maíz son especialmente relevantes.</p>
+</section>
+<section id="antismash" class="level3">
+<h3 class="anchored" data-anchor-id="antismash">02.6 antiSMASH</h3>
+<p>Dentro de los genomas microbianos, podemos encontrar algunas regiones específicas que participan en la biosíntesis de metabolitos secundarios, estas secciones se conocen como Clústeres de Genes Biosintéticos, que son relevantes debido a las posibles aplicaciones que pueden tener, por ejemplo: actividades antimicrobianas, antitumorales, reductoras del colesterol, antivirales, etc.</p>
+<p><a href="https://antismash.secondarymetabolites.org/#!/start">antiSMASH</a> usa modelos ocultos de Markov que permiten identificar los grupos de genes contenidos en las secuencias genómicas que codifican metabolitos secundarios de todas las clases químicas conocidas.</p>
+<p>Si te interesa buscar BGCs en los genomas de tu interés puedes aprender siguiendo el flujo de análisis propuestos en la lección de <a href="https://carpentries-incubator.github.io/genome-mining/">Minería Genómica</a> de Software Carpentry.</p>
 
 
 </section>
