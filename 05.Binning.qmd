@@ -67,7 +67,7 @@ mkdir -p results/06.metabat/0h
 Y ahora vamos a correrlo
 
 ``` bash
-metabat2 -i results/03.ensambles/0h/v2_megahit.fasta \
+metabat2 -i results/03.ensambles/0h/v3.spades.fasta \
  -a results/05.profundidad/0h/0h_depth.txt \
  -o results/06.metabat/0h/metabat -m 1500 -t 6 --seed 123
 ```
@@ -129,7 +129,7 @@ Y ahora si, corramos MaxBin
 
 ``` bash
 run_MaxBin.pl -thread 4 -min_contig_length 1500 \
- -contig results/03.ensambles/0h/v2_megahit.fasta \
+ -contig results/03.ensambles/0h/v3.spades.fasta \
  -abund results/05.profundidad/0h/0h_depth_maxbin.txt \
  -out results/07.maxbin/0h/v2/0h
 ```
@@ -232,7 +232,7 @@ mkdir -p results/09.comebin
 Corremos COMEBin:
 
 ``` bash
-run_comebin.sh -a results/03.ensambles/0h/v2_megahit.fasta \
+run_comebin.sh -a results/03.ensambles/0h/v3.spades.fasta \
  -o results/09.comebin/0h \
  -p results/05.profundidad/0h/ -t 6
 ```
