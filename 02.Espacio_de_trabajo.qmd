@@ -60,7 +60,7 @@ ls -lh
 ::: callout-tip
 ## Reglas del juego
 
--   **En este tutorial haremos el ejemplo corriendo la muestra de 9 horas.**
+-   **En este tutorial haremos el ejemplo corriendo la muestra del tiempo 0h.**
 
 -   **Se formaran 6 equipos (2 correspondientes a los tiempos 0, 24 y 48 horas).**
 

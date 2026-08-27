@@ -250,8 +250,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><img src="images/clipboard-1725959684.png" class="img-fluid"></p>
 <p>Veamos cuántas lecturas tiene la muestra del tiempo 0 hrs:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> 0h_sm_R1.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END {print NR/4}'</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> 0h_sm_R2.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END {print NR/4}'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> 0hrs_sm_R1.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END {print NR/4}'</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> 0hrs_sm_R2.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END {print NR/4}'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -409,7 +409,7 @@ Tip
 <p>Ahora si vamos a filtrar las lecturas</p>
 <p>Antes de ejecutarlo veamos la ayuda de trim_galore</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--help</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="ex">trim_galore</span> <span class="at">--fastqc</span> <span class="at">-j</span> 4 <span class="at">--paired</span> data/0hrs_sm_R1.fastq.gz data/0hrs_sm_R2.fastq.gz <span class="at">-o</span> results/02.trimgalore/0h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--fastqc</span> <span class="at">-j</span> 4 <span class="at">--paired</span> data/0hrs_sm_R1.fastq.gz data/0hrs_sm_R2.fastq.gz <span class="at">-o</span> results/02.trimgalore/0h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="revisemos-la-calidad-de-las-lecturas-antes-y-después-de-limpiar" class="level2">
 <h2 class="anchored" data-anchor-id="revisemos-la-calidad-de-las-lecturas-antes-y-después-de-limpiar">03. Revisemos la calidad de las lecturas antes y después de limpiar</h2>

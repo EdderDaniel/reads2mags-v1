@@ -16,7 +16,7 @@ Manos a la obra, vamos a ensamblar diferentes versiones de ensambles.
 Vamos a crear el directorio de resultados
 
 ``` bash
-mkdir -p results/03.ensambles/09h
+mkdir -p results/03.ensambles/0h
 ```
 
 ### 01.1 Versión 1 de ensamble
@@ -26,7 +26,7 @@ mkdir -p results/03.ensambles/09h
 Vamos a generar un script que corra esta versión:
 
 ``` bash
-nano scripts/03.1.ensamble_megahit_v1.sh
+nano scripts/03.1.ensamble_megahit_0hv1.sh
 ```
 
 ``` bash
@@ -36,10 +36,10 @@ nano scripts/03.1.ensamble_megahit_v1.sh
 
 # v01
 megahit -t 4 --min-contig-len 1000 \
- --out-prefix v1_megahit \
- -1 results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz \
- -2 results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz \
- -o results/03.ensambles/09h/v1 
+ --out-prefix v1 \
+ -1 results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz \
+ -2 results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz \
+ -o results/03.ensambles/0h/v1 
 ```
 
 Guardamos tecleando `ctrl` + `o` + `enter` y luego `ctrl` + `x` + `enter`
@@ -78,10 +78,10 @@ El flujo y código para correr las otras dos versiones se despliega a continuaci
 ``` {.bash collapse="true"}
 # v02
 megahit -t 4 --min-contig-len 1000 \
- --presets meta-sensitive --out-prefix v2_megahit \
- -1 results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz \
- -2 results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz \
- -o results/03.ensambles/09h/v2 
+ --presets meta-sensitive --out-prefix v2 \
+ -1 results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz \
+ -2 results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz \
+ -o results/03.ensambles/0h/v2 
 ```
 
 ------------------------------------------------------------------------
@@ -92,18 +92,18 @@ La tercera versión de ensamble es mediante otro ensamblador llamado metaSPAdes,
 
 ``` bash
 #El directorio para los resultados
-mkdir -p results/03.ensambles/09h/v3
+mkdir -p results/03.ensambles/24h/v3
 # La linea de comando para ejecutarla
 nohup metaspades.py -t 6 \
- -1 results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz \
- -2 results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz \
- -o results/03.ensambles/09h/v3 > outs/03.2.metaspades.nohup &
+ -1 results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz \
+ -2 results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz \
+ -o results/03.ensambles/0h/v3 > outs/03.2.metaspades.nohup &
 ```
 
 Remover contigs que sean menores a 1000 pb para que sea comparable con los ensambles de megahit, puede ser con seqkit
 
 ``` bash
-seqkit seq -m 1000 results/03.ensambles/09h/v3/scaffolds.fasta > results/03.ensambles/09h/v3_spades.fasta
+seqkit seq -m 1000 results/03.ensambles/0h/v3/scaffolds.fasta > results/03.ensambles/0h/v3_spades.fasta
 ```
 
 Revisemos el contenido del directorio `results/03.ensambles/`
@@ -125,7 +125,7 @@ En el ejemplo de los ensambles, los archivos intermedios suelen ser muy pesados 
 
 ``` bash
  # cambiamos de lugar los ensambles de megahit y los renombramos
- cd results/03.ensambles/09h/
+ cd results/03.ensambles/0h/
  mv v1/v1_megahit.contigs.fa v1_megahit.fasta
  mv v2/v2_megahit.contigs.fa v2_megahit.fasta
  
@@ -135,7 +135,7 @@ En el ejemplo de los ensambles, los archivos intermedios suelen ser muy pesados 
  rm -r v1/ v2/ v3/
  
  # y regresamos al directorio principal
- cd && cd reads2mags
+ cd && cd reads2mags_pozol
 ```
 :::
 ::::
@@ -188,6 +188,12 @@ bbmap.sh ref=results/03.ensambles/09h/v2_megahit.fasta in=results/02.trimgalore/
 
 # version 3
 bbmap.sh ref=results/03.ensambles/09h/v3_spades.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/09h/v3.stats
+```
+
+Activamos el ambiente
+
+``` bash
+conda activate bbmap_env
 ```
 
 Y lo ejecutamos asi:

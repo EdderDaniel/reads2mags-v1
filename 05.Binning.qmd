@@ -411,7 +411,7 @@ Todo el flujo de MAGScoT está en un solo script, que hace cinco cosas: (1) pred
 
 
 #Variables
-MAGSCOT=/ruta/a/MAGScoT                           
+MAGSCOT=/data/env/MAGScoT_env/MAGScoT                          
 asm=results/03.ensambles/0h/v3.spades.fasta     
 DT=results/10.dastool/0h                         
 out=results/11.magscot/0h                        

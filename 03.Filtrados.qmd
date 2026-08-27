@@ -31,8 +31,8 @@ Un archivo **FASTQ** contiene secuencias de ADN/ARN obtenidas mediante secuencia
 Veamos cuántas lecturas tiene la muestra del tiempo 0 hrs:
 
 ``` bash
-zcat 0h_sm_R1.fastq.gz | awk 'END {print NR/4}'
-zcat 0h_sm_R2.fastq.gz | awk 'END {print NR/4}'
+zcat 0hrs_sm_R1.fastq.gz | awk 'END {print NR/4}'
+zcat 0hrs_sm_R2.fastq.gz | awk 'END {print NR/4}'
 ```
 
 :::: callout-warning
@@ -152,7 +152,7 @@ trim_galore --help
 ```
 
 ``` bash
-  trim_galore --fastqc -j 4 --paired data/0hrs_sm_R1.fastq.gz data/0hrs_sm_R2.fastq.gz -o results/02.trimgalore/0h
+trim_galore --fastqc -j 4 --paired data/0hrs_sm_R1.fastq.gz data/0hrs_sm_R2.fastq.gz -o results/02.trimgalore/0h
 ```
 
 ## 03. Revisemos la calidad de las lecturas antes y después de limpiar
