@@ -254,7 +254,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># v01</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">megahit</span> <span class="at">-t</span> 4 <span class="at">--min-contig-len</span> 1000 <span class="dt">\</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a> <span class="at">--out-prefix</span> v1 <span class="dt">\</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a> <span class="at">--out-prefix</span> v1_megahit <span class="dt">\</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a> <span class="at">-1</span> results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz <span class="dt">\</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a> <span class="at">-2</span> results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz <span class="dt">\</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a> <span class="at">-o</span> results/03.ensambles/0h/v1 </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -309,7 +309,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 </ol>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-collapse="true"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># v02</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">megahit</span> <span class="at">-t</span> 4 <span class="at">--min-contig-len</span> 1000 <span class="dt">\</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> <span class="at">--presets</span> meta-sensitive <span class="at">--out-prefix</span> v2 <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> <span class="at">--presets</span> meta-sensitive <span class="at">--out-prefix</span> v2_megahit <span class="dt">\</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a> <span class="at">-1</span> results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz <span class="dt">\</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a> <span class="at">-2</span> results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz <span class="dt">\</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a> <span class="at">-o</span> results/03.ensambles/0h/v2 </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -409,11 +409,11 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <p>Y lo ejecutamos asi:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> bash scripts/04.profundidad.sh <span class="op">&gt;</span> outs/04.bbmap.out <span class="kw">&amp;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Vamos a explorar cuantas bases se mapearon en cada uno de los ensambles</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="va">$(</span><span class="fu">ls</span> results/04.compare/09h/<span class="pp">*</span>.stats<span class="va">)</span><span class="kw">;</span> <span class="cf">do</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="va">$(</span><span class="fu">ls</span> results/04.compare/0h/<span class="pp">*</span>.stats<span class="va">)</span><span class="kw">;</span> <span class="cf">do</span> </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"El número de bases mapeadas al ensamble:  "</span> <span class="va">$file</span> <span class="st">"es: "</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cut</span> <span class="at">-f9</span> <span class="va">$file</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> assignedBases <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{sum += $1;}END{print sum;}'</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><img src="images/clipboard-488604145.png" class="img-fluid"></p>
+<p><img src="images/clipboard-3405962165.png" class="img-fluid"></p>
 <p>Bien, ahora ya sabemos que ensamble se formó con una mayor cantidad de lecturas, sin embargo, ahora nos falta conocer que ensamble tiene una mayor longitud de contigs.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -433,9 +433,9 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <section id="longitud-de-los-contigs" class="level2">
 <h2 class="anchored" data-anchor-id="longitud-de-los-contigs">02.2 Longitud de los contigs</h2>
 <p>Por último, se utilizará <a href="https://github.com/ablab/quast">Quast</a> para revisar la longitud que tienen los contigs de cada ensamble.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quast.py</span> results/03.ensambles/09h/<span class="pp">*</span>.fasta <span class="at">-o</span> results/04.compare/09h/quast</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Veamos los resultados: <code>less results/04.compare/09h/quast/report.txt</code> o descarguemos el <code>report.html o pdf</code>.</p>
-<p><img src="images/clipboard-3590529693.png" class="img-fluid"></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quast.py</span> results/03.ensambles/0h/<span class="pp">*</span>.fasta <span class="at">-o</span> results/04.compare/0h/quast</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Veamos los resultados: <code>less results/04.compare/0h/quast/report.txt</code> o descarguemos el <code>report.html o pdf</code>.</p>
+<p><img src="images/clipboard-3869321566.png" class="img-fluid"></p>
 <p>Observemos la ayuda de metaquast para que veamos todo el potencial de esta herramienta:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">metaquast.py</span> <span class="at">--help</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-caution callout-titled">
@@ -490,7 +490,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>El proceso de mapeo es demandante en tiempo de ejecución y recursos. Así que nos dimos a la tarea de generar el archivo de profundidad para el tiempo 09 hrs y comenzar directamente con el <em>binning</em>.</p>
+<p>El proceso de mapeo es demandante en tiempo de ejecución y recursos. Así que nos dimos a la tarea de generar el archivo de profundidad para el tiempo 0 h y comenzar directamente con el <em>binning</em>.</p>
 <p>El mapeo lo corrimos con <a href="https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#introduction">bowtie2</a> que es una herramienta confiable y muy utilizada para alinear lecturas cortas a una referencia, en nuestro caso, la referencia es el ensamble metagenómico de la muestra de 09hrs.</p>
 <p>Bowtie2 genera un archivo de mapeo (SAM) que debe convertirse a un formato binario (BAM), para esta conversión usamos <a href="https://github.com/samtools/">samtools</a> que contiene multiples sub herramientas para trabajar con archivos de mapeos.</p>
 <p>Para generar este archivo se ejecutó el siguiente script:</p>
@@ -512,30 +512,30 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Script que ejecuta bowtie2, samtools y jgi para obtener la profundidad del ensamble</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Crear un directorio de resultados de profundidad</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/05.profundidad/09hrs</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/05.profundidad/0h</span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">## Declaramos variables de archivos y directorios</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="va">fasta</span><span class="op">=</span><span class="st">"results/03.ensambles/09h/v2_megahit.fasta"</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="va">out</span><span class="op">=</span><span class="st">"results/05.profundidad/09hrs"</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="va">fastq</span><span class="op">=</span><span class="st">"results/02.trimgalore/09h"</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="va">fasta</span><span class="op">=</span><span class="st">"results/03.ensambles/0h/v3.spades.fasta"</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="va">out</span><span class="op">=</span><span class="st">"results/05.profundidad/0h"</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="va">fastq</span><span class="op">=</span><span class="st">"results/02.trimgalore/0h"</span></span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co">## Formatear el ensamble</span></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2-build</span> <span class="va">$fasta</span> <span class="va">$out</span>/09hrs <span class="at">--threads</span> 6</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2-build</span> <span class="va">$fasta</span> <span class="va">$out</span>/0h <span class="at">--threads</span> 6</span>
 <span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co">## Mapear las lecturas al ensamble y generar un archivo bam ordenado</span></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> <span class="va">$out</span>/09hrs <span class="dt">\</span></span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a> <span class="at">-1</span> <span class="va">$fastq</span>/09hrs_sm_R1_val_1.fq.gz <span class="dt">\</span></span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a> <span class="at">-2</span> <span class="va">$fastq</span>/09hrs_sm_R2_val_2.fq.gz <span class="dt">\</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> <span class="va">$out</span>/0h <span class="dt">\</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a> <span class="at">-1</span> <span class="va">$fastq</span>/0hrs_sm_R1_val_1.fq.gz <span class="dt">\</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a> <span class="at">-2</span> <span class="va">$fastq</span>/0hrs_sm_R2_val_2.fq.gz <span class="dt">\</span></span>
 <span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a> <span class="at">-p</span> 6 <span class="kw">|</span> <span class="ex">samtools</span> view <span class="at">-bS</span> <span class="at">-</span> <span class="dt">\</span></span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a> <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> <span class="va">$out</span>/09hrs.sorted.bam</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a> <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> <span class="va">$out</span>/0h.sorted.bam</span>
 <span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co">## Indexar el archivo bam ordenado</span></span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index <span class="va">$out</span>/09hrs.sorted.bam</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index <span class="va">$out</span>/0h.sorted.bam</span>
 <span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="co">## Generar un archivo de profundidad adecuado para binning</span></span>
 <span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="ex">jgi_summarize_bam_contig_depths</span> <span class="dt">\</span></span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a> <span class="at">--outputDepth</span> <span class="va">$out</span>/09hrs_depth.txt <span class="dt">\</span></span>
-<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a> <span class="va">$out</span>/09hrs.sorted.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a> <span class="at">--outputDepth</span> <span class="va">$out</span>/0h_depth.txt <span class="dt">\</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a> <span class="va">$out</span>/0h.sorted.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>

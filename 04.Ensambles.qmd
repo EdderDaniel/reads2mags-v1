@@ -36,7 +36,7 @@ nano scripts/03.1.ensamble_megahit_0hv1.sh
 
 # v01
 megahit -t 4 --min-contig-len 1000 \
- --out-prefix v1 \
+ --out-prefix v1_megahit \
  -1 results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz \
  -2 results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz \
  -o results/03.ensambles/0h/v1 
@@ -78,7 +78,7 @@ El flujo y código para correr las otras dos versiones se despliega a continuaci
 ``` {.bash collapse="true"}
 # v02
 megahit -t 4 --min-contig-len 1000 \
- --presets meta-sensitive --out-prefix v2 \
+ --presets meta-sensitive --out-prefix v2_megahit \
  -1 results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz \
  -2 results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz \
  -o results/03.ensambles/0h/v2 
@@ -205,13 +205,13 @@ nohup bash scripts/04.profundidad.sh > outs/04.bbmap.out &
 Vamos a explorar cuantas bases se mapearon en cada uno de los ensambles
 
 ``` bash
-for file in $(ls results/04.compare/09h/*.stats); do 
+for file in $(ls results/04.compare/0h/*.stats); do 
   echo "El número de bases mapeadas al ensamble:  " $file "es: "
   cut -f9 $file | grep -v assignedBases | awk '{sum += $1;}END{print sum;}'
 done
 ```
 
-![](images/clipboard-488604145.png)
+![](images/clipboard-3405962165.png)
 
 Bien, ahora ya sabemos que ensamble se formó con una mayor cantidad de lecturas, sin embargo, ahora nos falta conocer que ensamble tiene una mayor longitud de contigs.
 
@@ -228,12 +228,12 @@ Bien, ahora ya sabemos que ensamble se formó con una mayor cantidad de lecturas
 Por último, se utilizará [Quast](https://github.com/ablab/quast) para revisar la longitud que tienen los contigs de cada ensamble.
 
 ``` bash
-quast.py results/03.ensambles/09h/*.fasta -o results/04.compare/09h/quast
+quast.py results/03.ensambles/0h/*.fasta -o results/04.compare/0h/quast
 ```
 
-Veamos los resultados: `less results/04.compare/09h/quast/report.txt` o descarguemos el `report.html o pdf`.
+Veamos los resultados: `less results/04.compare/0h/quast/report.txt` o descarguemos el `report.html o pdf`.
 
-![](images/clipboard-3590529693.png)
+![](images/clipboard-3869321566.png)
 
 Observemos la ayuda de metaquast para que veamos todo el potencial de esta herramienta:
 
@@ -278,7 +278,7 @@ Ahora es momento de obtener la profundidad. De acuerdo con el flujo de análisis
 ::::: callout-note
 ## Nota
 
-El proceso de mapeo es demandante en tiempo de ejecución y recursos. Así que nos dimos a la tarea de generar el archivo de profundidad para el tiempo 09 hrs y comenzar directamente con el *binning*.
+El proceso de mapeo es demandante en tiempo de ejecución y recursos. Así que nos dimos a la tarea de generar el archivo de profundidad para el tiempo 0 h y comenzar directamente con el *binning*.
 
 El mapeo lo corrimos con [bowtie2](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#introduction) que es una herramienta confiable y muy utilizada para alinear lecturas cortas a una referencia, en nuestro caso, la referencia es el ensamble metagenómico de la muestra de 09hrs.
 
@@ -299,30 +299,30 @@ nano scripts/05.profundidad.sh
 #Script que ejecuta bowtie2, samtools y jgi para obtener la profundidad del ensamble
 
 ## Crear un directorio de resultados de profundidad
-mkdir -p results/05.profundidad/09hrs
+mkdir -p results/05.profundidad/0h
 
 ## Declaramos variables de archivos y directorios
-fasta="results/03.ensambles/09h/v2_megahit.fasta"
-out="results/05.profundidad/09hrs"
-fastq="results/02.trimgalore/09h"
+fasta="results/03.ensambles/0h/v3.spades.fasta"
+out="results/05.profundidad/0h"
+fastq="results/02.trimgalore/0h"
 
 ## Formatear el ensamble
-bowtie2-build $fasta $out/09hrs --threads 6
+bowtie2-build $fasta $out/0h --threads 6
 
 ## Mapear las lecturas al ensamble y generar un archivo bam ordenado
-bowtie2 -x $out/09hrs \
- -1 $fastq/09hrs_sm_R1_val_1.fq.gz \
- -2 $fastq/09hrs_sm_R2_val_2.fq.gz \
+bowtie2 -x $out/0h \
+ -1 $fastq/0hrs_sm_R1_val_1.fq.gz \
+ -2 $fastq/0hrs_sm_R2_val_2.fq.gz \
  -p 6 | samtools view -bS - \
- | samtools sort -o $out/09hrs.sorted.bam
+ | samtools sort -o $out/0h.sorted.bam
 
 ## Indexar el archivo bam ordenado
-samtools index $out/09hrs.sorted.bam
+samtools index $out/0h.sorted.bam
 
 ## Generar un archivo de profundidad adecuado para binning
 jgi_summarize_bam_contig_depths \
- --outputDepth $out/09hrs_depth.txt \
- $out/09hrs.sorted.bam
+ --outputDepth $out/0h_depth.txt \
+ $out/0h.sorted.bam
 ```
 :::
 
