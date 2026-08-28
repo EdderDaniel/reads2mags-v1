@@ -92,7 +92,7 @@ La tercera versión de ensamble es mediante otro ensamblador llamado metaSPAdes,
 
 ``` bash
 #El directorio para los resultados
-mkdir -p results/03.ensambles/24h/v3
+mkdir -p results/03.ensambles/0h/v3
 # La linea de comando para ejecutarla
 nohup metaspades.py -t 6 \
  -1 results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz \
@@ -149,7 +149,7 @@ En el ejemplo de los ensambles, los archivos intermedios suelen ser muy pesados 
 
 **Ahora a te toca a tí**
 
-Les toca ensamblar la muestra del tiempo de fermentación que les tocó. En equipo discutan y **sólo un miembro del equipo corra el script** mientras los demás le ayudan a dictar las lineas de comandos.
+Les toca ensamblar la muestra del tiempo de fermentación que les tocó. En equipo discutan y armen las lineas de comando para correr dos versiones de sólo de megahit. **Sólo un miembro del equipo corra el script** mientras los demás le ayudan a dictar las lineas de comandos.
 
 Tiempo 30 min
 :::
@@ -165,7 +165,7 @@ Se usara [**bbtools**](https://jgi.doe.gov/data-and-tools/software-tools/bbtools
 Vamos a crear el directorio que albergará los resultados de profundidad
 
 ``` bash
-mkdir -p results/04.compare/09h/
+mkdir -p results/04.compare/0h/
 ```
 
 Vamos a mapear todos los ensambles que obtuvimos a las lecturas limpias,
@@ -181,13 +181,13 @@ nano scripts/04.mapeo_comparacion.sh
 #Script que corre BBmap para mapear y obtener el numero de lecturas mapeadas a cada version de ensamble
 
 # version 1
-bbmap.sh ref=results/03.ensambles/09h/v1_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/09h/v1.stats
+bbmap.sh ref=results/03.ensambles/0h/v1_megahit.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v1.stats
 
 # version 2
-bbmap.sh ref=results/03.ensambles/09h/v2_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/09h/v2.stats
+bbmap.sh ref=results/03.ensambles/0h/v2_megahit.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v2.stats
 
 # version 3
-bbmap.sh ref=results/03.ensambles/09h/v3_spades.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/09h/v3.stats
+bbmap.sh ref=results/03.ensambles/0h/v3_spades.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v3.stats
 ```
 
 Activamos el ambiente

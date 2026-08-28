@@ -389,7 +389,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">run_MaxBin.pl</span> <span class="at">-thread</span> 4 <span class="at">-min_contig_length</span> 1500 <span class="dt">\</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a> <span class="at">-contig</span> results/03.ensambles/0h/v3.spades.fasta <span class="dt">\</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a> <span class="at">-abund</span> results/05.profundidad/0h/0h_depth_maxbin.txt <span class="dt">\</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a> <span class="at">-out</span> results/07.maxbin/0h/v2/0h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a> <span class="at">-out</span> results/07.maxbin/0h/0h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-caution callout-titled" title="Explora">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -476,8 +476,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <p>La muestra de 0 h es de <strong>baja biomasa</strong>: la fermentación apenas comienza, hay poco ADN microbiano y el ensamble produce pocos contigs y cortos. VAMB entrena una red neuronal y, con tan pocos datos, con los umbrales normales no logra escribir ni un bin. <strong>Solo para que el taller corra rápido y puedan ver el flujo completo de refinamiento</strong>, relajamos dos parámetros de VAMB en esta muestra: <code>-m 1000</code> (longitud mínima de contig) y <code>--minfasta 50000</code> (tamaño mínimo de bin a escribir).</p>
-<p><strong>Esto no debe hacerse en un análisis real.</strong> Usar contigs de ~1000 pb degrada el binning: incluir contigs menores a ~2500 pb produce agrupaciones de peor calidad y menor precisión [AUTOR, AÑO]. La razón ya la vimos en la figura de tetranucleótidos: un contig corto reparte sus ~1000 ventanas entre cientos de tetranucleótidos posibles, así que hay muy pocas cuentas de cada uno y su <strong>firma de composición es ruidosa</strong> — el binneador lo ubica mal en el espacio y contamina los grupos. En tus proyectos, mantén el mínimo en <strong>1500–2500 pb o más</strong>, y reserva los umbrales bajos para casos como este: una demostración con datos pequeños.</p>
+<p><strong>Esto no debe hacerse en un análisis real.</strong> Usar contigs de ~1000 pb degrada el binning: incluir contigs menores a ~2500 pb produce agrupaciones de peor calidad y menor precisión (<a href="https://doi.org/10.1038/nmeth.3103">Alneberg et al., 2014</a>). La razón ya la vimos en la figura de tetranucleótidos: un contig corto reparte sus ~1000 ventanas entre cientos de tetranucleótidos posibles, así que hay muy pocas cuentas de cada uno y su <strong>firma de composición es ruidosa</strong>, el binneador lo ubica mal en el espacio y contamina los grupos. En tus proyectos, mantén el mínimo en <strong>1500–2500 pb o más</strong>, y reserva los umbrales bajos para casos como este: una demostración con datos pequeños.</p>
 </div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/clipboard-688869877.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="272"></p>
+</figure>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">

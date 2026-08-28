@@ -319,7 +319,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <h3 class="anchored" data-anchor-id="versión-3-de-ensamble">01.3 Versión 3 de ensamble</h3>
 <p>La tercera versión de ensamble es mediante otro ensamblador llamado metaSPAdes, en esta versión usaremos los parámetros por defecto para poder hacer una comparación justa con la primer versión de Megahit.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#El directorio para los resultados</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/03.ensambles/24h/v3</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/03.ensambles/0h/v3</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># La linea de comando para ejecutarla</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> metaspades.py <span class="at">-t</span> 6 <span class="dt">\</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a> <span class="at">-1</span> results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz <span class="dt">\</span></span>
@@ -377,7 +377,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Ahora a te toca a tí</strong></p>
-<p>Les toca ensamblar la muestra del tiempo de fermentación que les tocó. En equipo discutan y <strong>sólo un miembro del equipo corra el script</strong> mientras los demás le ayudan a dictar las lineas de comandos.</p>
+<p>Les toca ensamblar la muestra del tiempo de fermentación que les tocó. En equipo discutan y armen las lineas de comando para correr dos versiones de sólo de megahit. <strong>Sólo un miembro del equipo corra el script</strong> mientras los demás le ayudan a dictar las lineas de comandos.</p>
 <p>Tiempo 30 min</p>
 </div>
 </div>
@@ -389,7 +389,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <h2 class="anchored" data-anchor-id="mapeo-de-las-lecturas">02.1 Mapeo de las lecturas</h2>
 <p>Se usara <a href="https://jgi.doe.gov/data-and-tools/software-tools/bbtools/"><strong>bbtools</strong></a> para mapear las secuencias ensambladas.</p>
 <p>Vamos a crear el directorio que albergará los resultados de profundidad</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/04.compare/09h/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/04.compare/0h/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Vamos a mapear todos los ensambles que obtuvimos a las lecturas limpias,</p>
 <p>hagamos un script para esto:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> scripts/04.mapeo_comparacion.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -397,13 +397,13 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Script que corre BBmap para mapear y obtener el numero de lecturas mapeadas a cada version de ensamble</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># version 1</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/09h/v1_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/09h/v1.stats</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/0h/v1_megahit.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v1.stats</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># version 2</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/09h/v2_megahit.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/09h/v2.stats</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/0h/v2_megahit.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v2.stats</span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># version 3</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/09h/v3_spades.fasta in=results/02.trimgalore/09h/09hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/09h/09hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/09h/v3.stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/0h/v3_spades.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v3.stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Activamos el ambiente</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate bbmap_env</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Y lo ejecutamos asi:</p>
