@@ -21,90 +21,59 @@ La desreplicación global y las anotaciones de todas las muestras ya están **pr
 ::: {.callout-note collapse="true"}
 ## Así se generó el catálogo (referencia, no lo ejecutes)
 
-\[BLOQUE DE CÓDIGO: dRep global — pool de los DAS_Tool + MAGScoT de todas las muestras con prefijo por muestra, y dRep dereplicate con --genomeInfo. Es el bloque que ya tienes del cierre colaborativo.\]
+``` bash
+mkdir -p results/18.drep_global/bins
+```
+
+``` bash
+for s in 0h 09h 24h 48h; do
+  for f in results/12.drep/$s/dereplicated_genomes/*.fasta; do
+    base=$(basename "$f")
+    case "$base" in
+      ${s}_*) new="$base" ;;
+      *)      new="${s}_${base}" ;;
+    esac
+    cp "$f" "results/18.drep_global/bins/$new"
+  done
+done
+```
+
+``` bash
+checkm2 predict --threads 16 -x fasta --input results/18.drep_global/bins/ --output-directory results/18.drep_global/checkm2/
+```
+
+``` bash
+cq="results/18.drep_global/checkm2/quality_report.tsv"
+echo "genome,completeness,contamination" > results/18.drep_global/genomeInfo.csv
+tail -n +2 $cq | awk -F'\t' '{print $1".fasta,"$2","$3}' \
+  >> results/18.drep_global/genomeInfo.csv
+```
+
+``` bash
+dRep dereplicate results/18.drep_global \
+  -p 16 -comp 50 -con 10 \
+  --genomeInfo results/18.drep_global/genomeInfo.csv \
+  -g results/18.drep_global/bins/*.fasta
+```
+
+``` bash
+mkdir -p results/19.gtdbtk_global
+
+conda activate gtdbt
+
+nohup gtdbtk classify_wf \
+    --genome_dir results/18.drep_global/dereplicated_genomes/ \
+    --out_dir results/19.gtdbtk_global \
+    --cpus 12 \
+    -x fasta > outs/19.gtdbtk-global.out &
+```
 :::
 
 ## 02. Construye la tabla de metadatos
 
 Las anotaciones no significan nada solas: para leerlas necesitamos saber, de cada MAG, **de dónde viene, qué es y qué tan bueno es**. Esa tabla que une origen + taxonomía + calidad es la **metadata**, y es la columna vertebral de cualquier figura comparativa. La vas a construir tú, porque saber armarla es una habilidad que usarás en todos tus proyectos.
 
-Tienes tres fuentes, y el **nombre del MAG es la llave** que las une:
-
--   **Origen (muestra):** sale directo del nombre. De `24hBin03` sabes que se recuperó de la muestra de 24 h.
--   **Taxonomía:** de la tabla de GTDB-Tk (`gtdbtk.bac120.summary.tsv`), columna de clasificación.
--   **Calidad:** del `quality_report.tsv` de CheckM2 (completitud y contaminación).
-
-::: callout-important
-## Cuidado: "origen" no es "distribución"
-
-El nombre te dice de qué muestra **se ensambló** el MAG, no en qué muestras **está presente**. Un organismo recuperado desde 0 h probablemente también esté en 9, 24 y 48 h; nuestro metadato solo registra de dónde lo sacamos. Volveremos a esto al final.
-:::
-
-::: callout-tip
-## Ahora tú: arma tu tabla de metadatos
-
-Construye una tabla con una fila por MAG y, al menos, estas columnas: `Bin`, `Muestra` (del nombre), `Taxonomia` (de GTDB-Tk) y `Completitud` / `Contaminacion` (de CheckM2). Puedes hacerlo en R, en la terminal, o incluso a mano si son pocos MAGs — lo importante es entender que estás **uniendo tres fuentes por el nombre del bin**.
-:::
-
-\[BLOQUE DE CÓDIGO: ejemplo de construcción de la tabla de metadatos — leer nombres de bins para extraer la muestra, hacer join con el summary de GTDB-Tk y con el quality_report de CheckM2. Puede ser en R (recomendado, porque enseguida entra a RbiMs) o en bash. Deja el resultado como un data frame / tsv de metadatos.\]
-
-## 03. RbiMs: explora el metabolismo del catálogo
-
-\[Breve descripción de RbiMs: paquete de R que toma los resultados de anotación (aquí, los KO de KofamScan) y los organiza en una matriz de presencia/abundancia de funciones por genoma, para visualizar y comparar el potencial metabólico entre MAGs. Enlace al repo de RbiMs.\]
-
-Activamos R (o abrimos RStudio) y cargamos RbiMs:
-
-\[BLOQUE DE CÓDIGO R: library(rbims) y las dependencias; lectura de los .txt de KofamScan de todo el catálogo con la función de RbiMs correspondiente para construir la matriz de KOs.\]
-
-Ahora incorporamos la tabla de metadatos que construiste, para poder colorear y agrupar por muestra y taxonomía:
-
-\[BLOQUE DE CÓDIGO R: cargar la tabla de metadatos y unirla al objeto de RbiMs por el nombre del MAG.\]
-
-### Visualizaciones
-
-Con eso ya puedes generar las figuras que resumen el potencial metabólico del catálogo:
-
-\[BLOQUE DE CÓDIGO R: bubble plot / heatmap de RbiMs — abundancia de KOs o rutas por MAG, anotado con la metadata (muestra + taxonomía).\]
-
-::: callout-tip
-## Explora libremente
-
-Ya tienes el objeto completo (funciones + metadatos). Prueba distintas vistas:
-
--   Agrupa los MAGs por **taxonomía**: ¿los organismos emparentados comparten repertorio metabólico?
--   Enfócate en una **ruta o categoría** de interés (por ejemplo, fermentación, metabolismo de carbohidratos, biosíntesis de aminoácidos o vitaminas).
--   Colorea por **muestra de origen**: ¿los MAGs de tiempos tempranos se ven distintos a los de tiempos tardíos?
-:::
-
-## 04. Lectura biológica: ¿quién hace qué en el pozol?
-
-\[Aquí la interpretación, el pago de todo el taller. Conecta las funciones con la biología del pozol: qué grupos dominan (p. ej. bacterias lácticas), qué rutas de fermentación aparecen, biosíntesis de aminoácidos y vitaminas que enriquecen el sustrato de maíz, CAZymes que degradan el almidón. Deja que los MAGs cuenten la historia de la fermentación.\]
-
-::: callout-caution
-## La pregunta que queda abierta
-
-Coloreamos los MAGs por la muestra de la que los **recuperamos**, pero eso no nos dice en qué tiempos cada organismo realmente **está presente ni en qué abundancia**. Para responder eso, mapearíamos las lecturas de cada muestra contra el catálogo completo —por ejemplo con [CoverM](https://github.com/wwood/CoverM)— y obtendríamos la abundancia de cada MAG en cada tiempo de fermentación. Esa es la extensión natural de este análisis, y con ella podrías seguir la **sucesión** de la comunidad a lo largo del pozol.
-:::
-
-::: callout-tip
-## Para cerrar (reflexión)
-
-1.  ¿Cuántos MAGs quedaron en el catálogo tras la desreplicación global, y a qué grupos taxonómicos pertenecen?
-2.  ¿Qué funciones metabólicas parecen compartidas por casi todos, y cuáles son exclusivas de unos pocos?
-3.  Si tuvieras que elegir **un** MAG para estudiar a fondo el rol de un organismo en la fermentación del pozol, ¿cuál elegirías y por qué (taxonomía, calidad, repertorio funcional)?
-:::
-
-::: callout-caution
-## Exploremos:
-
--   Revisemos la tabla de resultados de GTDB-Tk (`gtdbtk.bac120.summary.tsv`). Identifiquen el MAG con la **mayor calidad** (mayor completitud y menor contaminación). ¿Qué taxonomía tiene?
-
--   Ahora, busquen el MAG con la **taxonomía más interesante o inesperada**. ¿Hay algún género o familia que no esperarían encontrar en el pozol?
-:::
-
-:::: callout-important
-## Metadatos:
-
+:::: callout-caution
 Crea una tabla que se llame `Metadatos.tsv` **dentro del directorio de resultados de GTDB-tk** que incluya el nombre del bin y la clasificación taxonómica.
 
 1\) Cambia el encabezado del nombre del bin: `user_genome` por `Bin_name`
@@ -116,23 +85,23 @@ Crea una tabla que se llame `Metadatos.tsv` **dentro del directorio de resultado
 
 echo -e Bin_name"\\t"Domain"\\t"Phylum"\\t"Class"\\t"Order"\\t"Family"\\t"Genus"\\t"Species \> Metadatos.tsv
 
-cut -f1,2 gtdbtk.bac120.summary.tsv \| grep -v "classification" \| sed 's/;/\\t/g' \>\> Metadatos.tsv 
+cut -f1,2 gtdbtk.bac120.summary.tsv \| grep -v "classification" \| sed 's/;/\\t/g' \>\> Metadatos.tsv
 :::
 ::::
 
+## 03. RbiMs: explora el metabolismo del catálogo
+
 Ahora que ya tenemos los *bins* refinados, queremos saber qué capacidades metabólicas poseen. Para ello es necesario predecir sus genes y asignarles función.
 
-## 
+[RbiMs](https://github.com/mirnavazquez/RbiMs) es un paquete de R muy útil para obtener la anotación de cada KEGG ID y generar plots de esta información. Puede trabajar con anotaciones de KOFAM, InterProScan, MEROPS, dbCAN.
 
-Estos resultados ya los tienes en el directorio `results/12.kofam/48h`
+![](images/clipboard-1480307409.png)
+
+Estos resultados ya los tienes en el directorio `results/20.kofam-global/`
 
 Y ahora que ya tenemos los identificadores de KO para cada proteína, vamos a filtrar y graficar el metabolismo de los *bins*.
 
-### RbiMs
-
-[RbiMs](https://github.com/mirnavazquez/RbiMs) es un paquete de R muy útil para obtener la anotación de cada KEGG ID y generar plots de esta información. Puede trabajar con anotaciones de KOFAM, InterProScan, MEROPS.
-
-![RbiMs](Figures/rRbiMs-3.png){fig-align="center"}
+### Visualizaciones
 
 Vamos al editor de Rstudio para correr RbiMs ✨
 
@@ -221,3 +190,30 @@ pozol_mapp %>%
 ```
 
 ![](Figures/RBiMs_heatmap.png){fig-align="center" width="962"}
+
+::: callout-tip
+## Explora libremente
+
+Ya tienes el objeto completo (funciones + metadatos). Prueba distintas vistas:
+
+-   Agrupa los MAGs por **taxonomía**: ¿los organismos emparentados comparten repertorio metabólico?
+-   Enfócate en una **ruta o categoría** de interés (por ejemplo, fermentación, metabolismo de carbohidratos, biosíntesis de aminoácidos o vitaminas).
+:::
+
+## 04. Lectura biológica: ¿quién hace qué en el pozol?
+
+Conecta las funciones con la biología del pozol: qué grupos dominan (p. ej. bacterias lácticas), qué rutas de fermentación aparecen, biosíntesis de aminoácidos y vitaminas que enriquecen el sustrato de maíz, CAZymes que degradan el almidón. Deja que los MAGs cuenten la historia de la fermentación.
+
+::: callout-caution
+## La pregunta que queda abierta
+
+Coloreamos los MAGs por la muestra de la que los **recuperamos**, pero eso no nos dice en qué tiempos cada organismo realmente **está presente ni en qué abundancia**. Para responder eso, mapearíamos las lecturas de cada muestra contra el catálogo completo —por ejemplo con [CoverM](https://github.com/wwood/CoverM)— y obtendríamos la abundancia de cada MAG en cada tiempo de fermentación. Esa es la extensión natural de este análisis, y con ella podrías seguir la **sucesión** de la comunidad a lo largo del pozol.
+:::
+
+::: callout-tip
+## Para cerrar (reflexión)
+
+1.  ¿Cuántos MAGs quedaron en el catálogo tras la desreplicación global, y a qué grupos taxonómicos pertenecen?
+2.  ¿Qué funciones metabólicas parecen compartidas por casi todos, y cuáles son exclusivas de unos pocos?
+3.  Si tuvieras que elegir **un** MAG para estudiar a fondo el rol de un organismo en la fermentación del pozol, ¿cuál elegirías y por qué (taxonomía, calidad, repertorio funcional)?
+:::

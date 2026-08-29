@@ -481,7 +481,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/clipboard-688869877.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="272"></p>
+<p><img src="images/clipboard-688869877.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="368"></p>
 </figure>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
@@ -761,54 +761,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Todo el flujo de MAGScoT está en un solo script, que hace cinco cosas: (1) predice los ORFs del ensamble con <strong>Prodigal</strong>, (2) los anota contra los marcadores de <strong>GTDB r207</strong> con <strong>HMMER</strong>, (3) arma la tabla contig-a-bin reutilizando las de DAS_Tool, (4) puntúa y refina con MAGScoT, y (5) extrae los MAGs a FASTA (porque MAGScoT entrega solo el mapeo, no los genomas).</p>
 <p>Todo el flujo de MAGScoT está en un solo script, que hace cinco cosas: (1) predice los ORFs del ensamble con <strong>Prodigal</strong>, (2) los anota contra los marcadores de <strong>GTDB r207</strong> con <strong>HMMER</strong>, (3) arma la tabla contig-a-bin reutilizando las de DAS_Tool, (4) puntúa y refina con MAGScoT, y (5) extrae los MAGs a FASTA (porque MAGScoT entrega solo el mapeo, no los genomas).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/bash</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Diana Oaxaca</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Refinamiento de bins con MAGScoT (predice ORFs, anota marcadores GTDB,</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># puntua y selecciona MAGs, y extrae los FASTA para dRep)</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Variables</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="va">MAGSCOT</span><span class="op">=</span>/data/env/MAGScoT_env/MAGScoT                          </span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="va">asm</span><span class="op">=</span>results/03.ensambles/0h/v3.spades.fasta     </span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="va">DT</span><span class="op">=</span>results/10.dastool/0h                         </span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="va">out</span><span class="op">=</span>results/11.magscot/0h                        </span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="va">threads</span><span class="op">=</span>6</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$out</span>/bins</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Prediccion de ORFs con Prodigal </span></span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="ex">prodigal</span> <span class="at">-p</span> meta <span class="at">-i</span> <span class="va">$asm</span> <span class="at">-a</span> <span class="va">$out</span>/0h.faa <span class="at">-d</span> <span class="va">$out</span>/0h.ffn <span class="at">-o</span> /dev/null</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Anotacion de marcadores de copia unica (HMMER vs GTDB r207)</span></span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="ex">hmmsearch</span> <span class="at">-o</span> <span class="va">$out</span>/tigr.out <span class="at">--tblout</span> <span class="va">$out</span>/tigr.hit <span class="at">--noali</span> <span class="at">--notextw</span> <span class="at">--cut_nc</span> <span class="at">--cpu</span> <span class="va">$threads</span> <span class="dt">\</span></span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>  <span class="va">$MAGSCOT</span>/hmm/gtdbtk_rel207_tigrfam.hmm <span class="va">$out</span>/0h.faa</span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a><span class="ex">hmmsearch</span> <span class="at">-o</span> <span class="va">$out</span>/pfam.out <span class="at">--tblout</span> <span class="va">$out</span>/pfam.hit <span class="at">--noali</span> <span class="at">--notextw</span> <span class="at">--cut_nc</span> <span class="at">--cpu</span> <span class="va">$threads</span> <span class="dt">\</span></span>
-<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>  <span class="va">$MAGSCOT</span>/hmm/gtdbtk_rel207_Pfam-A.hmm <span class="va">$out</span>/0h.faa</span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"^#"</span> <span class="va">$out</span>/tigr.hit <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{print $1"\t"$3"\t"$5}'</span> <span class="op">&gt;</span>  <span class="va">$out</span>/0h.hmm</span>
-<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"^#"</span> <span class="va">$out</span>/pfam.hit <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{print $1"\t"$4"\t"$5}'</span> <span class="op">&gt;&gt;</span> <span class="va">$out</span>/0h.hmm</span>
-<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Tabla contig-a-bin</span></span>
-<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print $2"\t"$1"\tmetabat2"}'</span> <span class="va">$DT</span>/0h_metabat.dastool.tsv  <span class="op">&gt;</span>  <span class="va">$out</span>/contigs_to_bin.tsv</span>
-<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print $2"\t"$1"\tmaxbin2"}'</span>  <span class="va">$DT</span>/0h_maxbin.dastool.tsv   <span class="op">&gt;&gt;</span> <span class="va">$out</span>/contigs_to_bin.tsv</span>
-<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print $2"\t"$1"\tvamb"}'</span>     <span class="va">$DT</span>/0h_vamb.dastool.tsv     <span class="op">&gt;&gt;</span> <span class="va">$out</span>/contigs_to_bin.tsv</span>
-<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print $2"\t"$1"\tcomebin"}'</span>  <span class="va">$DT</span>/0h_comebin.dastool.tsv  <span class="op">&gt;&gt;</span> <span class="va">$out</span>/contigs_to_bin.tsv</span>
-<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Puntaje y refinamiento con MAGScoT</span></span>
-<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="va">$MAGSCOT</span>/MAGScoT.py <span class="at">-i</span> <span class="va">$out</span>/contigs_to_bin.tsv <span class="at">--hmm</span> <span class="va">$out</span>/0hrs.hmm <span class="at">-o</span> <span class="va">$out</span>/0hrs</span>
-<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Extraccion de los FASTA (MAGScoT solo da el mapeo)</span></span>
-<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a><span class="bu">shopt</span> <span class="at">-s</span> nullglob</span>
-<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="va">$out</span>/bins/<span class="pp">*</span>.ctg<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>  <span class="va">b</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="va">$f</span> .ctg<span class="va">)</span></span>
-<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a>  <span class="ex">seqkit</span> grep <span class="at">-f</span> <span class="va">$f</span> <span class="va">$asm</span> <span class="op">&gt;</span> <span class="va">$out</span>/bins/<span class="va">$b</span>.fasta</span>
-<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-f</span> <span class="va">$out</span>/bins/<span class="pp">*</span>.ctg</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> bash scripts/12.magscot_0hrs.sh <span class="op">&gt;</span> outs/12.magscot.out <span class="kw">&amp;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Primero activamos el ambiente</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate MAGScoT_env</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Creamos el script de ejecución</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> scripts/11.magscot_0h.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/bash</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Diana Oaxaca</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Refinamiento de bins con MAGScoT (predice ORFs, anota marcadores GTDB,</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># puntua y selecciona MAGs, y extrae los FASTA para dRep)</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Variables</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="va">MAGSCOT</span><span class="op">=</span>/data/env/MAGScoT_env/MAGScoT                          </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="va">asm</span><span class="op">=</span>results/03.ensambles/0h/v3.spades.fasta     </span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="va">DT</span><span class="op">=</span>results/10.dastool/0h                         </span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="va">out</span><span class="op">=</span>results/11.magscot/0h                        </span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="va">threads</span><span class="op">=</span>6</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$out</span>/bins</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Prediccion de ORFs con Prodigal </span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="ex">prodigal</span> <span class="at">-p</span> meta <span class="at">-i</span> <span class="va">$asm</span> <span class="at">-a</span> <span class="va">$out</span>/0h.faa <span class="at">-d</span> <span class="va">$out</span>/0h.ffn <span class="at">-o</span> /dev/null</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Anotacion de marcadores de copia unica (HMMER vs GTDB r207)</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="ex">hmmsearch</span> <span class="at">-o</span> <span class="va">$out</span>/tigr.out <span class="at">--tblout</span> <span class="va">$out</span>/tigr.hit <span class="at">--noali</span> <span class="at">--notextw</span> <span class="at">--cut_nc</span> <span class="at">--cpu</span> <span class="va">$threads</span> <span class="dt">\</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>  <span class="va">$MAGSCOT</span>/hmm/gtdbtk_rel207_tigrfam.hmm <span class="va">$out</span>/0h.faa</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a><span class="ex">hmmsearch</span> <span class="at">-o</span> <span class="va">$out</span>/pfam.out <span class="at">--tblout</span> <span class="va">$out</span>/pfam.hit <span class="at">--noali</span> <span class="at">--notextw</span> <span class="at">--cut_nc</span> <span class="at">--cpu</span> <span class="va">$threads</span> <span class="dt">\</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>  <span class="va">$MAGSCOT</span>/hmm/gtdbtk_rel207_Pfam-A.hmm <span class="va">$out</span>/0h.faa</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"^#"</span> <span class="va">$out</span>/tigr.hit <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{print $1"\t"$3"\t"$5}'</span> <span class="op">&gt;</span>  <span class="va">$out</span>/0h.hmm</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"^#"</span> <span class="va">$out</span>/pfam.hit <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{print $1"\t"$4"\t"$5}'</span> <span class="op">&gt;&gt;</span> <span class="va">$out</span>/0h.hmm</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Tabla contig-a-bin</span></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print $2"\t"$1"\tmetabat2"}'</span> <span class="va">$DT</span>/0h_metabat.dastool.tsv  <span class="op">&gt;</span>  <span class="va">$out</span>/contigs_to_bin.tsv</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print $2"\t"$1"\tmaxbin2"}'</span>  <span class="va">$DT</span>/0h_maxbin.dastool.tsv   <span class="op">&gt;&gt;</span> <span class="va">$out</span>/contigs_to_bin.tsv</span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print $2"\t"$1"\tvamb"}'</span>     <span class="va">$DT</span>/0h_vamb.dastool.tsv     <span class="op">&gt;&gt;</span> <span class="va">$out</span>/contigs_to_bin.tsv</span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print $2"\t"$1"\tcomebin"}'</span>  <span class="va">$DT</span>/0h_comebin.dastool.tsv  <span class="op">&gt;&gt;</span> <span class="va">$out</span>/contigs_to_bin.tsv</span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Puntaje y refinamiento con MAGScoT</span></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="va">$MAGSCOT</span>/MAGScoT.py <span class="at">-i</span> <span class="va">$out</span>/contigs_to_bin.tsv <span class="at">--hmm</span> <span class="va">$out</span>/0h.hmm <span class="at">-o</span> <span class="va">$out</span>/0h</span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Extraccion de los FASTA (MAGScoT solo da el mapeo)</span></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a><span class="bu">shopt</span> <span class="at">-s</span> nullglob</span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="va">$out</span>/bins/<span class="pp">*</span>.ctg<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a>  <span class="va">b</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="va">$f</span> .ctg<span class="va">)</span></span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a>  <span class="ex">seqkit</span> grep <span class="at">-f</span> <span class="va">$f</span> <span class="va">$asm</span> <span class="op">&gt;</span> <span class="va">$out</span>/bins/<span class="va">$b</span>.fasta</span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-f</span> <span class="va">$out</span>/bins/<span class="pp">*</span>.ctg</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> bash scripts/11.magscot_0h.sh <span class="op">&gt;</span> outs/11.magscot.out <span class="kw">&amp;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -846,31 +850,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Ya que tenemos los resultados de los dos refinadores ejecutaremos dRep para desreplicar y seleccionar el mejor representante de cada <em>bin</em>.</p>
 <p>Primero vamos a crear el directorio de resultados para dRep.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">mkdir</span> <span class="at">-p</span> results/12.drep/0h/bins</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">mkdir</span> <span class="at">-p</span> results/12.drep/0h/bins</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Copia los bins que queremos comparar dentro del directorio que acabamos de crear. A dRep le tenemos que dar como entrada un directorio con todos los bins y la misma extensión.</p>
 <p>Con las siguientes lineas podemos copiar los bins resultantes de cada refinamiento:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="va">DT</span><span class="op">=</span><span class="st">"results/10.dastool/0h/0h_DASTool_bins"</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="va">MS</span><span class="op">=</span><span class="st">"results/11.magscot/0h/bins"</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="va">out</span><span class="op">=</span><span class="st">"results/12.drep/0h/bins"</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$(</span><span class="fu">ls</span> <span class="va">$DT</span>/<span class="pp">*</span>.fa<span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">name</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="va">$i</span> .fa<span class="va">)</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> <span class="va">$i</span> <span class="va">$out</span>/<span class="va">$name</span><span class="st">".fasta"</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="va">$MS</span>/<span class="pp">*</span>.fasta <span class="va">$out</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="va">DT</span><span class="op">=</span><span class="st">"results/10.dastool/0h/0h_DASTool_bins"</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="va">MS</span><span class="op">=</span><span class="st">"results/11.magscot/0h/bins"</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="va">out</span><span class="op">=</span><span class="st">"results/12.drep/0h/bins"</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$(</span><span class="fu">ls</span> <span class="va">$DT</span>/<span class="pp">*</span>.fa<span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">name</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="va">$i</span> .fa<span class="va">)</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> <span class="va">$i</span> <span class="va">$out</span>/<span class="va">$name</span><span class="st">".fasta"</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="va">$MS</span>/<span class="pp">*</span>.fasta <span class="va">$out</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Preparemos el insumo de dRep, para ello corramos checkm2</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">checkm2</span> predict <span class="at">--threads</span> 6 <span class="at">-x</span> fasta <span class="at">--input</span> results/12.drep/0h/bins/ <span class="at">--output-directory</span> results/12.drep/0h/checkm2/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">checkm2</span> predict <span class="at">--threads</span> 6 <span class="at">-x</span> fasta <span class="at">--input</span> results/12.drep/0h/bins/ <span class="at">--output-directory</span> results/12.drep/0h/checkm2/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Y ahora toca construir el archivo de información que dRep necesita.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="va">cq</span><span class="op">=</span><span class="st">"results/12.drep/0h/checkm2/quality_report.tsv"</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"genome,completeness,contamination"</span> <span class="op">&gt;</span> results/12.drep/0h/genomeInfo.csv</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 <span class="va">$cq</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F</span><span class="st">'\t'</span> <span class="st">'{print $1".fasta,"$2","$3}'</span> <span class="dt">\</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">&gt;&gt;</span> results/12.drep/0h/genomeInfo.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="va">cq</span><span class="op">=</span><span class="st">"results/12.drep/0h/checkm2/quality_report.tsv"</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"genome,completeness,contamination"</span> <span class="op">&gt;</span> results/12.drep/0h/genomeInfo.csv</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 <span class="va">$cq</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F</span><span class="st">'\t'</span> <span class="st">'{print $1".fasta,"$2","$3}'</span> <span class="dt">\</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">&gt;&gt;</span> results/12.drep/0h/genomeInfo.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Y ahora si, vamos a correr dRep …</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dRep</span> dereplicate results/12.drep/0h/ <span class="dt">\</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 6 <span class="at">-comp</span> 50 <span class="at">-con</span> 10 <span class="dt">\</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--genomeInfo</span> results/12.drep/0h/genomeInfo.csv <span class="dt">\</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-g</span> results/12.drep/0h/bins/<span class="pp">*</span>.fasta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dRep</span> dereplicate results/12.drep/0h/ <span class="dt">\</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 6 <span class="at">-comp</span> 50 <span class="at">-con</span> 10 <span class="dt">\</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--genomeInfo</span> results/12.drep/0h/genomeInfo.csv <span class="dt">\</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-g</span> results/12.drep/0h/bins/<span class="pp">*</span>.fasta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">

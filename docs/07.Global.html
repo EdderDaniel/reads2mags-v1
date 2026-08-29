@@ -201,15 +201,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#visualizaciones" id="toc-visualizaciones" class="nav-link" data-scroll-target="#visualizaciones">Visualizaciones</a></li>
   </ul></li>
   <li><a href="#lectura-biológica-quién-hace-qué-en-el-pozol" id="toc-lectura-biológica-quién-hace-qué-en-el-pozol" class="nav-link" data-scroll-target="#lectura-biológica-quién-hace-qué-en-el-pozol">04. Lectura biológica: ¿quién hace qué en el pozol?</a></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a>
-  <ul class="collapse">
-  <li><a href="#rbims" id="toc-rbims" class="nav-link" data-scroll-target="#rbims">RbiMs</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -266,7 +262,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>[BLOQUE DE CÓDIGO: dRep global — pool de los DAS_Tool + MAGScoT de todas las muestras con prefijo por muestra, y dRep dereplicate con –genomeInfo. Es el bloque que ya tienes del cierre colaborativo.]</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/18.drep_global/bins</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> 0h 09h 24h 48h<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> f <span class="kw">in</span> results/12.drep/<span class="va">$s</span>/dereplicated_genomes/<span class="pp">*</span>.fasta<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">base</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$f</span><span class="st">"</span><span class="va">)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="st">"</span><span class="va">$base</span><span class="st">"</span> <span class="kw">in</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="va">${s}</span><span class="ss">_</span><span class="pp">*</span><span class="kw">)</span> <span class="va">new</span><span class="op">=</span><span class="st">"</span><span class="va">$base</span><span class="st">"</span> <span class="cf">;;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      <span class="pp">*</span><span class="kw">)</span>      <span class="va">new</span><span class="op">=</span><span class="st">"</span><span class="va">${s}</span><span class="st">_</span><span class="va">${base}</span><span class="st">"</span> <span class="cf">;;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">esac</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> <span class="st">"</span><span class="va">$f</span><span class="st">"</span> <span class="st">"results/18.drep_global/bins/</span><span class="va">$new</span><span class="st">"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">done</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">checkm2</span> predict <span class="at">--threads</span> 16 <span class="at">-x</span> fasta <span class="at">--input</span> results/18.drep_global/bins/ <span class="at">--output-directory</span> results/18.drep_global/checkm2/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">cq</span><span class="op">=</span><span class="st">"results/18.drep_global/checkm2/quality_report.tsv"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"genome,completeness,contamination"</span> <span class="op">&gt;</span> results/18.drep_global/genomeInfo.csv</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 <span class="va">$cq</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F</span><span class="st">'\t'</span> <span class="st">'{print $1".fasta,"$2","$3}'</span> <span class="dt">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">&gt;&gt;</span> results/18.drep_global/genomeInfo.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dRep</span> dereplicate results/18.drep_global <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 16 <span class="at">-comp</span> 50 <span class="at">-con</span> 10 <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--genomeInfo</span> results/18.drep_global/genomeInfo.csv <span class="dt">\</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-g</span> results/18.drep_global/bins/<span class="pp">*</span>.fasta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/19.gtdbtk_global</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate gtdbt</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> gtdbtk classify_wf <span class="dt">\</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">--genome_dir</span> results/18.drep_global/dereplicated_genomes/ <span class="dt">\</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">--out_dir</span> results/19.gtdbtk_global <span class="dt">\</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">--cpus</span> 12 <span class="dt">\</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">-x</span> fasta <span class="op">&gt;</span> outs/19.gtdbtk-global.out <span class="kw">&amp;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -274,51 +298,135 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="construye-la-tabla-de-metadatos" class="level2">
 <h2 class="anchored" data-anchor-id="construye-la-tabla-de-metadatos">02. Construye la tabla de metadatos</h2>
 <p>Las anotaciones no significan nada solas: para leerlas necesitamos saber, de cada MAG, <strong>de dónde viene, qué es y qué tan bueno es</strong>. Esa tabla que une origen + taxonomía + calidad es la <strong>metadata</strong>, y es la columna vertebral de cualquier figura comparativa. La vas a construir tú, porque saber armarla es una habilidad que usarás en todos tus proyectos.</p>
-<p>Tienes tres fuentes, y el <strong>nombre del MAG es la llave</strong> que las une:</p>
-<ul>
-<li><strong>Origen (muestra):</strong> sale directo del nombre. De <code>24hBin03</code> sabes que se recuperó de la muestra de 24 h.</li>
-<li><strong>Taxonomía:</strong> de la tabla de GTDB-Tk (<code>gtdbtk.bac120.summary.tsv</code>), columna de clasificación.</li>
-<li><strong>Calidad:</strong> del <code>quality_report.tsv</code> de CheckM2 (completitud y contaminación).</li>
-</ul>
-<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Cuidado: “origen” no es “distribución”
+Caution
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>El nombre te dice de qué muestra <strong>se ensambló</strong> el MAG, no en qué muestras <strong>está presente</strong>. Un organismo recuperado desde 0 h probablemente también esté en 9, 24 y 48 h; nuestro metadato solo registra de dónde lo sacamos. Volveremos a esto al final.</p>
-</div>
-</div>
+<p>Crea una tabla que se llame <code>Metadatos.tsv</code> <strong>dentro del directorio de resultados de GTDB-tk</strong> que incluya el nombre del bin y la clasificación taxonómica.</p>
+<p>1) Cambia el encabezado del nombre del bin: <code>user_genome</code> por <code>Bin_name</code></p>
+<p>2) Elimina <code>classification</code> y asegurate de que los niveles taxonómicos estén separados por tabulador. A cada columna de los niveles taxonómicos agregale su encabezado correspondiente: <code>Domain, Phylum, Class, Order, Family, Genus, Species</code></p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Ahora tú: arma tu tabla de metadatos
+<span class="screen-reader-only">Tip</span>Solución
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
-<p>Construye una tabla con una fila por MAG y, al menos, estas columnas: <code>Bin</code>, <code>Muestra</code> (del nombre), <code>Taxonomia</code> (de GTDB-Tk) y <code>Completitud</code> / <code>Contaminacion</code> (de CheckM2). Puedes hacerlo en R, en la terminal, o incluso a mano si son pocos MAGs — lo importante es entender que estás <strong>uniendo tres fuentes por el nombre del bin</strong>.</p>
+<p>echo -e Bin_name”\t”Domain”\t”Phylum”\t”Class”\t”Order”\t”Family”\t”Genus”\t”Species &gt; Metadatos.tsv</p>
+<p>cut -f1,2 gtdbtk.bac120.summary.tsv | grep -v “classification” | sed ‘s/;/\t/g’ &gt;&gt; Metadatos.tsv</p>
 </div>
 </div>
-<p>[BLOQUE DE CÓDIGO: ejemplo de construcción de la tabla de metadatos — leer nombres de bins para extraer la muestra, hacer join con el summary de GTDB-Tk y con el quality_report de CheckM2. Puede ser en R (recomendado, porque enseguida entra a RbiMs) o en bash. Deja el resultado como un data frame / tsv de metadatos.]</p>
+</div>
+</div>
+</div>
 </section>
 <section id="rbims-explora-el-metabolismo-del-catálogo" class="level2">
 <h2 class="anchored" data-anchor-id="rbims-explora-el-metabolismo-del-catálogo">03. RbiMs: explora el metabolismo del catálogo</h2>
-<p>[Breve descripción de RbiMs: paquete de R que toma los resultados de anotación (aquí, los KO de KofamScan) y los organiza en una matriz de presencia/abundancia de funciones por genoma, para visualizar y comparar el potencial metabólico entre MAGs. Enlace al repo de RbiMs.]</p>
-<p>Activamos R (o abrimos RStudio) y cargamos RbiMs:</p>
-<p>[BLOQUE DE CÓDIGO R: library(rbims) y las dependencias; lectura de los .txt de KofamScan de todo el catálogo con la función de RbiMs correspondiente para construir la matriz de KOs.]</p>
-<p>Ahora incorporamos la tabla de metadatos que construiste, para poder colorear y agrupar por muestra y taxonomía:</p>
-<p>[BLOQUE DE CÓDIGO R: cargar la tabla de metadatos y unirla al objeto de RbiMs por el nombre del MAG.]</p>
+<p>Ahora que ya tenemos los <em>bins</em> refinados, queremos saber qué capacidades metabólicas poseen. Para ello es necesario predecir sus genes y asignarles función.</p>
+<p><a href="https://github.com/mirnavazquez/RbiMs">RbiMs</a> es un paquete de R muy útil para obtener la anotación de cada KEGG ID y generar plots de esta información. Puede trabajar con anotaciones de KOFAM, InterProScan, MEROPS, dbCAN.</p>
+<p><img src="images/clipboard-1480307409.png" class="img-fluid"></p>
+<p>Estos resultados ya los tienes en el directorio <code>results/20.kofam-global/</code></p>
+<p>Y ahora que ya tenemos los identificadores de KO para cada proteína, vamos a filtrar y graficar el metabolismo de los <em>bins</em>.</p>
 <section id="visualizaciones" class="level3">
 <h3 class="anchored" data-anchor-id="visualizaciones">Visualizaciones</h3>
-<p>Con eso ya puedes generar las figuras que resumen el potencial metabólico del catálogo:</p>
-<p>[BLOQUE DE CÓDIGO R: bubble plot / heatmap de RbiMs — abundancia de KOs o rutas por MAG, anotado con la metadata (muestra + taxonomía).]</p>
+<p>Vamos al editor de Rstudio para correr RbiMs ✨</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Ubicate en el directorio donde se encuentran los txt de kofam</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"/home/alumnoX/"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#A continuación, leemos los resultados de KEGG </span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>pozol_table <span class="ot">&lt;-</span> <span class="fu">read_ko</span>(<span class="at">data_kofam =</span> <span class="st">"12.kofam/48h"</span>) </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#y los mapeamos con la base de datos de KEGG:</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>pozol_mapp <span class="ot">&lt;-</span> <span class="fu">mapping_ko</span>(pozol_table)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Nos centraremos en las vías metabólicas relacionadas con la biosintesis de aminoacidos y vitaminas:</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>Overview <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Biosynthesis of amino acids"</span>, <span class="st">"Vitamin B6 metabolism"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>Aminoacids_metabolism_pozol <span class="ot">&lt;-</span> pozol_mapp <span class="sc">%&gt;%</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(Module_description) <span class="sc">%&gt;%</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_subset_pathway</span>(Pathway_description, Overview) </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#Visualizamos los datos con un gráfico de burbujas:</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bubble</span>(<span class="at">tibble_ko =</span> Aminoacids_metabolism_pozol,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">x_axis =</span> Bin_name, </span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">y_axis =</span> Pathway_description,</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">analysis =</span> <span class="st">"KEGG"</span>,</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">calc =</span> <span class="st">"Percentage"</span>,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">range_size =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>),</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">y_labs =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">x_labs =</span> <span class="cn">FALSE</span>)  </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#Añadiremos metadatos, como la taxonomía:</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>Metadatos <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"results/10.gtdbtk/Metadatos.txt"</span>, <span class="at">delim =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#Y generaremos un gráfico de burbujas con metadatos:</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bubble</span>(<span class="at">tibble_ko =</span> Aminoacids_metabolism_pozol,</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>            <span class="at">x_axis =</span> Bin_name, </span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>            <span class="at">y_axis =</span> Pathway_description,</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">analysis =</span> <span class="st">"KEGG"</span>,</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>            <span class="at">data_experiment =</span> Metadatos,</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>            <span class="at">calc =</span> <span class="st">"Percentage"</span>,</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>            <span class="at">color_character =</span> Family,</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>            <span class="at">range_size =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>),</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>            <span class="at">y_labs =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>            <span class="at">x_labs =</span> <span class="cn">FALSE</span>) </span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Exploración de una Vía Específica</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co"># podemos explorar una sola vía, como el “Secretion system,” y crear un mapa de calor para visualizar los genes relacionados con esta vía:</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>Secretion_system_pozol <span class="ot">&lt;-</span> pozol_mapp <span class="sc">%&gt;%</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(Cycle) <span class="sc">%&gt;%</span></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_subset_pathway</span>(Cycle, <span class="st">"Secretion system"</span>)</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="co">#Y, finalmente, generamos un mapa de calor:</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_heatmap</span>(<span class="at">tibble_ko =</span> Secretion_system_pozol, </span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>             <span class="at">y_axis =</span> Genes,</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>             <span class="at">analysis =</span> <span class="st">"KEGG"</span>,</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>             <span class="at">calc =</span> <span class="st">"Binary"</span>)</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="co">#También podemos agregar metadatos para obtener una visión más completa:</span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_heatmap</span>(<span class="at">tibble_ko =</span> Secretion_system_pozol, </span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>             <span class="at">y_axis =</span> Genes,</span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>             <span class="at">data_experiment =</span> Metadatos,</span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>             <span class="at">order_x =</span> Family,</span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>             <span class="at">analysis =</span> <span class="st">"KEGG"</span>,</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>             <span class="at">calc =</span> <span class="st">"Binary"</span>)</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_heatmap</span>(<span class="at">tibble_ko =</span> Secretion_system_pozol, </span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>             <span class="at">y_axis =</span> Genes,</span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>             <span class="at">data_experiment =</span> Metadatos,</span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>             <span class="at">order_y =</span> Pathway_cycle,</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>             <span class="at">order_x =</span> Family,</span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>             <span class="at">analysis =</span> <span class="st">"KEGG"</span>,</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>             <span class="at">calc =</span> <span class="st">"Binary"</span>)</span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a><span class="co"># Explorar</span></span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pozol_mapp) </span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>pozol_mapp <span class="sc">%&gt;%</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Cycle, Pathway_cycle, Pathway_description) <span class="sc">%&gt;%</span></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Figures/RBiMs_heatmap.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="962"></p>
+</figure>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -333,7 +441,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Agrupa los MAGs por <strong>taxonomía</strong>: ¿los organismos emparentados comparten repertorio metabólico?</li>
 <li>Enfócate en una <strong>ruta o categoría</strong> de interés (por ejemplo, fermentación, metabolismo de carbohidratos, biosíntesis de aminoácidos o vitaminas).</li>
-<li>Colorea por <strong>muestra de origen</strong>: ¿los MAGs de tiempos tempranos se ven distintos a los de tiempos tardíos?</li>
 </ul>
 </div>
 </div>
@@ -341,7 +448,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="lectura-biológica-quién-hace-qué-en-el-pozol" class="level2">
 <h2 class="anchored" data-anchor-id="lectura-biológica-quién-hace-qué-en-el-pozol">04. Lectura biológica: ¿quién hace qué en el pozol?</h2>
-<p>[Aquí la interpretación, el pago de todo el taller. Conecta las funciones con la biología del pozol: qué grupos dominan (p.&nbsp;ej. bacterias lácticas), qué rutas de fermentación aparecen, biosíntesis de aminoácidos y vitaminas que enriquecen el sustrato de maíz, CAZymes que degradan el almidón. Deja que los MAGs cuenten la historia de la fermentación.]</p>
+<p>Conecta las funciones con la biología del pozol: qué grupos dominan (p.&nbsp;ej. bacterias lácticas), qué rutas de fermentación aparecen, biosíntesis de aminoácidos y vitaminas que enriquecen el sustrato de maíz, CAZymes que degradan el almidón. Deja que los MAGs cuenten la historia de la fermentación.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -372,159 +479,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 </div>
 </div>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exploremos:
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><p>Revisemos la tabla de resultados de GTDB-Tk (<code>gtdbtk.bac120.summary.tsv</code>). Identifiquen el MAG con la <strong>mayor calidad</strong> (mayor completitud y menor contaminación). ¿Qué taxonomía tiene?</p></li>
-<li><p>Ahora, busquen el MAG con la <strong>taxonomía más interesante o inesperada</strong>. ¿Hay algún género o familia que no esperarían encontrar en el pozol?</p></li>
-</ul>
-</div>
-</div>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Metadatos:
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Crea una tabla que se llame <code>Metadatos.tsv</code> <strong>dentro del directorio de resultados de GTDB-tk</strong> que incluya el nombre del bin y la clasificación taxonómica.</p>
-<p>1) Cambia el encabezado del nombre del bin: <code>user_genome</code> por <code>Bin_name</code></p>
-<p>2) Elimina <code>classification</code> y asegurate de que los niveles taxonómicos estén separados por tabulador. A cada columna de los niveles taxonómicos agregale su encabezado correspondiente: <code>Domain, Phylum, Class, Order, Family, Genus, Species</code></p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Solución
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<p>echo -e Bin_name”\t”Domain”\t”Phylum”\t”Class”\t”Order”\t”Family”\t”Genus”\t”Species &gt; Metadatos.tsv</p>
-<p>cut -f1,2 gtdbtk.bac120.summary.tsv | grep -v “classification” | sed ‘s/;/\t/g’ &gt;&gt; Metadatos.tsv&nbsp;</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p>Ahora que ya tenemos los <em>bins</em> refinados, queremos saber qué capacidades metabólicas poseen. Para ello es necesario predecir sus genes y asignarles función.</p>
-</section>
-<section id="section" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="section"></h2>
-<p>Estos resultados ya los tienes en el directorio <code>results/12.kofam/48h</code></p>
-<p>Y ahora que ya tenemos los identificadores de KO para cada proteína, vamos a filtrar y graficar el metabolismo de los <em>bins</em>.</p>
-<section id="rbims" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="rbims">RbiMs</h3>
-<p><a href="https://github.com/mirnavazquez/RbiMs">RbiMs</a> es un paquete de R muy útil para obtener la anotación de cada KEGG ID y generar plots de esta información. Puede trabajar con anotaciones de KOFAM, InterProScan, MEROPS.</p>
-<div class="quarto-figure quarto-figure-center page-columns page-full">
-<figure class="figure page-columns page-full">
-<p><img src="Figures/rRbiMs-3.png" class="img-fluid figure-img"></p>
-<figcaption class="margin-caption">RbiMs</figcaption>
-</figure>
-</div>
-<p>Vamos al editor de Rstudio para correr RbiMs ✨</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Ubicate en el directorio donde se encuentran los txt de kofam</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"/home/alumnoX/"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#A continuación, leemos los resultados de KEGG </span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>pozol_table <span class="ot">&lt;-</span> <span class="fu">read_ko</span>(<span class="at">data_kofam =</span> <span class="st">"12.kofam/48h"</span>) </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#y los mapeamos con la base de datos de KEGG:</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>pozol_mapp <span class="ot">&lt;-</span> <span class="fu">mapping_ko</span>(pozol_table)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Nos centraremos en las vías metabólicas relacionadas con la biosintesis de aminoacidos y vitaminas:</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Overview <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Biosynthesis of amino acids"</span>, <span class="st">"Vitamin B6 metabolism"</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>Aminoacids_metabolism_pozol <span class="ot">&lt;-</span> pozol_mapp <span class="sc">%&gt;%</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(Module_description) <span class="sc">%&gt;%</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_subset_pathway</span>(Pathway_description, Overview) </span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#Visualizamos los datos con un gráfico de burbujas:</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bubble</span>(<span class="at">tibble_ko =</span> Aminoacids_metabolism_pozol,</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">x_axis =</span> Bin_name, </span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">y_axis =</span> Pathway_description,</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">analysis =</span> <span class="st">"KEGG"</span>,</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">calc =</span> <span class="st">"Percentage"</span>,</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">range_size =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>),</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">y_labs =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">x_labs =</span> <span class="cn">FALSE</span>)  </span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#Añadiremos metadatos, como la taxonomía:</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>Metadatos <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"results/10.gtdbtk/Metadatos.txt"</span>, <span class="at">delim =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">#Y generaremos un gráfico de burbujas con metadatos:</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bubble</span>(<span class="at">tibble_ko =</span> Aminoacids_metabolism_pozol,</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>            <span class="at">x_axis =</span> Bin_name, </span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>            <span class="at">y_axis =</span> Pathway_description,</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">analysis =</span> <span class="st">"KEGG"</span>,</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>            <span class="at">data_experiment =</span> Metadatos,</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>            <span class="at">calc =</span> <span class="st">"Percentage"</span>,</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>            <span class="at">color_character =</span> Family,</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>            <span class="at">range_size =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>),</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>            <span class="at">y_labs =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>            <span class="at">x_labs =</span> <span class="cn">FALSE</span>) </span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Exploración de una Vía Específica</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co"># podemos explorar una sola vía, como el “Secretion system,” y crear un mapa de calor para visualizar los genes relacionados con esta vía:</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>Secretion_system_pozol <span class="ot">&lt;-</span> pozol_mapp <span class="sc">%&gt;%</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(Cycle) <span class="sc">%&gt;%</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_subset_pathway</span>(Cycle, <span class="st">"Secretion system"</span>)</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co">#Y, finalmente, generamos un mapa de calor:</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_heatmap</span>(<span class="at">tibble_ko =</span> Secretion_system_pozol, </span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>             <span class="at">y_axis =</span> Genes,</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>             <span class="at">analysis =</span> <span class="st">"KEGG"</span>,</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>             <span class="at">calc =</span> <span class="st">"Binary"</span>)</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co">#También podemos agregar metadatos para obtener una visión más completa:</span></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_heatmap</span>(<span class="at">tibble_ko =</span> Secretion_system_pozol, </span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>             <span class="at">y_axis =</span> Genes,</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>             <span class="at">data_experiment =</span> Metadatos,</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>             <span class="at">order_x =</span> Family,</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>             <span class="at">analysis =</span> <span class="st">"KEGG"</span>,</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>             <span class="at">calc =</span> <span class="st">"Binary"</span>)</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_heatmap</span>(<span class="at">tibble_ko =</span> Secretion_system_pozol, </span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>             <span class="at">y_axis =</span> Genes,</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>             <span class="at">data_experiment =</span> Metadatos,</span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>             <span class="at">order_y =</span> Pathway_cycle,</span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>             <span class="at">order_x =</span> Family,</span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>             <span class="at">analysis =</span> <span class="st">"KEGG"</span>,</span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>             <span class="at">calc =</span> <span class="st">"Binary"</span>)</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="co"># Explorar</span></span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pozol_mapp) </span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>pozol_mapp <span class="sc">%&gt;%</span></span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Cycle, Pathway_cycle, Pathway_description) <span class="sc">%&gt;%</span></span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Figures/RBiMs_heatmap.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="962"></p>
-</figure>
-</div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

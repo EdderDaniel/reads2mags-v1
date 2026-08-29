@@ -154,8 +154,18 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#cargar-y-mapear-anotaciones" id="toc-cargar-y-mapear-anotaciones" class="nav-link active" data-scroll-target="#cargar-y-mapear-anotaciones">01. Cargar y mapear anotaciones</a></li>
+  <li><a href="#explorar-las-rutas-de-degradación" id="toc-explorar-las-rutas-de-degradación" class="nav-link" data-scroll-target="#explorar-las-rutas-de-degradación">02. Explorar las rutas de degradación</a></li>
+  <li><a href="#análisis-discriminante-qué-separa-5-m-de-700-m" id="toc-análisis-discriminante-qué-separa-5-m-de-700-m" class="nav-link" data-scroll-target="#análisis-discriminante-qué-separa-5-m-de-700-m">03. Análisis discriminante: ¿qué separa 5 m de 700 m?</a></li>
+  <li><a href="#sesgo-direccional-por-ruta" id="toc-sesgo-direccional-por-ruta" class="nav-link" data-scroll-target="#sesgo-direccional-por-ruta">04. Sesgo direccional por ruta</a></li>
+  <li><a href="#lectura-biológica-y-cierre" id="toc-lectura-biológica-y-cierre" class="nav-link" data-scroll-target="#lectura-biológica-y-cierre">05. Lectura biológica y cierre</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -179,8 +189,136 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>En esta sesión aplicamos el flujo de <strong>rbims</strong> a un caso real y publicado: <strong>42 MAGs</strong> recuperados de un experimento de enriquecimiento con hexadecano en el <strong>Atlántico Norte</strong>, muestreados en dos profundidades (<strong>5 m vs 700 m</strong>) <span class="citation" data-cites="rbims2026">[@rbims2026]</span>. La pregunta ya no es solo <em>“¿qué puede hacer cada genoma?”</em>, sino <em>“¿qué distingue funcionalmente a dos comunidades?”</em> — el salto de perfilar a <strong>comparar</strong>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Por qué este caso, y no el pozol
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El pozol es un gradiente temporal de pocos MAGs; no tiene dos grupos claros que contrastar. Este dataset <strong>sí</strong>: dos profundidades, 42 MAGs, y un foco en <strong>degradación de hidrocarburos</strong>. Eso es lo que habilita el análisis discriminante — y lo que lo hace directamente útil para biorremediación.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Todo pre-computado
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Las anotaciones KO, la metadata limpia y el ambiente <code>rbimsenv</code> ya están en tu directorio. Cargamos objetos listos: el foco es <strong>interpretar</strong>, no procesar.</p>
+</div>
+</div>
+<section id="cargar-y-mapear-anotaciones" class="level2">
+<h2 class="anchored" data-anchor-id="cargar-y-mapear-anotaciones">01. Cargar y mapear anotaciones</h2>
+<p><code>rbims</code> lee la anotación de KofamScan y la mapea a rutas, módulos y a su <strong>base interna de hidrocarburos</strong> (hexadecano, fenantreno, naftaleno — rutas que KEGG no cubre completas).</p>
+<p>[BLOQUE DE CÓDIGO R: library(rbims); read_ko() sobre los .txt de KofamScan; mapping_ko() → objeto de KOs mapeado. Cargar también la metadata limpia (.rds pre-computado con Depth por MAG).]</p>
+</section>
+<section id="explorar-las-rutas-de-degradación" class="level2">
+<h2 class="anchored" data-anchor-id="explorar-las-rutas-de-degradación">02. Explorar las rutas de degradación</h2>
+<p>Extraemos las tres rutas de hidrocarburos y las visualizamos por genoma y taxonomía.</p>
+<p>[BLOQUE DE CÓDIGO R: get_subset_pathway() sobre hexadecano/fenantreno/naftaleno; plot_bubble() y/o plot_heatmap() estratificado por taxonomía y profundidad. Reproduce Figuras 3–4.]</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Interpreta (checkpoint)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>¿Qué rutas están casi en todos los MAGs y cuáles son taxonómicamente restringidas?</li>
+<li>¿Qué genes aparecen como más abundantes y conservados? ¿Qué papel cumplen?</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="análisis-discriminante-qué-separa-5-m-de-700-m" class="level2">
+<h2 class="anchored" data-anchor-id="análisis-discriminante-qué-separa-5-m-de-700-m">03. Análisis discriminante: ¿qué separa 5 m de 700 m?</h2>
+<p>Aquí está el salto conceptual. <code>get_subset_discriminant()</code> combina <strong>ALDEx2</strong> (análisis composicional con transformación <strong>CLR</strong>, que corrige que los conteos son relativos) con un <strong>random forest</strong> usado <em>solo como ranking exploratorio</em> de KOs, no como predictor. La salida prioriza los KOs que más distinguen a los dos grupos, con su <em>effect size</em>.</p>
+<p>[BLOQUE DE CÓDIGO R: get_subset_discriminant() con group_col de profundidad; plot_disc_effect() y plot_disc_heatmap(). Reproduce Figura 5.]</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Dos ideas clave antes de correr
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Composicionalidad (CLR):</strong> los conteos de genes son relativos (dependen del tamaño del genoma y la anotación); la transformación CLR los vuelve comparables. Por eso no se usan conteos crudos.</li>
+<li><strong>El random forest es solo un ranking</strong>, no un clasificador validado. Ordena candidatos; la inferencia real viene del <em>effect size</em> de ALDEx2 y del paso siguiente.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Lo que NO corremos (pero sí mostramos)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La estabilidad del ranking se evaluó repitiendo el random forest <strong>200 veces</strong> con remuestreo. Es esencial para la honestidad del análisis, pero pesado y no aporta a la intuición. Aquí solo vemos el resultado: un subconjunto de KOs se recupera consistentemente; el ranking completo varía. Conclusión: úsalo como exploración, no como predicción.</p>
+</div>
+</div>
+</section>
+<section id="sesgo-direccional-por-ruta" class="level2">
+<h2 class="anchored" data-anchor-id="sesgo-direccional-por-ruta">04. Sesgo direccional por ruta</h2>
+<p>El aporte más novedoso de rbims. En vez de preguntar <em>“¿esta ruta tiene más genes significativos de lo esperado?”</em> (enriquecimiento clásico), pregunta: <em>“¿la <strong>mayoría</strong> de los genes de la ruta apuntan a la <strong>misma</strong> condición?”</em> — un test binomial sobre la proporción de genes con efecto positivo, con corrección FDR.</p>
+<p>[BLOQUE DE CÓDIGO R: make_ko_dictionary() + calc_pathway_directional_bias() sobre la salida discriminante; plot_pathway_directional_bias(). Reproduce Figura 6.]</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Interpreta (checkpoint)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>¿Qué rutas muestran un sesgo direccional fuerte hacia aguas profundas? ¿Coincide con lo que viste en el bubble plot del paso 02?</li>
+<li>¿Por qué un sesgo <em>coherente de ruta completa</em> es una señal más fuerte que unos pocos genes sueltos significativos?</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="lectura-biológica-y-cierre" class="level2">
+<h2 class="anchored" data-anchor-id="lectura-biológica-y-cierre">05. Lectura biológica y cierre</h2>
+<p>[Interpretación: por qué las rutas de fenantreno y naftaleno se enriquecen en aguas profundas; qué implican los genes clave (alkB, fadL, pcaC) para el potencial de degradación; qué significa una “capacidad latente” de degradar hidrocarburos en un ambiente sin derrames activos. Conectar con biorremediación y monitoreo — relevante para aplicaciones industriales.]</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Para cerrar (reflexión)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Si tuvieras que priorizar organismos para un consorcio de biorremediación a partir de estos datos, ¿en qué señales te fijarías (cobertura de ruta, discriminante, sesgo direccional)?</li>
+<li>Este flujo se aplicó a profundidad marina. ¿Qué otra variable (sitio contaminado vs prístino, antes/después de un tratamiento) podrías meter como grupo y correr igual?</li>
+</ol>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <button id="quarto-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">

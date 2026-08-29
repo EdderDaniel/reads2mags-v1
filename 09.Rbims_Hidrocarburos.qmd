@@ -1,3 +1,79 @@
 ---
 title: "Caso de estudio: Metabolismo de hidrocarburos"
 ---
+
+En esta sesión aplicamos el flujo de **rbims** a un caso real y publicado: **42 MAGs** recuperados de un experimento de enriquecimiento con hexadecano en el **Atlántico Norte**, muestreados en dos profundidades (**5 m vs 700 m**) [@rbims2026]. La pregunta ya no es solo *"¿qué puede hacer cada genoma?"*, sino *"¿qué distingue funcionalmente a dos comunidades?"* — el salto de perfilar a **comparar**.
+
+::: callout-note
+## Por qué este caso, y no el pozol
+
+El pozol es un gradiente temporal de pocos MAGs; no tiene dos grupos claros que contrastar. Este dataset **sí**: dos profundidades, 42 MAGs, y un foco en **degradación de hidrocarburos**. Eso es lo que habilita el análisis discriminante — y lo que lo hace directamente útil para biorremediación.
+:::
+
+::: callout-important
+## Todo pre-computado
+
+Las anotaciones KO, la metadata limpia y el ambiente `rbimsenv` ya están en tu directorio. Cargamos objetos listos: el foco es **interpretar**, no procesar.
+:::
+
+## 01. Cargar y mapear anotaciones
+
+`rbims` lee la anotación de KofamScan y la mapea a rutas, módulos y a su **base interna de hidrocarburos** (hexadecano, fenantreno, naftaleno — rutas que KEGG no cubre completas).
+
+\[BLOQUE DE CÓDIGO R: library(rbims); read_ko() sobre los .txt de KofamScan; mapping_ko() → objeto de KOs mapeado. Cargar también la metadata limpia (.rds pre-computado con Depth por MAG).\]
+
+## 02. Explorar las rutas de degradación
+
+Extraemos las tres rutas de hidrocarburos y las visualizamos por genoma y taxonomía.
+
+\[BLOQUE DE CÓDIGO R: get_subset_pathway() sobre hexadecano/fenantreno/naftaleno; plot_bubble() y/o plot_heatmap() estratificado por taxonomía y profundidad. Reproduce Figuras 3–4.\]
+
+::: callout-tip
+## Interpreta (checkpoint)
+
+-   ¿Qué rutas están casi en todos los MAGs y cuáles son taxonómicamente restringidas?
+-   ¿Qué genes aparecen como más abundantes y conservados? ¿Qué papel cumplen?
+:::
+
+## 03. Análisis discriminante: ¿qué separa 5 m de 700 m?
+
+Aquí está el salto conceptual. `get_subset_discriminant()` combina **ALDEx2** (análisis composicional con transformación **CLR**, que corrige que los conteos son relativos) con un **random forest** usado *solo como ranking exploratorio* de KOs, no como predictor. La salida prioriza los KOs que más distinguen a los dos grupos, con su *effect size*.
+
+\[BLOQUE DE CÓDIGO R: get_subset_discriminant() con group_col de profundidad; plot_disc_effect() y plot_disc_heatmap(). Reproduce Figura 5.\]
+
+::: callout-note
+## Dos ideas clave antes de correr
+
+-   **Composicionalidad (CLR):** los conteos de genes son relativos (dependen del tamaño del genoma y la anotación); la transformación CLR los vuelve comparables. Por eso no se usan conteos crudos.
+-   **El random forest es solo un ranking**, no un clasificador validado. Ordena candidatos; la inferencia real viene del *effect size* de ALDEx2 y del paso siguiente.
+:::
+
+::: callout-caution
+## Lo que NO corremos (pero sí mostramos)
+
+La estabilidad del ranking se evaluó repitiendo el random forest **200 veces** con remuestreo. Es esencial para la honestidad del análisis, pero pesado y no aporta a la intuición. Aquí solo vemos el resultado: un subconjunto de KOs se recupera consistentemente; el ranking completo varía. Conclusión: úsalo como exploración, no como predicción.
+:::
+
+## 04. Sesgo direccional por ruta
+
+El aporte más novedoso de rbims. En vez de preguntar *"¿esta ruta tiene más genes significativos de lo esperado?"* (enriquecimiento clásico), pregunta: *"¿la **mayoría** de los genes de la ruta apuntan a la **misma** condición?"* — un test binomial sobre la proporción de genes con efecto positivo, con corrección FDR.
+
+\[BLOQUE DE CÓDIGO R: make_ko_dictionary() + calc_pathway_directional_bias() sobre la salida discriminante; plot_pathway_directional_bias(). Reproduce Figura 6.\]
+
+::: callout-tip
+## Interpreta (checkpoint)
+
+-   ¿Qué rutas muestran un sesgo direccional fuerte hacia aguas profundas? ¿Coincide con lo que viste en el bubble plot del paso 02?
+-   ¿Por qué un sesgo *coherente de ruta completa* es una señal más fuerte que unos pocos genes sueltos significativos?
+:::
+
+## 05. Lectura biológica y cierre
+
+\[Interpretación: por qué las rutas de fenantreno y naftaleno se enriquecen en aguas profundas; qué implican los genes clave (alkB, fadL, pcaC) para el potencial de degradación; qué significa una "capacidad latente" de degradar hidrocarburos en un ambiente sin derrames activos. Conectar con biorremediación y monitoreo — relevante para aplicaciones industriales.\]
+
+::: callout-tip
+## Para cerrar (reflexión)
+
+1.  Si tuvieras que priorizar organismos para un consorcio de biorremediación a partir de estos datos, ¿en qué señales te fijarías (cobertura de ruta, discriminante, sesgo direccional)?
+2.  Este flujo se aplicó a profundidad marina. ¿Qué otra variable (sitio contaminado vs prístino, antes/después de un tratamiento) podrías meter como grupo y correr igual?
+:::

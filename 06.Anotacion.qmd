@@ -49,6 +49,8 @@ done
 Y ahora si, ejecutamos gtdbtk
 
 ``` bash
+export GTDBTK_DATA_PATH=/data/BD/gtdbtk/release_gtdbtk_r226_full
+
 nohup gtdbtk classify_wf \
     --genome_dir results/13.gtdbtk/0h/bins/ \
     --out_dir results/13.gtdbtk/0h/ \

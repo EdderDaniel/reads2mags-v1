@@ -190,7 +190,7 @@ La muestra de 0 h es de **baja biomasa**: la fermentación apenas comienza, hay 
 **Esto no debe hacerse en un análisis real.** Usar contigs de \~1000 pb degrada el binning: incluir contigs menores a \~2500 pb produce agrupaciones de peor calidad y menor precisión ([Alneberg et al., 2014](https://doi.org/10.1038/nmeth.3103)). La razón ya la vimos en la figura de tetranucleótidos: un contig corto reparte sus \~1000 ventanas entre cientos de tetranucleótidos posibles, así que hay muy pocas cuentas de cada uno y su **firma de composición es ruidosa**, el binneador lo ubica mal en el espacio y contamina los grupos. En tus proyectos, mantén el mínimo en **1500–2500 pb o más**, y reserva los umbrales bajos para casos como este: una demostración con datos pequeños.
 :::
 
-![](images/clipboard-688869877.png){fig-align="center" width="272"}
+![](images/clipboard-688869877.png){fig-align="center" width="368"}
 
 ::: callout-caution
 ## Responde
@@ -403,6 +403,18 @@ Todo el flujo de MAGScoT está en un solo script, que hace cinco cosas: (1) pred
 
 Todo el flujo de MAGScoT está en un solo script, que hace cinco cosas: (1) predice los ORFs del ensamble con **Prodigal**, (2) los anota contra los marcadores de **GTDB r207** con **HMMER**, (3) arma la tabla contig-a-bin reutilizando las de DAS_Tool, (4) puntúa y refina con MAGScoT, y (5) extrae los MAGs a FASTA (porque MAGScoT entrega solo el mapeo, no los genomas).
 
+Primero activamos el ambiente
+
+``` bash
+conda activate MAGScoT_env
+```
+
+Creamos el script de ejecución
+
+``` bash
+nano scripts/11.magscot_0h.sh
+```
+
 ``` bash
 #!/usr/bin/bash
 
@@ -441,7 +453,7 @@ awk '{print $2"\t"$1"\tvamb"}'     $DT/0h_vamb.dastool.tsv     >> $out/contigs_t
 awk '{print $2"\t"$1"\tcomebin"}'  $DT/0h_comebin.dastool.tsv  >> $out/contigs_to_bin.tsv
 
 # 4. Puntaje y refinamiento con MAGScoT
-python3 $MAGSCOT/MAGScoT.py -i $out/contigs_to_bin.tsv --hmm $out/0hrs.hmm -o $out/0hrs
+python3 $MAGSCOT/MAGScoT.py -i $out/contigs_to_bin.tsv --hmm $out/0h.hmm -o $out/0h
 
 # 5. Extraccion de los FASTA (MAGScoT solo da el mapeo)
 
@@ -454,7 +466,7 @@ rm -f $out/bins/*.ctg
 ```
 
 ``` bash
-nohup bash scripts/12.magscot_0hrs.sh > outs/12.magscot.out &
+nohup bash scripts/11.magscot_0h.sh > outs/11.magscot.out &
 ```
 
 ::: callout-caution
