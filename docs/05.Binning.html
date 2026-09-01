@@ -625,7 +625,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption class="margin-caption">Contaminación de bins</figcaption>
 </figure>
 </div>
-<p>Para disminuir la contaminación e incrementar la completitud hay algunos programas que pueden ayudarnos. Entre ellos están Binning_refiner y DASTool.</p>
+<p>Para disminuir la contaminación e incrementar la completitud hay algunos programas que pueden ayudarnos. Entre ellos están MAGScoT y DASTool.</p>
 <section id="checkm2" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="checkm2">02.1 CheckM2</h3>
 <p>Antes de refinar necesitamos una forma de medir qué tan buenos son los <em>bins</em> que vamos obteniendo. Dos números resumen su calidad: la <strong>completitud</strong> (qué fracción del genoma esperado está presente) y la <strong>contaminación</strong> o redundancia (cuánto material de <em>otros</em> genomas se coló en el mismo <em>bin</em>). Para estimar ambas usaremos <a href="https://github.com/chklovski/CheckM2">CheckM2</a>, que se ha vuelto el estándar para evaluar la <a href="https://genome.cshlp.org/content/25/7/1043/T3.expansion.html">calidad de genomas y MAGs</a>.</p>
@@ -805,14 +805,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="va">$MAGSCOT</span>/MAGScoT.py <span class="at">-i</span> <span class="va">$out</span>/contigs_to_bin.tsv <span class="at">--hmm</span> <span class="va">$out</span>/0h.hmm <span class="at">-o</span> <span class="va">$out</span>/0h</span>
 <span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Extraccion de los FASTA (MAGScoT solo da el mapeo)</span></span>
-<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a><span class="bu">shopt</span> <span class="at">-s</span> nullglob</span>
-<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="va">$out</span>/bins/<span class="pp">*</span>.ctg<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a>  <span class="va">b</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="va">$f</span> .ctg<span class="va">)</span></span>
-<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a>  <span class="ex">seqkit</span> grep <span class="at">-f</span> <span class="va">$f</span> <span class="va">$asm</span> <span class="op">&gt;</span> <span class="va">$out</span>/bins/<span class="va">$b</span>.fasta</span>
-<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-f</span> <span class="va">$out</span>/bins/<span class="pp">*</span>.ctg</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> bash scripts/11.magscot_0h.sh <span class="op">&gt;</span> outs/11.magscot.out <span class="kw">&amp;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 <span class="va">$out</span>/0h.refined.contig_to_bin.out <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a> <span class="fu">awk</span> <span class="at">-v</span> d=<span class="st">"</span><span class="va">$out</span><span class="st">/bins"</span> <span class="st">'{b=$1; sub(/.*\//,"",b); print $2 &gt;&gt; d"/"b".ctg"}'</span></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a><span class="bu">shopt</span> <span class="at">-s</span> nullglob</span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="va">$out</span>/bins/<span class="pp">*</span>.ctg<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a>  <span class="va">b</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="va">$f</span> .ctg<span class="va">)</span></span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a>  <span class="ex">seqkit</span> grep <span class="at">-f</span> <span class="va">$f</span> <span class="va">$asm</span> <span class="op">&gt;</span> <span class="va">$out</span>/bins/<span class="va">$b</span>.fasta</span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-f</span> <span class="va">$out</span>/bins/<span class="pp">*</span>.ctg</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> bash scripts/11.magscot_0h.sh <span class="op">&gt;</span> outs/11.magscot_0h.out <span class="kw">&amp;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -826,7 +828,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Ya tienes las salidas de <strong>DAS_Tool</strong> y <strong>MAGScoT</strong> sobre la misma muestra. Compáralas:</p>
 <ol type="1">
 <li>¿Cuántos MAGs recuperó cada refinador? ¿Coinciden?</li>
-<li>Revisa la columna <code>is_magscot</code> en <code>0hrs.scores.out</code>: ¿alguno de los MAGs finales es un <strong>bin híbrido</strong> (fusionado por MAGScoT), o todos venían tal cual de un binneador?</li>
+<li>Revisa la columna <code>is_magscot</code> en <code>0h.scores.out</code>: ¿alguno de los MAGs finales es un <strong>bin híbrido</strong> (fusionado por MAGScoT), o todos venían tal cual de un binneador?</li>
 <li>Si ambos parten de los mismos bins, ¿por qué no dan exactamente el mismo resultado?</li>
 </ol>
 </div>

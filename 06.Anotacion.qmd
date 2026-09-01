@@ -123,7 +123,7 @@ out="results/14.prokka/0h"
 for FASTA in $(ls $input/); do
   LOCUSTAG=$(basename $FASTA .fasta)
   prokka --locustag "${LOCUSTAG}_Scaffold" \
-  --prefix $LOCUSTAG --addgenes --addmrn \
+  --prefix $LOCUSTAG --addgenes --addmrna \
   --cpus 6 --outdir "${out}/${LOCUSTAG}" \
   "${input}/${FASTA}" ;
 done

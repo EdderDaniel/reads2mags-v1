@@ -278,7 +278,7 @@ Ya corrimos cuatro programas de *binning*, pero, recordemos que los agrupamiento
 
 ![Contaminación de bins](Figures/05.Refinamiento.png){fig-align="center" width="260"}
 
-Para disminuir la contaminación e incrementar la completitud hay algunos programas que pueden ayudarnos. Entre ellos están Binning_refiner y DASTool.
+Para disminuir la contaminación e incrementar la completitud hay algunos programas que pueden ayudarnos. Entre ellos están MAGScoT y DASTool.
 
 ### 02.1 CheckM2
 
@@ -456,6 +456,8 @@ awk '{print $2"\t"$1"\tcomebin"}'  $DT/0h_comebin.dastool.tsv  >> $out/contigs_t
 python3 $MAGSCOT/MAGScoT.py -i $out/contigs_to_bin.tsv --hmm $out/0h.hmm -o $out/0h
 
 # 5. Extraccion de los FASTA (MAGScoT solo da el mapeo)
+tail -n +2 $out/0h.refined.contig_to_bin.out | \
+ awk -v d="$out/bins" '{b=$1; sub(/.*\//,"",b); print $2 >> d"/"b".ctg"}'
 
 shopt -s nullglob
 for f in $out/bins/*.ctg; do
@@ -466,7 +468,7 @@ rm -f $out/bins/*.ctg
 ```
 
 ``` bash
-nohup bash scripts/11.magscot_0h.sh > outs/11.magscot.out &
+nohup bash scripts/11.magscot_0h.sh > outs/11.magscot_0h.out &
 ```
 
 ::: callout-caution
@@ -475,7 +477,7 @@ nohup bash scripts/11.magscot_0h.sh > outs/11.magscot.out &
 Ya tienes las salidas de **DAS_Tool** y **MAGScoT** sobre la misma muestra. Compáralas:
 
 1.  ¿Cuántos MAGs recuperó cada refinador? ¿Coinciden?
-2.  Revisa la columna `is_magscot` en `0hrs.scores.out`: ¿alguno de los MAGs finales es un **bin híbrido** (fusionado por MAGScoT), o todos venían tal cual de un binneador?
+2.  Revisa la columna `is_magscot` en `0h.scores.out`: ¿alguno de los MAGs finales es un **bin híbrido** (fusionado por MAGScoT), o todos venían tal cual de un binneador?
 3.  Si ambos parten de los mismos bins, ¿por qué no dan exactamente el mismo resultado?
 :::
 

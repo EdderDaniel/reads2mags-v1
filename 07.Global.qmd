@@ -122,12 +122,12 @@ La clasificación viene como **una sola cadena** (`d__...;p__...;...`). La parti
 tax <- read_tsv(file.path("19.gtdbtk_global/gtdbtk.bac120.summary.tsv")) |>
   select(Bin_name = user_genome, classification) |>
   separate(classification,
-           into = c("Dominio","Phylum","Clase","Orden","Familia","Genero","Especie"),
+           into = c("Domain","Phylum","Class","Order","Family","Genus","Species"),
            sep = ";", fill = "right") |>
   # quita los prefijos d__ p__ c__ ...
-  mutate(across(Dominio:Especie, \(x) str_remove(x, "^[a-z]__"))) |>
+  mutate(across(Domain:Species, \(x) str_remove(x, "^[a-z]__"))) |>
   # el origen está en el nombre: MAG15_48h -> 48h
-  mutate(Muestra_origen = str_extract(MAG, "\\d+h$"))
+  mutate(Muestra_origen = str_extract(Bin_name, "\\d+h$"))
 ```
 
 ### 2. Calidad (CheckM2)
@@ -144,11 +144,9 @@ calidad <- read_tsv(file.path("19.gtdbtk_global/quality_report.tsv")) |>
 ``` r
 metadata <- tax |>
   left_join(calidad, by = "Bin_name") |>
-  arrange(Phylum, Clase, Orden, Familia, Genero)
+  arrange(Phylum, Class, Order, Family, Genus)
 
 metadata
-
-write_csv(metadata, file.path("metadata_pozol.csv"))
 ```
 
 ::: callout-tip
@@ -178,11 +176,11 @@ write_csv(metadata, file.path("metadata_pozol.csv"))
 
 # 1. ¿Cuántos MAGs por familia? 
 metadata |>
-  count(Familia, sort = TRUE)
+  count(Family, sort = TRUE)
 
 # 2. ¿Cómo se ve la calidad por familia? 
 metadata |>
-  group_by(Familia) |>
+  group_by(Family) |>
   summarise(
     n_MAGs        = n(),
     Compl_media   = round(mean(Completitud), 1),
@@ -196,13 +194,13 @@ metadata |>
 library(ggplot2)
 
 ## barplot
-ggplot(count(metadata, Familia), aes(x = reorder(Familia, n), y = n, fill = Familia)) +
+ggplot(count(metadata, Family), aes(x = reorder(Family, n), y = n, fill = Family)) +
   geom_col(show.legend = FALSE) + coord_flip() +
   labs(x = NULL, y = "Nº de MAGs", title = "MAGs recuperados por familia") +
   theme_minimal(base_size = 12)
 
 ## scatterplot
-ggplot(metadata, aes(x = Completitud, y = Contaminacion, color = Familia)) +
+ggplot(metadata, aes(x = Completitud, y = Contaminacion, color = Family)) +
   geom_hline(yintercept = 5,  linetype = "dashed", color = "grey60") +
   geom_vline(xintercept = 90, linetype = "dashed", color = "grey60") +
   geom_point(size = 2.5, alpha = 0.85) +
@@ -213,7 +211,6 @@ ggplot(metadata, aes(x = Completitud, y = Contaminacion, color = Familia)) +
   ) +
   ggrepel::geom_text_repel(aes(label = Bin_name), size = 3)+
   theme_minimal(base_size = 12)
-  
 ```
 :::
 
@@ -227,7 +224,7 @@ Ahora que ya tenemos los *bins* refinados, queremos saber qué capacidades metab
 
 ![](images/clipboard-1480307409.png){fig-align="center" width="550"}
 
-Estos resultados ya los tienes en el directorio `results/20.kofam-global/`
+Estos resultados ya los tienes en el directorio `results/21.kofam-global/`
 
 Y ahora que ya tenemos los identificadores de KO para cada proteína, vamos a filtrar y graficar el metabolismo de los *bins*.
 
@@ -318,7 +315,6 @@ pozol_mapp %>%
 ![](images/clipboard-3889016253.png){fig-align="center"}
 
 ::: callout-tip
-
 ## Explora libremente
 
 Ya tienes el objeto completo (funciones + metadatos). Prueba distintas vistas:

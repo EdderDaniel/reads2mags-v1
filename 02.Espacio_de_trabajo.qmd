@@ -26,6 +26,12 @@ ejecución, estructura del repositorio, los resultados obtenidos y sus conclusio
 
 Conozcamos el directorio en el que estamos situados
 
+copia el directorio completo
+
+``` bash
+cp -r /home/dianao/reads2mags_pozol .
+```
+
 ``` bash
 pwd
 ```

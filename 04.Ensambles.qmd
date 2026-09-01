@@ -26,28 +26,16 @@ mkdir -p results/03.ensambles/0h
 Vamos a generar un script que corra esta versión:
 
 ``` bash
-nano scripts/03.1.ensamble_megahit_0hv1.sh
-```
-
-``` bash
 #!/usr/bin/bash
 # Nombre y fecha
 # Script que corre  version 1 de ensamble con megahit
 
 # v01
-megahit -t 4 --min-contig-len 1000 \
+nohup megahit -t 4 --min-contig-len 1000 \
  --out-prefix v1_megahit \
  -1 results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz \
  -2 results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz \
- -o results/03.ensambles/0h/v1 
-```
-
-Guardamos tecleando `ctrl` + `o` + `enter` y luego `ctrl` + `x` + `enter`
-
-Y ejecutamos asi:
-
-``` bash
-nohup bash scripts/03.1.ensamble_megahit_v1.sh > outs/03.1.ensambles_megahit.out &
+ -o results/03.ensambles/0h/v1 > outs/03.megahit_0hv1.out &
 ```
 
 ::: callout-important
@@ -103,7 +91,7 @@ nohup metaspades.py -t 6 \
 Remover contigs que sean menores a 1000 pb para que sea comparable con los ensambles de megahit, puede ser con seqkit
 
 ``` bash
-seqkit seq -m 1000 results/03.ensambles/0h/v3/scaffolds.fasta > results/03.ensambles/0h/v3_spades.fasta
+seqkit seq -m 1000 results/03.ensambles/0h/v3/scaffolds.fasta > results/03.ensambles/0h/v3.spades.fasta
 ```
 
 Revisemos el contenido del directorio `results/03.ensambles/`
@@ -352,7 +340,7 @@ De nuevo te toca
 
 En equipos armen el script de profundidad con la muestra que les tocó y dejelo corriendo para que mañana lo revisemos.
 
-**NOTA:** para el ejemplo del tiempo 09hrs seguimos con v2 (meta-sensitive); en tu proyecto y en el ejercicio usa el que selecciones como el de mejor calidad.
+**NOTA:** para el ejemplo del tiempo 0h seguimos con v3; en tu proyecto y en el ejercicio usa el que selecciones como el de mejor calidad.
 
 Tiempo 15 min
 :::
