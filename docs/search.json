@@ -277,21 +277,35 @@
     "href": "00.Contenido.html",
     "title": "Contenido del taller",
     "section": "",
-    "text": "Tiempo estimado\nTema\n\n\n\n\n30 min\nPlática introducción a la metagenómica\n\n\n30 min\nFlujo general y planeación de proyectos\n\n\n30 min\nFiltrado por calidad y Remoción de hospedero\n\n\n1 h\nEnsambles\n\n\n15 min\nDescanso\n\n\n40 min\nComparación de ensambles\n\n\n2 h\nEquipos para que hagan todo con las 3 muestras sobrantes\n\n\n30 min\nResultados y discusión"
+    "text": "Este es el programa del taller De lecturas a MAGs. Está diseñado para que los procesos más pesados (ensamble, mapeo, binning, refinamiento) se dejen corriendo durante los refrigerios y almuerzos, aprovechando esos descansos como tiempo de cómputo. Los tiempos son aproximados y pueden ajustarse según el ritmo del grupo."
   },
   {
-    "objectID": "00.Contenido.html#día-uno",
-    "href": "00.Contenido.html#día-uno",
+    "objectID": "00.Contenido.html#día-1-del-dato-crudo-al-ensamble",
+    "href": "00.Contenido.html#día-1-del-dato-crudo-al-ensamble",
     "title": "Contenido del taller",
-    "section": "",
-    "text": "Tiempo estimado\nTema\n\n\n\n\n30 min\nPlática introducción a la metagenómica\n\n\n30 min\nFlujo general y planeación de proyectos\n\n\n30 min\nFiltrado por calidad y Remoción de hospedero\n\n\n1 h\nEnsambles\n\n\n15 min\nDescanso\n\n\n40 min\nComparación de ensambles\n\n\n2 h\nEquipos para que hagan todo con las 3 muestras sobrantes\n\n\n30 min\nResultados y discusión"
+    "section": "Día 1 · Del dato crudo al ensamble",
+    "text": "Día 1 · Del dato crudo al ensamble\n\n\n\n\n\n\n\n\n\nJornada\nHora\nTema\nModalidad\n\n\n\n\nMañana\n8:00–8:20\nLlegada y preparación del entorno\n—\n\n\n\n8:20–9:20\nCharla: flujo bioinformático para metagenómica centrada en genomas\nCharla\n\n\n\n9:20–10:00\nControl de calidad de lecturas (FastQC / MultiQC)\nPráctica\n\n\n\n10:00–10:20\n☕ Refrigerio\nDescanso\n\n\n\n10:20–12:30\nFiltrado y recorte (Trim Galore); remoción de hospedero (conceptual)\nPráctica\n\n\nAlmuerzo\n12:30–14:00\n🍽️ Almuerzo 🚀 dejar corriendo el ensamble v1\nDescanso + cómputo\n\n\nTarde\n14:00–14:30\nCharla: ensamblaje metagenómico (métricas, N50 vs auN)\nCharla\n\n\n\n14:30–16:45\nComparación de ensambles (QUAST, mapeo) 🚀 dejar corriendo la profundidad\nPráctica"
   },
   {
-    "objectID": "00.Contenido.html#día-dos",
-    "href": "00.Contenido.html#día-dos",
+    "objectID": "00.Contenido.html#día-2-binning-y-refinamiento",
+    "href": "00.Contenido.html#día-2-binning-y-refinamiento",
     "title": "Contenido del taller",
-    "section": "Día dos",
-    "text": "Día dos\n\n\n\nTiempo\nTema"
+    "section": "Día 2 · Binning y refinamiento",
+    "text": "Día 2 · Binning y refinamiento\n\n\n\n\n\n\n\n\n\nJornada\nHora\nTema\nModalidad\n\n\n\n\nMañana\n8:00–8:20\nLlegada\n—\n\n\n\n8:20–9:20\nCharla: binning (cobertura + composición; los cuatro binneadores)\nCharla\n\n\n\n9:20–10:00\nMetaBAT2 y MaxBin2 🚀 dejar corriendo antes del descanso\nPráctica\n\n\n\n10:00–10:20\n☕ Refrigerio (binning corriendo)\nDescanso + cómputo\n\n\n\n10:20–12:30\nVAMB (COMEBin 🔧 pre-computado) · CheckM2 sobre MetaBAT\nPráctica\n\n\nAlmuerzo\n12:30–14:00\n🍽️ Almuerzo 🚀 dejar corriendo DAS_Tool + MAGScoT\nDescanso + cómputo\n\n\nTarde\n14:00–15:00\nCharla: refinamiento y desreplicación (DAS_Tool, MAGScoT, dRep; MIMAG)\nCharla\n\n\n\n15:00–16:45\nExplorar el refinamiento · dRep → MAGs finales\nPráctica"
+  },
+  {
+    "objectID": "00.Contenido.html#día-3-taxonomía-anotación-y-análisis-global",
+    "href": "00.Contenido.html#día-3-taxonomía-anotación-y-análisis-global",
+    "title": "Contenido del taller",
+    "section": "Día 3 · Taxonomía, anotación y análisis global",
+    "text": "Día 3 · Taxonomía, anotación y análisis global\n\n\n\n\n\n\n\n\n\nJornada\nHora\nTema\nModalidad\n\n\n\n\nMañana\n8:00–8:20\nLlegada\n—\n\n\n\n8:20–9:20\nCharla: clasificación taxonómica y anotación funcional\nCharla\n\n\n\n9:20–10:00\nGTDB-Tk (🔧 pre-computado) · Prokka en vivo sobre un MAG 🚀\nPráctica\n\n\n\n10:00–10:20\n☕ Refrigerio\nDescanso\n\n\n\n10:20–12:30\nBakta (🔧 pre-computado) · KofamScan · Análisis global: tabla de metadatos y RbiMs\nPráctica\n\n\nAlmuerzo\n12:30–14:00\n🍽️ Almuerzo\nDescanso"
+  },
+  {
+    "objectID": "00.Contenido.html#día-4-caso-de-estudio-degradación-de-hidrocarburos",
+    "href": "00.Contenido.html#día-4-caso-de-estudio-degradación-de-hidrocarburos",
+    "title": "Contenido del taller",
+    "section": "Día 4 · Caso de estudio: degradación de hidrocarburos",
+    "text": "Día 4 · Caso de estudio: degradación de hidrocarburos\n\n\n\n\n\n\n\n\n\nJornada\nHora\nTema\nModalidad\n\n\n\n\nMañana\n8:00–8:20\nLlegada\n—\n\n\n\n8:20–9:20\nCharla: degradación de hidrocarburos y análisis funcional comparativo\nCharla\n\n\n\n9:20–10:00\nCarga de datos (🔧 pre-computados) y exploración de rutas de hidrocarburos\nPráctica\n\n\n\n10:00–10:20\n☕ Refrigerio\nDescanso\n\n\n\n10:20–12:30\nAnálisis discriminante, sesgo direccional por ruta y lectura biológica\nPráctica\n\n\nAlmuerzo\n12:30–14:00\n🍽️ Almuerzo\nDescanso\n\n\n\n\n\n\n\n\n\nNoteLeyenda\n\n\n\n🚀 Proceso que se lanza antes de un descanso para que corra durante el mismo\n🔧 Resultado pre-computado que ya está en tu directorio\n☕🍽️ Descansos."
   },
   {
     "objectID": "Recursos_extra.html",
@@ -305,14 +319,14 @@
     "href": "Creditos.html",
     "title": "Créditos",
     "section": "",
-    "text": "Diana Hernández Oaxaca https://github.com/DianaOaxaca\n\n\n\nMirna Vázquez Rosas Landa https://github.com/mirnavazquez\n\n\n\nFrida Ruiz https://github.com/FridalRuiz\nYaxche Lona Tellez https://github.com/YaxcheLona\nPaola https://github.com/xanathh\nLaura Mendez\nFrancisco Javier Balvino Olvera\nIrma Gonzalez https://github.com/irmagonzalez\nEdder Daniel https://github.com/EdderDaniel"
+    "text": "Diana Hernández Oaxaca https://github.com/DianaOaxaca\n\n\n\nMirna Vázquez Rosas Landa https://github.com/mirnavazquez\n\n\n\nFrida Ruiz https://github.com/FridalRuiz\nYaxche Lona Tellez https://github.com/YaxcheLona\nPaola https://github.com/xanathh\nLaura Mendez https://github.com/mecllaus-licm\nFrancisco Javier Balvino Olvera https://github.com/fjbalvino\nIrma Gonzalez https://github.com/irmagonzalez\nEdder Daniel https://github.com/EdderDaniel"
   },
   {
     "objectID": "Creditos.html#colaboradores",
     "href": "Creditos.html#colaboradores",
     "title": "Créditos",
     "section": "",
-    "text": "Diana Hernández Oaxaca https://github.com/DianaOaxaca\n\n\n\nMirna Vázquez Rosas Landa https://github.com/mirnavazquez\n\n\n\nFrida Ruiz https://github.com/FridalRuiz\nYaxche Lona Tellez https://github.com/YaxcheLona\nPaola https://github.com/xanathh\nLaura Mendez\nFrancisco Javier Balvino Olvera\nIrma Gonzalez https://github.com/irmagonzalez\nEdder Daniel https://github.com/EdderDaniel"
+    "text": "Diana Hernández Oaxaca https://github.com/DianaOaxaca\n\n\n\nMirna Vázquez Rosas Landa https://github.com/mirnavazquez\n\n\n\nFrida Ruiz https://github.com/FridalRuiz\nYaxche Lona Tellez https://github.com/YaxcheLona\nPaola https://github.com/xanathh\nLaura Mendez https://github.com/mecllaus-licm\nFrancisco Javier Balvino Olvera https://github.com/fjbalvino\nIrma Gonzalez https://github.com/irmagonzalez\nEdder Daniel https://github.com/EdderDaniel"
   },
   {
     "objectID": "Creditos.html#licencia",

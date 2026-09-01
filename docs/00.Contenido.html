@@ -159,8 +159,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#día-uno" id="toc-día-uno" class="nav-link active" data-scroll-target="#día-uno">Día uno</a></li>
-  <li><a href="#día-dos" id="toc-día-dos" class="nav-link" data-scroll-target="#día-dos">Día dos</a></li>
+  <li><a href="#día-1-del-dato-crudo-al-ensamble" id="toc-día-1-del-dato-crudo-al-ensamble" class="nav-link active" data-scroll-target="#día-1-del-dato-crudo-al-ensamble">Día 1 · Del dato crudo al ensamble</a></li>
+  <li><a href="#día-2-binning-y-refinamiento" id="toc-día-2-binning-y-refinamiento" class="nav-link" data-scroll-target="#día-2-binning-y-refinamiento">Día 2 · Binning y refinamiento</a></li>
+  <li><a href="#día-3-taxonomía-anotación-y-análisis-global" id="toc-día-3-taxonomía-anotación-y-análisis-global" class="nav-link" data-scroll-target="#día-3-taxonomía-anotación-y-análisis-global">Día 3 · Taxonomía, anotación y análisis global</a></li>
+  <li><a href="#día-4-caso-de-estudio-degradación-de-hidrocarburos" id="toc-día-4-caso-de-estudio-degradación-de-hidrocarburos" class="nav-link" data-scroll-target="#día-4-caso-de-estudio-degradación-de-hidrocarburos">Día 4 · Caso de estudio: degradación de hidrocarburos</a></li>
   </ul>
 </nav>
     </div>
@@ -186,96 +188,273 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="día-uno" class="level2">
-<h2 class="anchored" data-anchor-id="día-uno">Día uno</h2>
+<p>Este es el programa del taller <strong>De lecturas a MAGs</strong>. Está diseñado para que los procesos más pesados (ensamble, mapeo, binning, refinamiento) se <strong>dejen corriendo durante los refrigerios y almuerzos</strong>, aprovechando esos descansos como tiempo de cómputo. Los tiempos son aproximados y pueden ajustarse según el ritmo del grupo.</p>
+<section id="día-1-del-dato-crudo-al-ensamble" class="level2">
+<h2 class="anchored" data-anchor-id="día-1-del-dato-crudo-al-ensamble">Día 1 · Del dato crudo al ensamble</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 26%">
-<col style="width: 73%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Tiempo estimado</th>
+<th>Jornada</th>
+<th>Hora</th>
 <th>Tema</th>
+<th>Modalidad</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>30 min</td>
-<td>Plática introducción a la metagenómica</td>
+<td>Mañana</td>
+<td>8:00–8:20</td>
+<td>Llegada y preparación del entorno</td>
+<td>—</td>
 </tr>
 <tr class="even">
-<td>30 min</td>
-<td>Flujo general y planeación de proyectos</td>
+<td></td>
+<td>8:20–9:20</td>
+<td>Charla: flujo bioinformático para metagenómica centrada en genomas</td>
+<td>Charla</td>
 </tr>
 <tr class="odd">
-<td>30 min</td>
-<td>Filtrado por calidad y Remoción de hospedero</td>
+<td></td>
+<td>9:20–10:00</td>
+<td>Control de calidad de lecturas (FastQC / MultiQC)</td>
+<td>Práctica</td>
 </tr>
 <tr class="even">
-<td>1 h</td>
-<td>Ensambles</td>
-</tr>
-<tr class="odd">
-<td>15 min</td>
+<td></td>
+<td>10:00–10:20</td>
+<td>☕ <strong>Refrigerio</strong></td>
 <td>Descanso</td>
 </tr>
-<tr class="even">
-<td>40 min</td>
-<td>Comparación de ensambles</td>
-</tr>
-<tr class="odd">
-<td>2 h</td>
-<td>Equipos para que hagan todo con las 3 muestras sobrantes</td>
-</tr>
-<tr class="even">
-<td>30 min</td>
-<td>Resultados y discusión</td>
-</tr>
 <tr class="odd">
 <td></td>
-<td></td>
+<td>10:20–12:30</td>
+<td>Filtrado y recorte (Trim Galore); remoción de hospedero (conceptual)</td>
+<td>Práctica</td>
+</tr>
+<tr class="even">
+<td>Almuerzo</td>
+<td>12:30–14:00</td>
+<td>🍽️ <strong>Almuerzo</strong> 🚀 <em>dejar corriendo el ensamble v1</em></td>
+<td>Descanso + cómputo</td>
+</tr>
+<tr class="odd">
+<td>Tarde</td>
+<td>14:00–14:30</td>
+<td>Charla: ensamblaje metagenómico (métricas, N50 vs auN)</td>
+<td>Charla</td>
 </tr>
 <tr class="even">
 <td></td>
-<td></td>
+<td>14:30–16:45</td>
+<td>Comparación de ensambles (QUAST, mapeo) 🚀 <em>dejar corriendo la profundidad</em></td>
+<td>Práctica</td>
 </tr>
 </tbody>
 </table>
-<hr>
 </section>
-<section id="día-dos" class="level2">
-<h2 class="anchored" data-anchor-id="día-dos">Día dos</h2>
+<section id="día-2-binning-y-refinamiento" class="level2">
+<h2 class="anchored" data-anchor-id="día-2-binning-y-refinamiento">Día 2 · Binning y refinamiento</h2>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Tiempo</th>
+<th>Jornada</th>
+<th>Hora</th>
 <th>Tema</th>
+<th>Modalidad</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td></td>
-<td></td>
+<td>Mañana</td>
+<td>8:00–8:20</td>
+<td>Llegada</td>
+<td>—</td>
 </tr>
 <tr class="even">
 <td></td>
-<td></td>
+<td>8:20–9:20</td>
+<td>Charla: binning (cobertura + composición; los cuatro binneadores)</td>
+<td>Charla</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td></td>
+<td>9:20–10:00</td>
+<td>MetaBAT2 y MaxBin2 🚀 <em>dejar corriendo antes del descanso</em></td>
+<td>Práctica</td>
 </tr>
 <tr class="even">
 <td></td>
-<td></td>
+<td>10:00–10:20</td>
+<td>☕ <strong>Refrigerio</strong> <em>(binning corriendo)</em></td>
+<td>Descanso + cómputo</td>
 </tr>
 <tr class="odd">
 <td></td>
+<td>10:20–12:30</td>
+<td>VAMB (COMEBin 🔧 pre-computado) · CheckM2 sobre MetaBAT</td>
+<td>Práctica</td>
+</tr>
+<tr class="even">
+<td>Almuerzo</td>
+<td>12:30–14:00</td>
+<td>🍽️ <strong>Almuerzo</strong> 🚀 <em>dejar corriendo DAS_Tool + MAGScoT</em></td>
+<td>Descanso + cómputo</td>
+</tr>
+<tr class="odd">
+<td>Tarde</td>
+<td>14:00–15:00</td>
+<td>Charla: refinamiento y desreplicación (DAS_Tool, MAGScoT, dRep; MIMAG)</td>
+<td>Charla</td>
+</tr>
+<tr class="even">
 <td></td>
+<td>15:00–16:45</td>
+<td>Explorar el refinamiento · dRep → MAGs finales</td>
+<td>Práctica</td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="día-3-taxonomía-anotación-y-análisis-global" class="level2">
+<h2 class="anchored" data-anchor-id="día-3-taxonomía-anotación-y-análisis-global">Día 3 · Taxonomía, anotación y análisis global</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Jornada</th>
+<th>Hora</th>
+<th>Tema</th>
+<th>Modalidad</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mañana</td>
+<td>8:00–8:20</td>
+<td>Llegada</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>8:20–9:20</td>
+<td>Charla: clasificación taxonómica y anotación funcional</td>
+<td>Charla</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>9:20–10:00</td>
+<td>GTDB-Tk (🔧 pre-computado) · Prokka en vivo sobre un MAG 🚀</td>
+<td>Práctica</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>10:00–10:20</td>
+<td>☕ <strong>Refrigerio</strong></td>
+<td>Descanso</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>10:20–12:30</td>
+<td>Bakta (🔧 pre-computado) · KofamScan · Análisis global: tabla de metadatos y RbiMs</td>
+<td>Práctica</td>
+</tr>
+<tr class="even">
+<td>Almuerzo</td>
+<td>12:30–14:00</td>
+<td>🍽️ <strong>Almuerzo</strong></td>
+<td>Descanso</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="día-4-caso-de-estudio-degradación-de-hidrocarburos" class="level2">
+<h2 class="anchored" data-anchor-id="día-4-caso-de-estudio-degradación-de-hidrocarburos">Día 4 · Caso de estudio: degradación de hidrocarburos</h2>
+<table class="table-striped table-hover caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 18%">
+<col style="width: 52%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Jornada</th>
+<th>Hora</th>
+<th>Tema</th>
+<th>Modalidad</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mañana</td>
+<td>8:00–8:20</td>
+<td>Llegada</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>8:20–9:20</td>
+<td>Charla: degradación de hidrocarburos y análisis funcional comparativo</td>
+<td>Charla</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>9:20–10:00</td>
+<td>Carga de datos (🔧 pre-computados) y exploración de rutas de hidrocarburos</td>
+<td>Práctica</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>10:00–10:20</td>
+<td>☕ <strong>Refrigerio</strong></td>
+<td>Descanso</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>10:20–12:30</td>
+<td>Análisis discriminante, sesgo direccional por ruta y lectura biológica</td>
+<td>Práctica</td>
+</tr>
+<tr class="even">
+<td>Almuerzo</td>
+<td>12:30–14:00</td>
+<td>🍽️ <strong>Almuerzo</strong></td>
+<td>Descanso</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Leyenda
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>🚀 Proceso que se <strong>lanza antes de un descanso</strong> para que corra durante el mismo</p>
+<p>🔧 Resultado <strong>pre-computado</strong> que ya está en tu directorio</p>
+<p>☕🍽️ Descansos.</p>
+</div>
+</div>
 
 
 </section>

@@ -2,29 +2,64 @@
 title: "Contenido del taller"
 ---
 
-## Día uno
+Este es el programa del taller **De lecturas a MAGs**. Está diseñado para que los procesos más pesados (ensamble, mapeo, binning, refinamiento) se **dejen corriendo durante los refrigerios y almuerzos**, aprovechando esos descansos como tiempo de cómputo. Los tiempos son aproximados y pueden ajustarse según el ritmo del grupo.
 
-| Tiempo estimado | Tema                                                     |
-|------------------|-------------------------------------------------|
-| 30 min          | Plática introducción a la metagenómica                   |
-| 30 min          | Flujo general y planeación de proyectos                  |
-| 30 min          | Filtrado por calidad y Remoción de hospedero             |
-| 1 h             | Ensambles                                                |
-| 15 min          | Descanso                                                 |
-| 40 min          | Comparación de ensambles                                 |
-| 2 h             | Equipos para que hagan todo con las 3 muestras sobrantes |
-| 30 min          | Resultados y discusión                                   |
-|                 |                                                          |
-|                 |                                                          |
+## Día 1 · Del dato crudo al ensamble
 
----
+| Jornada | Hora | Tema | Modalidad |
+|------------------|------------------|------------------|------------------|
+| Mañana | 8:00–8:20 | Llegada y preparación del entorno | — |
+|  | 8:20–9:20 | Charla: flujo bioinformático para metagenómica centrada en genomas | Charla |
+|  | 9:20–10:00 | Control de calidad de lecturas (FastQC / MultiQC) | Práctica |
+|  | 10:00–10:20 | ☕ **Refrigerio** | Descanso |
+|  | 10:20–12:30 | Filtrado y recorte (Trim Galore); remoción de hospedero (conceptual) | Práctica |
+| Almuerzo | 12:30–14:00 | 🍽️ **Almuerzo** 🚀 *dejar corriendo el ensamble v1* | Descanso + cómputo |
+| Tarde | 14:00–14:30 | Charla: ensamblaje metagenómico (métricas, N50 vs auN) | Charla |
+|  | 14:30–16:45 | Comparación de ensambles (QUAST, mapeo) 🚀 *dejar corriendo la profundidad* | Práctica |
 
-## Día dos
+## Día 2 · Binning y refinamiento
 
-| Tiempo | Tema |
-|--------|------|
-|        |      |
-|        |      |
-|        |      |
-|        |      |
-|        |      |
+| Jornada | Hora | Tema | Modalidad |
+|------------------|------------------|------------------|------------------|
+| Mañana | 8:00–8:20 | Llegada | — |
+|  | 8:20–9:20 | Charla: binning (cobertura + composición; los cuatro binneadores) | Charla |
+|  | 9:20–10:00 | MetaBAT2 y MaxBin2 🚀 *dejar corriendo antes del descanso* | Práctica |
+|  | 10:00–10:20 | ☕ **Refrigerio** *(binning corriendo)* | Descanso + cómputo |
+|  | 10:20–12:30 | VAMB (COMEBin 🔧 pre-computado) · CheckM2 sobre MetaBAT | Práctica |
+| Almuerzo | 12:30–14:00 | 🍽️ **Almuerzo** 🚀 *dejar corriendo DAS_Tool + MAGScoT* | Descanso + cómputo |
+| Tarde | 14:00–15:00 | Charla: refinamiento y desreplicación (DAS_Tool, MAGScoT, dRep; MIMAG) | Charla |
+|  | 15:00–16:45 | Explorar el refinamiento · dRep → MAGs finales | Práctica |
+
+## Día 3 · Taxonomía, anotación y análisis global
+
+| Jornada | Hora | Tema | Modalidad |
+|------------------|------------------|------------------|------------------|
+| Mañana | 8:00–8:20 | Llegada | — |
+|  | 8:20–9:20 | Charla: clasificación taxonómica y anotación funcional | Charla |
+|  | 9:20–10:00 | GTDB-Tk (🔧 pre-computado) · Prokka en vivo sobre un MAG 🚀 | Práctica |
+|  | 10:00–10:20 | ☕ **Refrigerio** | Descanso |
+|  | 10:20–12:30 | Bakta (🔧 pre-computado) · KofamScan · Análisis global: tabla de metadatos y RbiMs | Práctica |
+| Almuerzo | 12:30–14:00 | 🍽️ **Almuerzo** | Descanso |
+
+## Día 4 · Caso de estudio: degradación de hidrocarburos
+
+| Jornada | Hora | Tema | Modalidad |
+|------------------|------------------|------------------|------------------|
+| Mañana | 8:00–8:20 | Llegada | — |
+|  | 8:20–9:20 | Charla: degradación de hidrocarburos y análisis funcional comparativo | Charla |
+|  | 9:20–10:00 | Carga de datos (🔧 pre-computados) y exploración de rutas de hidrocarburos | Práctica |
+|  | 10:00–10:20 | ☕ **Refrigerio** | Descanso |
+|  | 10:20–12:30 | Análisis discriminante, sesgo direccional por ruta y lectura biológica | Práctica |
+| Almuerzo | 12:30–14:00 | 🍽️ **Almuerzo** | Descanso |
+
+: {.striped .hover tbl-colwidths="\[15,18,52,15\]"}
+
+::: callout-note
+## Leyenda
+
+🚀 Proceso que se **lanza antes de un descanso** para que corra durante el mismo
+
+🔧 Resultado **pre-computado** que ya está en tu directorio
+
+☕🍽️ Descansos.
+:::

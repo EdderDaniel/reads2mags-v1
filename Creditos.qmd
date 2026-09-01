@@ -15,8 +15,8 @@ title: "Créditos"
 -   Frida Ruiz <https://github.com/FridalRuiz>
 -   Yaxche Lona Tellez <https://github.com/YaxcheLona>
 -   Paola <https://github.com/xanathh>
--   Laura Mendez
--   Francisco Javier Balvino Olvera
+-   Laura Mendez <https://github.com/mecllaus-licm>
+-   Francisco Javier Balvino Olvera <https://github.com/fjbalvino>
 -   Irma Gonzalez <https://github.com/irmagonzalez>
 -   Edder Daniel <https://github.com/EdderDaniel>
 
