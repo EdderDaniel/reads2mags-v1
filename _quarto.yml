@@ -38,7 +38,7 @@ website:
       - href: 09.Rbims_Hidrocarburos.qmd
         text: Hidrocarburos
         icon: droplet
-      - href: 08.Creditos.qmd
+      - href: Creditos.qmd
         text: Creditos
         icon: bezier2
 

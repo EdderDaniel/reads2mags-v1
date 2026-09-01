@@ -14,20 +14,18 @@ title: "Créditos"
 
 -   Frida Ruiz <https://github.com/FridalRuiz>
 -   Yaxche Lona Tellez <https://github.com/YaxcheLona>
--   Paola
+-   Paola <https://github.com/xanathh>
 -   Laura Mendez
 -   Francisco Javier Balvino Olvera
--   Irma
--   Daniel
+-   Irma Gonzalez <https://github.com/irmagonzalez>
+-   Edder Daniel <https://github.com/EdderDaniel>
 
 ## Licencia
 
-Este material combina código y contenido educativo, cada uno con su
-propia licencia:
+Este material combina código y contenido educativo, cada uno con su propia licencia:
 
-- **Código** (scripts, bloques de análisis y el sitio Quarto): licencia [MIT](https://github.com/DianaOaxaca/reads2mags/blob/main/LICENSE).
-- **Contenido educativo** (texto de las lecciones y figuras originales):
-licencia [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+-   **Código** (scripts, bloques de análisis y el sitio Quarto): licencia [MIT](https://github.com/DianaOaxaca/reads2mags/blob/main/LICENSE).
+-   **Contenido educativo** (texto de las lecciones y figuras originales): licencia [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 En breve: **puedes reusar, adaptar y redistribuir** este material, siempre que **des el crédito correspondiente**.
 
@@ -43,7 +41,7 @@ is licensed under
 </p>
 ```
 
----
+------------------------------------------------------------------------
 
 ## Cómo citar
 
