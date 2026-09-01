@@ -57,12 +57,27 @@ dRep dereplicate results/18.drep_global \
 ```
 
 ``` bash
-mkdir -p results/19.gtdbtk_global
+in=results/18.drep_global/dereplicated_genomes
+out=results/19.gtdbtk_global/mags
+mkdir -p $out
 
-conda activate gtdbt
+n=1
+for s in 0h 09h 24h 48h; do
+  for f in $(ls $in/${s}_*.fasta | sort); do
+    new=$(printf "MAG%02d_%s" "$n" "$s")
+    cp "$f" "$out/${new}.fasta"
+    n=$((n+1))
+  done
+done
+
+ls $out/*.fasta | wc -l     
+```
+
+``` bash
+conda activate gtdbtk
 
 nohup gtdbtk classify_wf \
-    --genome_dir results/18.drep_global/dereplicated_genomes/ \
+    --genome_dir results/19.gtdbtk_global/mags/ \
     --out_dir results/19.gtdbtk_global \
     --cpus 12 \
     -x fasta > outs/19.gtdbtk-global.out &
@@ -71,23 +86,138 @@ nohup gtdbtk classify_wf \
 
 ## 02. Construye la tabla de metadatos
 
-Las anotaciones no significan nada solas: para leerlas necesitamos saber, de cada MAG, **de dónde viene, qué es y qué tan bueno es**. Esa tabla que une origen + taxonomía + calidad es la **metadata**, y es la columna vertebral de cualquier figura comparativa. La vas a construir tú, porque saber armarla es una habilidad que usarás en todos tus proyectos.
+Necesitamos saber, de cada MAG, **de dónde viene, qué es y qué tan bueno es**. Esa tabla que une origen + taxonomía + calidad es la **metadata**, y es la columna vertebral de cualquier figura comparativa. La vas a construir tú, porque saber armarla es una habilidad que usarás en todos tus proyectos.
 
-:::: callout-caution
+::::
+
+::: callout-note
+Ingresa al directorio `results/19.gtdbtk_global`
+
 Crea una tabla que se llame `Metadatos.tsv` **dentro del directorio de resultados de GTDB-tk** que incluya el nombre del bin y la clasificación taxonómica.
 
-1\) Cambia el encabezado del nombre del bin: `user_genome` por `Bin_name`
+Cambia el encabezado del nombre del bin: `user_genome` por `Bin_name`
 
-2\) Elimina `classification` y asegurate de que los niveles taxonómicos estén separados por tabulador. A cada columna de los niveles taxonómicos agregale su encabezado correspondiente: `Domain, Phylum, Class, Order, Family, Genus, Species`
+Tienes tres archivos, y cada uno aporta una pieza:
 
-::: {.callout-tip collapse="True"}
-## Solución
+| Fuente | Aporta | Cómo llama al MAG |
+|------------------------|------------------------|------------------------|
+| `gtdbtk.bac120.summary.tsv` | taxonomía | columna `user_genome` |
+| `quality_report.tsv` (CheckM2) | completitud, contaminación | columna `Name` |
+| el **nombre del MAG** | muestra de origen | p\. ej. `MAG15_48h` → `48h` |
 
-echo -e Bin_name"\\t"Domain"\\t"Phylum"\\t"Class"\\t"Order"\\t"Family"\\t"Genus"\\t"Species \> Metadatos.tsv
-
-cut -f1,2 gtdbtk.bac120.summary.tsv \| grep -v "classification" \| sed 's/;/\\t/g' \>\> Metadatos.tsv
+Fíjate en el detalle: **cada tabla llama al MAG con un nombre de columna distinto** (`user_genome`, `Name`). El primer paso siempre es homogeneizar esa llave; luego, unir es fácil.
 :::
-::::
+
+Trabajaremos en R, ingresa al servidor de Rstudio `LandaLabServer` y crea un proyecto dentro del directorio `results`.
+
+``` r
+library(tidyverse)
+```
+
+### 1. Taxonomía (GTDB-Tk)
+
+La clasificación viene como **una sola cadena** (`d__...;p__...;...`). La partimos en niveles y, de paso, sacamos la **muestra de origen** del nombre del MAG.
+
+``` r
+tax <- read_tsv(file.path("19.gtdbtk_global/gtdbtk.bac120.summary.tsv")) |>
+  select(Bin_name = user_genome, classification) |>
+  separate(classification,
+           into = c("Dominio","Phylum","Clase","Orden","Familia","Genero","Especie"),
+           sep = ";", fill = "right") |>
+  # quita los prefijos d__ p__ c__ ...
+  mutate(across(Dominio:Especie, \(x) str_remove(x, "^[a-z]__"))) |>
+  # el origen está en el nombre: MAG15_48h -> 48h
+  mutate(Muestra_origen = str_extract(MAG, "\\d+h$"))
+```
+
+### 2. Calidad (CheckM2)
+
+Solo necesitamos completitud y contaminación. Renombramos `Name` a `MAG` para que la llave coincida.
+
+``` r
+calidad <- read_tsv(file.path("19.gtdbtk_global/quality_report.tsv")) |>
+  select(Bin_name = Name, Completitud = Completeness, Contaminacion = Contamination)
+```
+
+### 3. Unir todo por el nombre
+
+``` r
+metadata <- tax |>
+  left_join(calidad, by = "Bin_name") |>
+  arrange(Phylum, Clase, Orden, Familia, Genero)
+
+metadata
+
+write_csv(metadata, file.path("metadata_pozol.csv"))
+```
+
+::: callout-tip
+## Verifica (checkpoint)
+
+Antes de seguir, confirma que la tabla quedó bien:
+
+``` r
+nrow(metadata)                 # ¿son tus 17 MAGs?
+sum(is.na(metadata$Familia))   # ¿alguna taxonomía quedó vacía?
+```
+
+Si `nrow` no da 17, o hay `NA` inesperados, casi siempre es que un nombre de MAG no coincide entre archivos (un espacio, una extensión `.fasta` de más). Revisa con `setdiff(tax$MAG, calidad$MAG)`.
+:::
+
+Guárdala para RbiMs y para anotar cualquier figura.
+
+``` r
+write_csv(metadata, file.path("metadata_pozol.csv"))
+```
+
+::: callout-tip
+## Para explorar
+
+``` r
+# Exploración de los MAGs
+
+# 1. ¿Cuántos MAGs por familia? 
+metadata |>
+  count(Familia, sort = TRUE)
+
+# 2. ¿Cómo se ve la calidad por familia? 
+metadata |>
+  group_by(Familia) |>
+  summarise(
+    n_MAGs        = n(),
+    Compl_media   = round(mean(Completitud), 1),
+    Contam_media  = round(mean(Contaminacion), 2),
+    .groups = "drop"
+  ) |>
+  arrange(desc(n_MAGs))
+
+# 3. Plot exploratorio: calidad de cada MAG por familia
+
+library(ggplot2)
+
+## barplot
+ggplot(count(metadata, Familia), aes(x = reorder(Familia, n), y = n, fill = Familia)) +
+  geom_col(show.legend = FALSE) + coord_flip() +
+  labs(x = NULL, y = "Nº de MAGs", title = "MAGs recuperados por familia") +
+  theme_minimal(base_size = 12)
+
+## scatterplot
+ggplot(metadata, aes(x = Completitud, y = Contaminacion, color = Familia)) +
+  geom_hline(yintercept = 5,  linetype = "dashed", color = "grey60") +
+  geom_vline(xintercept = 90, linetype = "dashed", color = "grey60") +
+  geom_point(size = 2.5, alpha = 0.85) +
+  scale_x_continuous(limits = c(50, 100)) +
+  labs(
+    title = "Calidad de los MAGs del pozol",
+    x = "Completitud (%)", y = "Contaminación (%)"
+  ) +
+  ggrepel::geom_text_repel(aes(label = Bin_name), size = 3)+
+  theme_minimal(base_size = 12)
+  
+```
+:::
+
+![](images/clipboard-2071547069.png){fig-align="center" width="670"}
 
 ## 03. RbiMs: explora el metabolismo del catálogo
 
@@ -95,7 +225,7 @@ Ahora que ya tenemos los *bins* refinados, queremos saber qué capacidades metab
 
 [RbiMs](https://github.com/mirnavazquez/RbiMs) es un paquete de R muy útil para obtener la anotación de cada KEGG ID y generar plots de esta información. Puede trabajar con anotaciones de KOFAM, InterProScan, MEROPS, dbCAN.
 
-![](images/clipboard-1480307409.png)
+![](images/clipboard-1480307409.png){fig-align="center" width="550"}
 
 Estos resultados ya los tienes en el directorio `results/20.kofam-global/`
 
@@ -106,11 +236,11 @@ Y ahora que ya tenemos los identificadores de KO para cada proteína, vamos a fi
 Vamos al editor de Rstudio para correr RbiMs ✨
 
 ``` r
-#Ubicate en el directorio donde se encuentran los txt de kofam
-setwd("/home/alumnoX/")
+library(devtools)
+library(rbims)
 
 #A continuación, leemos los resultados de KEGG 
-pozol_table <- read_ko(data_kofam = "12.kofam/48h") 
+pozol_table <- read_ko(data_kofam = "21.kofam/") 
 
 #y los mapeamos con la base de datos de KEGG:
 pozol_mapp <- mapping_ko(pozol_table)
@@ -133,17 +263,13 @@ plot_bubble(tibble_ko = Aminoacids_metabolism_pozol,
             y_labs = FALSE,
             x_labs = FALSE)  
 
-#Añadiremos metadatos, como la taxonomía:
-
-Metadatos <- read_delim("results/10.gtdbtk/Metadatos.txt", delim = "\t")
-
 #Y generaremos un gráfico de burbujas con metadatos:
 
 plot_bubble(tibble_ko = Aminoacids_metabolism_pozol,
             x_axis = Bin_name, 
             y_axis = Pathway_description,
             analysis = "KEGG",
-            data_experiment = Metadatos,
+            data_experiment = metadata,
             calc = "Percentage",
             color_character = Family,
             range_size = c(1, 10),
@@ -189,9 +315,10 @@ pozol_mapp %>%
   distinct()
 ```
 
-![](Figures/RBiMs_heatmap.png){fig-align="center" width="962"}
+![](images/clipboard-3889016253.png){fig-align="center"}
 
 ::: callout-tip
+
 ## Explora libremente
 
 Ya tienes el objeto completo (funciones + metadatos). Prueba distintas vistas:
@@ -200,20 +327,16 @@ Ya tienes el objeto completo (funciones + metadatos). Prueba distintas vistas:
 -   Enfócate en una **ruta o categoría** de interés (por ejemplo, fermentación, metabolismo de carbohidratos, biosíntesis de aminoácidos o vitaminas).
 :::
 
-## 04. Lectura biológica: ¿quién hace qué en el pozol?
-
-Conecta las funciones con la biología del pozol: qué grupos dominan (p. ej. bacterias lácticas), qué rutas de fermentación aparecen, biosíntesis de aminoácidos y vitaminas que enriquecen el sustrato de maíz, CAZymes que degradan el almidón. Deja que los MAGs cuenten la historia de la fermentación.
-
-::: callout-caution
-## La pregunta que queda abierta
-
-Coloreamos los MAGs por la muestra de la que los **recuperamos**, pero eso no nos dice en qué tiempos cada organismo realmente **está presente ni en qué abundancia**. Para responder eso, mapearíamos las lecturas de cada muestra contra el catálogo completo —por ejemplo con [CoverM](https://github.com/wwood/CoverM)— y obtendríamos la abundancia de cada MAG en cada tiempo de fermentación. Esa es la extensión natural de este análisis, y con ella podrías seguir la **sucesión** de la comunidad a lo largo del pozol.
-:::
-
 ::: callout-tip
-## Para cerrar (reflexión)
+## Responde
 
 1.  ¿Cuántos MAGs quedaron en el catálogo tras la desreplicación global, y a qué grupos taxonómicos pertenecen?
 2.  ¿Qué funciones metabólicas parecen compartidas por casi todos, y cuáles son exclusivas de unos pocos?
 3.  Si tuvieras que elegir **un** MAG para estudiar a fondo el rol de un organismo en la fermentación del pozol, ¿cuál elegirías y por qué (taxonomía, calidad, repertorio funcional)?
 :::
+
+## 04. Lectura biológica: ¿quién hace qué en el pozol?
+
+Conecta las funciones con la biología del pozol: qué grupos dominan (p. ej. bacterias lácticas), qué rutas de fermentación aparecen, biosíntesis de aminoácidos y vitaminas que enriquecen el sustrato de maíz, cuál es la historia de la fermentación?.
+
+![](Figures/heatmap_pozol.png){fig-align="center" width="722"}

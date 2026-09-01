@@ -581,6 +581,8 @@ Ahora te toca a ti.
 
 -   Discutan cada resultado obtenido.
 
+-   ¿Qué refinador dió mejores resultados?
+
 -   Clasifica tus bins según MIMAG. ¿Cuántos de cada uno?
 
 -   En la [carpeta compartida de Drive](https://docs.google.com/presentation/d/1f4vaJ_fV_8-i-dja2wtFx55vRkgeAB5Y4s-opCvFI1k/edit?usp=sharing) busquen la presentación para el Ejercicio 2, en la diapositiva correspondiente resuman sus resultados obtenidos para que los presenten.

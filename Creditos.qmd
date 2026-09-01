@@ -2,28 +2,51 @@
 title: "Créditos"
 ---
 
-LOGO DE LANDA LAB
+## **Colaboradores**
 
-**Autores**:
-
--   Yaxche Lona Tellez
+-   Diana Hernández Oaxaca <https://github.com/DianaOaxaca>
 
 <!-- -->
 
--   Frida Ruiz
+-   Mirna Vázquez Rosas Landa <https://github.com/mirnavazquez>
 
 <!-- -->
 
--   Diana Hernández Oaxaca [\@DianaOaxaca](https://github.com/DianaOaxaca)
+-   Frida Ruiz <https://github.com/FridalRuiz>
+-   Yaxche Lona Tellez <https://github.com/YaxcheLona>
+-   Paola
+-   Laura Mendez
+-   Francisco Javier Balvino Olvera
+-   Irma
+-   Daniel
 
--   Mirna Rosas Vázquez Landa [\@MirnaVazquez](https://github.com/mirnavazquez) .
+## Licencia
 
-**Agradecimientos:**
+Este material combina código y contenido educativo, cada uno con su
+propia licencia:
 
--   Todos los miembros del laboratorio [LandaLab](https://github.com/landalab0) del [Departamento](https://www.icmyl.unam.mx/es/quienes_somos/personal_academico/vazquez-rosas-landa-mirna) de Ecología Molecular y genómica poblacional del ICMyL de la UNAM, por la sugerencias a la mejora de este tutorial.
+- **Código** (scripts, bloques de análisis y el sitio Quarto): licencia [MIT](https://github.com/DianaOaxaca/reads2mags/blob/main/LICENSE).
+- **Contenido educativo** (texto de las lecciones y figuras originales):
+licencia [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
--   Al Dr. Francisco Balvino de landalab por su apoyo en la instalación de las herramientas usadas en este taller.
+En breve: **puedes reusar, adaptar y redistribuir** este material, siempre que **des el crédito correspondiente**.
 
-------------------------------------------------------------------------
+```{=html}
+<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/">
+<a property="dct:title" rel="cc:attributionURL" href="https://dianaoaxaca.github.io/reads2mags/01.Presentacion_pozol.html">reads2mags Workshop</a>
+© 2024 by
+<a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/DianaOaxaca">Diana Oaxaca and Mirna Vazquez</a>
+is licensed under
+<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener noreferrer">CC BY 4.0</a>
+<img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" style="max-width: 1em;max-height:1em;margin-left: .2em;">
+<img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" style="max-width: 1em;max-height:1em;margin-left: .2em;">
+</p>
+```
 
-PONER UNA LICENCIA DE USO
+---
+
+## Cómo citar
+
+Si usas este material, por favor cítalo como:
+
+Hernández-Oaxaca, D., Vázquez-Rosas-Landa, M. , et al (2024). r**eads2mags: Taller de metagenómica centrada en genomas**. \[DOI de Zenodo\]

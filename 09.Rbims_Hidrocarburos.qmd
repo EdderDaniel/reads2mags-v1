@@ -2,12 +2,12 @@
 title: "Caso de estudio: Metabolismo de hidrocarburos"
 ---
 
-En esta sesión aplicamos el flujo de **rbims** a un caso real y publicado: **42 MAGs** recuperados de un experimento de enriquecimiento con hexadecano en el **Atlántico Norte**, muestreados en dos profundidades (**5 m vs 700 m**) [@rbims2026]. La pregunta ya no es solo *"¿qué puede hacer cada genoma?"*, sino *"¿qué distingue funcionalmente a dos comunidades?"* — el salto de perfilar a **comparar**.
+En esta sesión aplicamos el flujo de **rbims** a un caso real y publicado: **42 MAGs** recuperados de un experimento de enriquecimiento con hexadecano en el **Atlántico Norte**, muestreados en dos profundidades (**5 m vs 700 m**) [@rbims2026].
 
 ::: callout-note
 ## Por qué este caso, y no el pozol
 
-El pozol es un gradiente temporal de pocos MAGs; no tiene dos grupos claros que contrastar. Este dataset **sí**: dos profundidades, 42 MAGs, y un foco en **degradación de hidrocarburos**. Eso es lo que habilita el análisis discriminante — y lo que lo hace directamente útil para biorremediación.
+El pozol es un gradiente temporal de pocos MAGs; no tiene dos grupos claros que contrastar. Este dataset **sí**: dos profundidades, 42 MAGs, y un foco en **degradación de hidrocarburos**. Eso es lo que habilita el análisis discriminante y lo que lo hace directamente útil para biorremediación.
 :::
 
 ::: callout-important

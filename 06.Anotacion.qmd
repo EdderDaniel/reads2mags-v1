@@ -49,6 +49,10 @@ done
 Y ahora si, ejecutamos gtdbtk
 
 ``` bash
+conda activate /home/dianao/.conda/envs/gtdbtk_2.5.2
+```
+
+``` bash
 export GTDBTK_DATA_PATH=/data/BD/gtdbtk/release_gtdbtk_r226_full
 
 nohup gtdbtk classify_wf \
