@@ -175,7 +175,7 @@ bbmap.sh ref=results/03.ensambles/0h/v1_megahit.fasta in=results/02.trimgalore/0
 bbmap.sh ref=results/03.ensambles/0h/v2_megahit.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v2.stats
 
 # version 3
-bbmap.sh ref=results/03.ensambles/0h/v3_spades.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v3.stats
+bbmap.sh ref=results/03.ensambles/0h/v3.spades.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v3.stats
 ```
 
 Activamos el ambiente
@@ -187,7 +187,7 @@ conda activate bbmap_env
 Y lo ejecutamos asi:
 
 ``` bash
-nohup bash scripts/04.profundidad.sh > outs/04.bbmap.out &
+nohup bash scripts/04.mapeo_comparacion.sh > outs/04.bbmap.out &
 ```
 
 Vamos a explorar cuantas bases se mapearon en cada uno de los ensambles

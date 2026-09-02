@@ -7,7 +7,7 @@ Este es el programa del taller **De lecturas a MAGs**. Está diseñado para que 
 ## Día 1 · Del dato crudo al ensamble
 
 | Jornada | Hora | Tema | Modalidad |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | Mañana | 8:00–8:20 | Llegada y preparación del entorno | — |
 |  | 8:20–9:20 | Charla: flujo bioinformático para metagenómica centrada en genomas | Charla |
 |  | 9:20–10:00 | Control de calidad de lecturas (FastQC / MultiQC) | Práctica |
@@ -20,7 +20,7 @@ Este es el programa del taller **De lecturas a MAGs**. Está diseñado para que 
 ## Día 2 · Binning y refinamiento
 
 | Jornada | Hora | Tema | Modalidad |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | Mañana | 8:00–8:20 | Llegada | — |
 |  | 8:20–9:20 | Charla: binning (cobertura + composición; los cuatro binneadores) | Charla |
 |  | 9:20–10:00 | MetaBAT2 y MaxBin2 🚀 *dejar corriendo antes del descanso* | Práctica |
@@ -33,7 +33,7 @@ Este es el programa del taller **De lecturas a MAGs**. Está diseñado para que 
 ## Día 3 · Taxonomía, anotación y análisis global
 
 | Jornada | Hora | Tema | Modalidad |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | Mañana | 8:00–8:20 | Llegada | — |
 |  | 8:20–9:20 | Charla: clasificación taxonómica y anotación funcional | Charla |
 |  | 9:20–10:00 | GTDB-Tk (🔧 pre-computado) · Prokka en vivo sobre un MAG 🚀 | Práctica |
@@ -44,7 +44,7 @@ Este es el programa del taller **De lecturas a MAGs**. Está diseñado para que 
 ## Día 4 · Caso de estudio: degradación de hidrocarburos
 
 | Jornada | Hora | Tema | Modalidad |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | Mañana | 8:00–8:20 | Llegada | — |
 |  | 8:20–9:20 | Charla: degradación de hidrocarburos y análisis funcional comparativo | Charla |
 |  | 9:20–10:00 | Carga de datos (🔧 pre-computados) y exploración de rutas de hidrocarburos | Práctica |
