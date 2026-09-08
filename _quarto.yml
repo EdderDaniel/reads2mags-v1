@@ -35,9 +35,9 @@ website:
       - href: 07.Global.qmd
         text: Analisis global
         icon: lightning-charge
-      - href: 09.Rbims_Hidrocarburos.qmd
-        text: Hidrocarburos
-        icon: droplet
+      # - href: 09.Rbims_Hidrocarburos.qmd
+      #   text: Hidrocarburos
+      #   icon: droplet
       - href: Creditos.qmd
         text: Creditos
         icon: bezier2
