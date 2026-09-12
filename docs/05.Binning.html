@@ -874,14 +874,16 @@ El resultado de checkm2 para correr dRep
 <div class="callout-body-container callout-body">
 <p>Como esta parte toma mucho tiempo ya tienes el resultado en el directorio de <code>results/12.drep/0h/checkm2/</code>, pero aquí te dejamos como lo corrimos:</p>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-25-contents" aria-controls="callout-25" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 No lo corras
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-25" class="callout-25-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Preparemos el insumo de dRep, para ello corramos checkm2</p>
 <p>Declarar los nucleos</p>
@@ -890,6 +892,7 @@ No lo corras
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">TF_NUM_INTEROP_THREADS</span><span class="op">=</span>1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>y ahora si …</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">checkm2</span> predict <span class="at">--threads</span> 2 <span class="at">-x</span> fasta <span class="at">--input</span> results/12.drep/0h/bins/ <span class="at">--output-directory</span> results/12.drep/0h/checkm2/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 </div>
 </div>

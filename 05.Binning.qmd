@@ -533,7 +533,7 @@ cp $MS/*.fasta $out
 
 Como esta parte toma mucho tiempo ya tienes el resultado en el directorio de `results/12.drep/0h/checkm2/`, pero aquí te dejamos como lo corrimos:
 
-::: callout-caution
+::: {.callout-caution collapse="true"}
 ## No lo corras
 
 Preparemos el insumo de dRep, para ello corramos checkm2
