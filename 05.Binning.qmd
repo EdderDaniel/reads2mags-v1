@@ -528,6 +528,14 @@ done
 cp $MS/*.fasta $out
 ```
 
+:::: callout-note
+## El resultado de checkm2 para correr dRep
+
+Como esta parte toma mucho tiempo ya tienes el resultado en el directorio de `results/12.drep/0h/checkm2/`, pero aquí te dejamos como lo corrimos:
+
+::: callout-caution
+## No lo corras
+
 Preparemos el insumo de dRep, para ello corramos checkm2
 
 Declarar los nucleos
@@ -543,6 +551,8 @@ y ahora si ...
 ``` bash
 checkm2 predict --threads 2 -x fasta --input results/12.drep/0h/bins/ --output-directory results/12.drep/0h/checkm2/
 ```
+:::
+::::
 
 Y ahora toca construir el archivo de información que dRep necesita.
 
