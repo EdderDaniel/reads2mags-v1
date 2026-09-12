@@ -305,10 +305,18 @@ Vamos a crear el directorio de resultados
 mkdir -p results/06.metabat/0h/checkm2
 ```
 
+Declarar los nucleos
+
+``` bash
+export OMP_NUM_THREADS=2
+export TF_NUM_INTRAOP_THREADS=2
+export TF_NUM_INTEROP_THREADS=1
+```
+
 Y ahora si lo ejecutamos
 
 ``` bash
-checkm2 predict --threads 6 -x fa \
+checkm2 predict --threads 2 -x fa \
  --input results/06.metabat/0h/ \
  --output-directory results/06.metabat/0h/checkm2
 ```
@@ -409,6 +417,12 @@ Primero activamos el ambiente
 conda activate MAGScoT_env
 ```
 
+E instalaremos una libreria dentro del ambiente
+
+``` bash
+pip install --user pandas
+```
+
 Creamos el script de ejecución
 
 ``` bash
@@ -494,7 +508,7 @@ Ya que tenemos los resultados de los dos refinadores ejecutaremos dRep para desr
 Primero vamos a crear el directorio de resultados para dRep.
 
 ``` bash
- mkdir -p results/12.drep/0h/bins
+mkdir -p results/12.drep/0h/bins
 ```
 
 Copia los bins que queremos comparar dentro del directorio que acabamos de crear. A dRep le tenemos que dar como entrada un directorio con todos los bins y la misma extensión.
@@ -516,8 +530,18 @@ cp $MS/*.fasta $out
 
 Preparemos el insumo de dRep, para ello corramos checkm2
 
+Declarar los nucleos
+
 ``` bash
-checkm2 predict --threads 6 -x fasta --input results/12.drep/0h/bins/ --output-directory results/12.drep/0h/checkm2/
+export OMP_NUM_THREADS=2
+export TF_NUM_INTRAOP_THREADS=2
+export TF_NUM_INTEROP_THREADS=1
+```
+
+y ahora si ...
+
+``` bash
+checkm2 predict --threads 2 -x fasta --input results/12.drep/0h/bins/ --output-directory results/12.drep/0h/checkm2/
 ```
 
 Y ahora toca construir el archivo de información que dRep necesita.
