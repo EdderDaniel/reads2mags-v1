@@ -46,7 +46,7 @@ done
 ```
 :::
 
-Y ahora si, ejecutamos gtdbtk
+Y ahora sí, ejecutamos gtdbtk
 
 ``` bash
 conda activate /home/dianao/.conda/envs/gtdbtk_2.5.2
@@ -92,7 +92,7 @@ Tenemos el ambiente activo, ahora vamos a crear un directorio de resultados para
 mkdir -p results/14.prokka/0h
 ```
 
-Y ahora si le pedimos a prokka que haga a predicción y anotación del MAG que obtuvimos
+Y ahora sí le pedimos a prokka que haga a predicción y anotación del MAG que obtuvimos
 
 ``` bash
 prokka --locustag 0hBin01_Scaffold \
@@ -150,11 +150,11 @@ conda deactivate
 
 Las ventajas sobre Prokka son:
 
--   **Menos "hypothetical protein":** al apoyarse en una base curada y grande, más genes reciben una función informativa en lugar de quedar como "proteína hipotética".
+- **Menos "hypothetical protein":** al apoyarse en una base curada y grande, más genes reciben una función informativa en lugar de quedar como "proteína hipotética".
 
--   **Anotación más rica y trazable:** cada gen trae identificadores estables y referencias cruzadas a varias bases, así que puedes ver anotaciones de KEGG, COG o EC directo en la salida.
+- **Anotación más rica y trazable:** cada gen trae identificadores estables y referencias cruzadas a varias bases, así que puedes ver anotaciones de KEGG, COG o EC directo en la salida.
 
--   **Más tipos de elementos y salidas listas para downstream** (`.faa`, `.gff3`, `.gbff`, `.tsv`, `.json`, además de un resumen legible).
+- **Más tipos de elementos y salidas listas para downstream** (`.faa`, `.gff3`, `.gbff`, `.tsv`, `.json`, además de un resumen legible).
 
 El costo es que Bakta necesita una **base de datos grande** (la completa pesa decenas de GB) y **tarda más**: en este MAG de 0 h corrió en \~15 minutos. Por eso en el taller **no lo vamos a correr en vivo**, ya dejamos sus resultados en el directorio de cada quien; de ahí tomaremos el `.faa` (las proteínas predichas) como insumo para las anotaciones que siguen, por ser la anotación más completa y actual.
 
@@ -195,13 +195,13 @@ Con las proteínas predichas por Bakta ya podemos hacerles preguntas más espec�
 ::: callout-note
 ## ¿Qué pregunta responde cada herramienta?
 
--   **KofamScan (KEGG):** ¿qué **rutas metabólicas** puede llevar a cabo este organismo? (asigna números KO, que se mapean a rutas)
+- **KofamScan (KEGG):** ¿qué **rutas metabólicas** puede llevar a cabo este organismo? (asigna números KO, que se mapean a rutas)
 
--   **EggNOG-mapper:** ¿a qué **ortólogos / categorías COG** pertenecen sus genes? Función amplia y **comparable entre genomas**.
+- **EggNOG-mapper:** ¿a qué **ortólogos / categorías COG** pertenecen sus genes? Función amplia y **comparable entre genomas**.
 
--   **CAZy / dbCAN:** ¿qué **enzimas activas sobre carbohidratos** tiene? Clave en un fermento de maíz, donde degradar el almidón es central.
+- **CAZy / dbCAN:** ¿qué **enzimas activas sobre carbohidratos** tiene? Clave en un fermento de maíz, donde degradar el almidón es central.
 
--   **antiSMASH:** ¿tiene **clústeres de genes biosintéticos** para metabolitos secundarios (antibióticos, bacteriocinas…)?
+- **antiSMASH:** ¿tiene **clústeres de genes biosintéticos** para metabolitos secundarios (antibióticos, bacteriocinas…)?
 
 En el taller correremos **KofamScan** en vivo; las demás las platicamos.
 :::
@@ -222,7 +222,7 @@ Para correrlo necesitamos activar el ambiente donde vive kofam
 conda activate annot_fun
 ```
 
-Y ahora si correrlo
+Y ahora sí correrlo
 
 ``` bash
 mkdir -p results/16.kofam/0h

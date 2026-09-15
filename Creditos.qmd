@@ -4,28 +4,30 @@ title: "Créditos"
 
 ## **Colaboradores**
 
--   Diana Hernández Oaxaca <https://github.com/DianaOaxaca>
+- Diana Hernández Oaxaca <https://github.com/DianaOaxaca>
 
 <!-- -->
 
--   Mirna Vázquez Rosas Landa <https://github.com/mirnavazquez>
+- Mirna Vázquez Rosas Landa <https://github.com/mirnavazquez>
 
 <!-- -->
 
--   Frida Ruiz <https://github.com/FridalRuiz>
--   Yaxche Lona Tellez <https://github.com/YaxcheLona>
--   Paola <https://github.com/xanathh>
--   Laura Mendez <https://github.com/mecllaus-licm>
--   Francisco Javier Balvino Olvera <https://github.com/fjbalvino>
--   Irma Gonzalez <https://github.com/irmagonzalez>
--   Edder Daniel <https://github.com/EdderDaniel>
+- Frida Ruiz <https://github.com/FridalRuiz>
+- Yaxche Lona Tellez <https://github.com/YaxcheLona>
+- Diana Franco May
+- Esteban Gonzalez <https://github.com/gf-lab-bit>
+- Paola <https://github.com/xanathh>
+- Laura Mendez <https://github.com/mecllaus-licm>
+- Francisco Javier Balvino Olvera <https://github.com/fjbalvino>
+- Irma Gonzalez <https://github.com/irmagonzalez>
+- Edder Daniel <https://github.com/EdderDaniel>
 
 ## Licencia
 
 Este material combina código y contenido educativo, cada uno con su propia licencia:
 
--   **Código** (scripts, bloques de análisis y el sitio Quarto): licencia [MIT](https://github.com/DianaOaxaca/reads2mags/blob/main/LICENSE).
--   **Contenido educativo** (texto de las lecciones y figuras originales): licencia [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+- **Código** (scripts, bloques de análisis y el sitio Quarto): licencia [MIT](https://github.com/DianaOaxaca/reads2mags/blob/main/LICENSE).
+- **Contenido educativo** (texto de las lecciones y figuras originales): licencia [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 En breve: **puedes reusar, adaptar y redistribuir** este material, siempre que **des el crédito correspondiente**.
 

@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>02.Ensambles – De lecturas a MAGs</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -66,15 +69,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-07d02a982881b5761ba359a55b952adc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-cef2c1c31530f63b19a524b29bc20565.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -276,7 +278,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Las siguientes dos versiones de ensamble tardan todavía más tiempo que la primer versión, así que nos dimos a la tarea de correrlas y los resultados se encuentran en el directorio de resultados correspondiente. Exploremoslos!!!</p>
+<p>Las siguientes dos versiones de ensamble tardan todavía más tiempo que la primer versión, así que nos dimos a la tarea de correrlas y los resultados se encuentran en el directorio de resultados correspondiente. Explorémoslos!!!</p>
 </div>
 </div>
 <p>El flujo y código para correr las otras dos versiones se despliega a continuación, recuerda que <strong>NO es para ejecutarse</strong>, pero te lo dejamos como ejemplo para que lo puedas replicar más tarde en los ejercicios.</p>
@@ -367,7 +369,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Ahora a te toca a tí</strong></p>
+<p><strong>Ahora a te toca a ti</strong></p>
 <p>Les toca ensamblar la muestra del tiempo de fermentación que les tocó. En equipo discutan y armen las lineas de comando para correr dos versiones de sólo de megahit. <strong>Sólo un miembro del equipo corra el script</strong> mientras los demás le ayudan a dictar las lineas de comandos.</p>
 <p>Tiempo 30 min</p>
 </div>
@@ -388,16 +390,16 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Script que corre BBmap para mapear y obtener el numero de lecturas mapeadas a cada version de ensamble</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># version 1</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/0h/v1_megahit.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v1.stats</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> <span class="at">-Xmx20g</span> ref=results/03.ensambles/0h/v1_megahit.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v1.stats</span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># version 2</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/0h/v2_megahit.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v2.stats</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> <span class="at">-Xmx20g</span> ref=results/03.ensambles/0h/v2_megahit.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v2.stats</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># version 3</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> ref=results/03.ensambles/0h/v3.spades.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v3.stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="ex">bbmap.sh</span> <span class="at">-Xmx20g</span> ref=results/03.ensambles/0h/v3.spades.fasta in=results/02.trimgalore/0h/0hrs_sm_R1_val_1.fq.gz in2=results/02.trimgalore/0h/0hrs_sm_R2_val_2.fq.gz nodisk=t threads=10 scafstats=results/04.compare/0h/v3.stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Activamos el ambiente</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate bbmap_env</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Y lo ejecutamos asi:</p>
+<p>Y lo ejecutamos así:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> bash scripts/04.mapeo_comparacion.sh <span class="op">&gt;</span> outs/04.bbmap.out <span class="kw">&amp;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Vamos a explorar cuantas bases se mapearon en cada uno de los ensambles</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="va">$(</span><span class="fu">ls</span> results/04.compare/0h/<span class="pp">*</span>.stats<span class="va">)</span><span class="kw">;</span> <span class="cf">do</span> </span>
@@ -459,8 +461,8 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Ahora te toca a tí</strong></p>
-<p>Les toca obtener los datos de profundidad de cada ensamble de la muestra que les tocó, reunanse en equipos y <strong>sólo un miembro del equipo corra el script</strong> mientras los demás le ayudan a dictar las lineas de comandos para construirlo, discutan los resultados y preparen una diapositiva para que la presenten.</p>
+<p><strong>Ahora te toca a ti</strong></p>
+<p>Les toca obtener los datos de profundidad de cada ensamble de la muestra que les tocó, reúnanse en equipos y <strong>sólo un miembro del equipo corra el script</strong> mientras los demás le ayudan a dictar las líneas de comandos para construirlo, discutan los resultados y preparen una diapositiva para que la presenten.</p>
 <p>Tiempo 1 hora</p>
 </div>
 </div>
@@ -469,7 +471,7 @@ Ensamblaremos con <a href="https://github.com/ablab/spades"><strong>MetaSPAdes</
 </section>
 <section id="profundidad" class="level1">
 <h1>03. Profundidad</h1>
-<p>Ok, hasta a aquí ya aprendimos a evaluar la calidad de las lecturas, filtrarlas y ensamblarlas. Además, aprendimos como ejecutar diferentes versiones de ensamble, compararlas y seleccionar el de mejor calidad.</p>
+<p>Ok, hasta aquí ya aprendimos a evaluar la calidad de las lecturas, filtrarlas y ensamblarlas. Además, aprendimos como ejecutar diferentes versiones de ensamble, compararlas y seleccionar el de mejor calidad.</p>
 <p>Ahora es momento de obtener la profundidad. De acuerdo con el flujo de análisis debemos partir de un ensamble, mapear las lecturas y obtener un archivo de profundidad de cada contig en el ensamble, este archivo debe ser compatible con los programas de <em>binning</em>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">

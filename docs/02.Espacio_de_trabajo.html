@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>00. Preparación del proyecto – De lecturas a MAGs</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -66,15 +69,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-07d02a982881b5761ba359a55b952adc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-cef2c1c31530f63b19a524b29bc20565.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -243,7 +245,7 @@ ejecución, estructura del repositorio, los resultados obtenidos y sus conclusio
 <p>Entremos al directorio <code>data</code> para ver lo que contiene</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> data/</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>¿Cuántas muestra hay?</p>
+<p>¿Cuántas muestras hay?</p>
 <hr>
 <hr>
 </section>
@@ -261,7 +263,7 @@ ejecución, estructura del repositorio, los resultados obtenidos y sus conclusio
 <div class="callout-body-container callout-body">
 <ul>
 <li><p><strong>En este tutorial haremos el ejemplo corriendo la muestra del tiempo 0h.</strong></p></li>
-<li><p><strong>Se formaran 6 equipos (2 correspondientes a los tiempos 0, 24 y 48 horas).</strong></p></li>
+<li><p><strong>Se formarán 6 equipos (2 correspondientes a los tiempos 0, 24 y 48 horas).</strong></p></li>
 <li><p><strong>Se reunirán y en equipo discutirán y presentarán sus resultados cuando se indique en el tutorial.</strong></p></li>
 </ul>
 </div>
@@ -272,7 +274,7 @@ ejecución, estructura del repositorio, los resultados obtenidos y sus conclusio
 <section id="advertencias" class="level2">
 <h2 class="anchored" data-anchor-id="advertencias">03. Advertencias</h2>
 <p align="justify">
-</p><p><font color="black">La presente práctica sólo es una representación del flujo de trabajo para el an álisis metagenómico, sin embargo, <strong>no sustituye los manuales</strong> de cada programa y el flujo puede variar dependiendo del tipo de datos y pregunta de investigación, de hecho para fines del taller, con frecuencia se utilizan las lineas de comando más simples para eficientar tiempo y recursos, tómalo en cuenta.</font></p>
+</p><p><font color="black">La presente práctica sólo es una representación del flujo de trabajo para el análisis metagenómico, sin embargo, <strong>no sustituye los manuales</strong> de cada programa y el flujo puede variar dependiendo del tipo de datos y pregunta de investigación, de hecho para fines del taller, con frecuencia se utilizan las líneas de comando más simples para eficientar tiempo y recursos, tómalo en cuenta.</font></p>
 <p></p>
 <p>Cada programa tiene una ayuda y un manual de usuario, es <strong>importante</strong> revisarlo y conocer cada parámetro que se ejecute. En terminal se puede consultar el manual con el comando <code>man</code> y también se puede consultar la ayuda con <code>-h</code> o <code>--help</code>, por ejemplo <code>fastqc -h</code>.</p>
 <hr>

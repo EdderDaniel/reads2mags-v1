@@ -55,7 +55,7 @@ cd data/
 ls -lh
 ```
 
-¿Cuántas muestra hay?
+¿Cuántas muestras hay?
 
 ------------------------------------------------------------------------
 
@@ -66,11 +66,11 @@ ls -lh
 ::: callout-tip
 ## Reglas del juego
 
--   **En este tutorial haremos el ejemplo corriendo la muestra del tiempo 0h.**
+- **En este tutorial haremos el ejemplo corriendo la muestra del tiempo 0h.**
 
--   **Se formaran 6 equipos (2 correspondientes a los tiempos 0, 24 y 48 horas).**
+- **Se formarán 6 equipos (2 correspondientes a los tiempos 0, 24 y 48 horas).**
 
--   **Se reunirán y en equipo discutirán y presentarán sus resultados cuando se indique en el tutorial.**
+- **Se reunirán y en equipo discutirán y presentarán sus resultados cuando se indique en el tutorial.**
 :::
 
 ------------------------------------------------------------------------
@@ -81,7 +81,7 @@ ls -lh
 
 <p align="justify">
 
-<FONT COLOR="black">La presente práctica sólo es una representación del flujo de trabajo para el an álisis metagenómico, sin embargo, **no sustituye los manuales** de cada programa y el flujo puede variar dependiendo del tipo de datos y pregunta de investigación, de hecho para fines del taller, con frecuencia se utilizan las lineas de comando más simples para eficientar tiempo y recursos, tómalo en cuenta.</FONT>
+<FONT COLOR="black">La presente práctica sólo es una representación del flujo de trabajo para el análisis metagenómico, sin embargo, **no sustituye los manuales** de cada programa y el flujo puede variar dependiendo del tipo de datos y pregunta de investigación, de hecho para fines del taller, con frecuencia se utilizan las líneas de comando más simples para eficientar tiempo y recursos, tómalo en cuenta.</FONT>
 
 </p>
 
@@ -98,19 +98,19 @@ Cada programa tiene una ayuda y un manual de usuario, es **importante** revisarl
 
 En cada paso:
 
--   **Detente a revisar la información de cada programa, lee el manual y la ayuda**
+- **Detente a revisar la información de cada programa, lee el manual y la ayuda**
 
--   **Elige los parámetros que mejor se adapten a tus datos.**
+- **Elige los parámetros que mejor se adapten a tus datos.**
 
--   **Analiza las salidas de cada proceso y los resultados.**
+- **Analiza las salidas de cada proceso y los resultados.**
 
--   **Haz varias pruebas, usa controles (positivo y negativo).**
+- **Haz varias pruebas, usa controles (positivo y negativo).**
 
--   **Visita foros de ayuda, complementa con IA.**
+- **Visita foros de ayuda, complementa con IA.**
 
--   **Toma decisiones informadas y con argumentos sólidos.**
+- **Toma decisiones informadas y con argumentos sólidos.**
 
--   **Disfruta el proceso.**
+- **Disfruta el proceso.**
 :::
 
 ## 04. ¿Cómo abordar Proyecto Metagenómico?

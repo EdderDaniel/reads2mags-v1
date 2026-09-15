@@ -89,13 +89,13 @@ Para evaluar la calidad de nuestros archivos FASTQ, utilizaremos FastQC
 
 [FastQC](https://github.com/s-andrews/FastQC) es un programa que nos permite visualizar la calidad de nuestras lecturas, permitiendo detectar alguna anomalía en las secuencias antes de hacer cualquier análisis:
 
--   Lecturas de baja calidad en los extremos
+- Lecturas de baja calidad en los extremos
 
--   Contaminación por adaptadores
+- Contaminación por adaptadores
 
--   Sesgos en la secuenciación
+- Sesgos en la secuenciación
 
--   Presencia de secuencias duplicadas
+- Presencia de secuencias duplicadas
 
 ::: callout-important
 ## Directorio Principal
@@ -123,8 +123,8 @@ fastqc data/0hrs_sm_R* -o results/01.fastqc/0h
 ::: callout-warning
 ## Antes de "arreglar" nada
 
--   ¿En qué extremo de la lectura cae la calidad y por qué es esperable en Illumina?
--   FastQC suele marcar en rojo el "per base sequence content" en las primeras bases. En metagenómica esto es común por el cebado aleatorio/tagmentación: ¿lo tratarían como un problema real o no? ¿Por qué?
+- ¿En qué extremo de la lectura cae la calidad y por qué es esperable en Illumina?
+- FastQC suele marcar en rojo el "per base sequence content" en las primeras bases. En metagenómica esto es común por el cebado aleatorio/tagmentación: ¿lo tratarían como un problema real o no? ¿Por qué?
 :::
 
 ------------------------------------------------------------------------
@@ -143,7 +143,7 @@ Creamos el directorio de resultados
 mkdir -p results/02.trimgalore/0h
 ```
 
-Ahora si vamos a filtrar las lecturas
+Ahora sí vamos a filtrar las lecturas
 
 Antes de ejecutarlo veamos la ayuda de trim_galore
 
@@ -159,13 +159,13 @@ trim_galore --fastqc -j 4 --paired data/0hrs_sm_R1.fastq.gz data/0hrs_sm_R2.fast
 
 [MultiQC](https://github.com/MultiQC/MultiQC) toma los resultados de FastQC y los resume en un único informe que nos permite:
 
--   Revisar la calidad de todas las muestras a la vez.
+- Revisar la calidad de todas las muestras a la vez.
 
--   Comparar rápidamente cuál muestra tiene peor calidad.
+- Comparar rápidamente cuál muestra tiene peor calidad.
 
--   Facilitar la interpretación sin tener que abrir muchos HTMLs.
+- Facilitar la interpretación sin tener que abrir muchos HTMLs.
 
--   Identificar como están las lecturas y los posibles problemas para planear futuros análisis si son necesarios.
+- Identificar como están las lecturas y los posibles problemas para planear futuros análisis si son necesarios.
 
 Revisemos la calidad con multiqc
 
@@ -208,7 +208,7 @@ TrimGalore quitó adaptadores sin que le dijeras cuál. ¿Cómo lo supo? (autode
 
 Como las muestras del pozol tienen DNA de maíz es necesario eliminar las lecturas de éste para quedarnos con las secuencias pertenecientes al microbioma. Para hacer este proceso se necesita hacer un mapeo global, existen diferentes herramientas que nos permiten realizarlo, como bwa, bowtie2, bbmap o minimap (este último para lecturas largas).
 
-Cómo es un proceso largo, nos dimos a la tarea de ejecutarlo y las lecturas que estaremos trabajando ya no contienen el genoma del maiz. Este es el script que usamos para obtenerlas.
+Como es un proceso largo, nos dimos a la tarea de ejecutarlo y las lecturas que estaremos trabajando ya no contienen el genoma del maíz. Este es el script que usamos para obtenerlas.
 
 ::: {.callout-tip collapse="true"}
 ## Script de remoción de hospedero
@@ -244,9 +244,9 @@ awk '{print "@"$1"\n"$10"\n+\n"$11}' > data/0hrs_sm_R2.fastq
 ::: callout-note
 ## Reflexionemos
 
--   El hospedero aquí es el maíz. ¿Cuál sería en un metagenoma de intestino humano? ¿Y en uno de suelo?
+- El hospedero aquí es el maíz. ¿Cuál sería en un metagenoma de intestino humano? ¿Y en uno de suelo?
 
--   ¿Qué le pasaría a tu ensamble y a tus MAGs si NO quitáramos el maíz?
+- ¿Qué le pasaría a tu ensamble y a tus MAGs si NO quitáramos el maíz?
 
--   ¿Conviene remover hospedero antes o después del trimming?
+- ¿Conviene remover hospedero antes o después del trimming?
 :::
