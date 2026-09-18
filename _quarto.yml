@@ -41,6 +41,9 @@ website:
       - href: Creditos.qmd
         text: Creditos
         icon: bezier2
+      - href: Recursos_extra.qmd
+        text: Recursos
+        icon: bezier2
 
 
 

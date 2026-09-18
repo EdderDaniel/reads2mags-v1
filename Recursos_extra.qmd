@@ -14,9 +14,8 @@ title: "Recursos extra"
 
     -   Preprocesamiento y visualización de datos metagenómicos: [link](https://carpentries-incubator.github.io/metagenomics/)
 
-```{=html}
 <!-- -->
-```
+
 -   Sitio web de [Anvio](https://anvio.org/), canal de [YouTube](https://www.youtube.com/watch?v=MqD4aN1p1qA&t=344s) y canal de [DIscord.](https://discord.gg/C6He6mSNY4)
 
 ### R
