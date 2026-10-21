@@ -6,7 +6,6 @@ project:
 website:
   title: "De lecturas a MAGs"
   navbar:
-    logo-alt: "LandaLab"
     logo-href: "https://www.instagram.com/landalab/"
     pinned: true
     left:

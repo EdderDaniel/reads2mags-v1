@@ -1,0 +1,1 @@
+QUARTO_LOCK_PASSWORD="FibrasHumboldt" quarto render
