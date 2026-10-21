@@ -63,6 +63,10 @@ format:
     theme:
       - cosmo
       - styles.css
+    filters:
+      - lsbjordao/quarto-lock
+    lock:
+      password: "FibrasHumboldt"
     linkcolor: "#097f5f"
     anchor-sections: true
     fig-cap-location: margin
