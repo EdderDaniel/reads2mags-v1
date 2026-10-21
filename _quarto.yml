@@ -6,7 +6,6 @@ project:
 website:
   title: "De lecturas a MAGs"
   navbar:
-    logo: "Figures/landalab.jpeg"
     logo-alt: "LandaLab"
     logo-href: "https://www.instagram.com/landalab/"
     pinned: true
@@ -50,7 +49,6 @@ website:
   page-footer:
     right: "This page is built with ❤ Science 🦠 🧬 and [Quarto](https://quarto.org/)."
     left: "Taller de Metagenómica Centrada en Genomas <br> <span style='font-size:0.9rem; font-weight:600; '>Diana Oaxaca</span>, &copy; Copyright 2026"
-    center: "🧬 <span style='font-size:0.9rem; font-weight:600; letter-spacing:0.5px;'>LandaLab</span> 🧪"
     background: "#4d7b93"
 
 editor: visual
