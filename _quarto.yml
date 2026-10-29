@@ -62,8 +62,8 @@ format:
       - styles.css
     #filters:
     #  - lsbjordao/quarto-lock
-    #lock:
-    #  password: "FibrasHumboldt"
+    ##lock:
+    #  password: "FibrasHumboldt"QUARTO_LOCK_PASSWORD="FibrasHumboldt" quarto render
     linkcolor: "#097f5f"
     anchor-sections: true
     fig-cap-location: margin
