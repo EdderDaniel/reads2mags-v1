@@ -1,0 +1,343 @@
+IQ-TREE 3.0.1 built Jul  9 2025
+
+Input file name: /home/lauram/curso_microbiota/09_filogenomica_mags/results/arbol/bac120_17mags.faa
+Type of analysis: ModelFinder + tree reconstruction + ultrafast bootstrap (1000 replicates)
+Random seed number: 123
+
+REFERENCES
+----------
+
+To cite IQ-TREE 3 please use:
+
+Thomas K.F. Wong, Nhan Ly-Trong, Huaiyan Ren, Hector Banos, Andrew J. Roger,
+Edward Susko, Chris Bielow, Nicola De Maio, Nick Goldman, Matthew W. Hahn,
+Gavin Huttley, Robert Lanfear, Bui Quang Minh (2025)
+IQ-TREE 3: Phylogenomic Inference Software using Complex Evolutionary Models.
+Submitted.
+
+Please also cite the following paper(s) for the feature(s) that you used:
+
+To cite ModelFinder please use: 
+
+Subha Kalyaanamoorthy, Bui Quang Minh, Thomas KF Wong, Arndt von Haeseler,
+and Lars S Jermiin (2017) ModelFinder: Fast model selection for
+accurate phylogenetic estimates. Nature Methods, 14:587–589.
+https://doi.org/10.1038/nmeth.4285
+
+Since you used ultrafast bootstrap (UFBoot) please also cite: 
+
+Diep Thi Hoang, Olga Chernomor, Arndt von Haeseler, Bui Quang Minh,
+and Le Sy Vinh (2018) UFBoot2: Improving the ultrafast bootstrap
+approximation. Mol. Biol. Evol., 35:518–522.
+https://doi.org/10.1093/molbev/msx281
+
+SEQUENCE ALIGNMENT
+------------------
+
+Input data: 17 sequences with 5036 amino-acid sites
+Number of constant sites: 660 (= 13.1056% of all sites)
+Number of invariant (constant or ambiguous constant) sites: 660 (= 13.1056% of all sites)
+Number of parsimony informative sites: 3377
+Number of distinct site patterns: 4843
+
+ModelFinder
+-----------
+
+Best-fit model according to BIC: LG+F+I+R3
+
+List of models sorted by BIC scores: 
+
+Model                  LogL         AIC      w-AIC        AICc     w-AICc         BIC      w-BIC
+LG+F+I+R3        -92889.136  185888.272 +     0.98  185889.509 +    0.979  186247.112 +     0.65
+LG+F+R3          -92894.016  185896.033 -   0.0202  185897.225 -   0.0207  186248.348 +     0.35
+Q.PFAM+F+I+R3    -92986.941  186083.882 - 3.27e-43  186085.119 - 3.27e-43  186442.722 - 2.17e-43
+Q.PFAM+F+R3      -92992.103  186092.207 -  5.1e-45  186093.399 - 5.21e-45  186444.523 - 8.82e-44
+LG+I+R3          -93073.961  186219.921 - 9.43e-73  186220.454 - 1.34e-72  186454.798 - 5.18e-46
+LG+R3            -93078.606  186227.212 - 2.46e-74  186227.716 - 3.55e-74  186455.564 - 3.53e-46
+LG+I+R4          -93073.819  186223.638 - 1.47e-73  186224.232 - 2.03e-73  186471.564 - 1.18e-49
+LG+R4            -93078.308  186230.616 - 4.49e-75  186231.178 - 6.29e-75  186472.017 - 9.45e-50
+LG+G4            -93105.451  186274.903 - 1.08e-84  186275.325 - 1.63e-84  186483.682 - 2.77e-52
+LG+I+G4          -93104.632  186275.264 - 9.06e-85  186275.712 - 1.34e-84  186490.568 - 8.85e-54
+Q.PFAM+R3        -93155.714  186381.428 - 8.01e-108  186381.932 - 1.16e-107  186609.781 - 1.15e-79
+Q.PFAM+I+R3      -93151.475  186374.951 - 2.04e-106  186375.484 - 2.9e-106  186609.828 - 1.12e-79
+Q.YEAST+F+I+R3   -93078.548  186267.096 - 5.38e-83  186268.333 - 5.37e-83  186625.937 - 3.57e-83
+Q.YEAST+F+R3     -93084.785  186277.571 - 2.86e-85  186278.763 - 2.92e-85  186629.886 - 4.95e-84
+LG+I+R2          -93206.524  186481.048 - 1.87e-129  186481.524 - 2.73e-129  186702.877 -   7e-100
+LG+R2            -93300.913  186667.827 - 5.16e-170  186668.275 - 7.66e-170  186883.131 - 5.05e-139
+RTREV+F+I+R3     -93209.842  186529.683 - 5.13e-140  186530.920 - 5.13e-140  186888.524 - 3.4e-140
+RTREV+F+R3       -93215.353  186538.707 - 5.64e-142  186539.899 - 5.76e-142  186891.022 - 9.76e-141
+WAG+F+R3         -93297.512  186703.025 - 1.17e-177  186704.217 - 1.2e-177  187055.341 - 2.03e-176
+WAG+F+I+R3       -93295.237  186700.475 - 4.2e-177  186701.712 - 4.2e-177  187059.315 - 2.79e-177
+Q.INSECT+F+I+R3  -93355.546  186821.092 - 2.7e-203  186822.329 - 2.7e-203  187179.932 - 1.79e-203
+Q.INSECT+F+R3    -93361.000  186830.000 - 3.14e-205  186831.193 - 3.21e-205  187182.316 - 5.44e-204
+Q.YEAST+I+R3     -93556.796  187185.593 - 1.91e-282  187186.126 - 2.72e-282  187420.470 - 1.05e-255
+Q.YEAST+R3       -93565.058  187200.116 - 1.34e-285  187200.620 - 1.94e-285  187428.469 - 1.93e-257
+Q.INSECT+I+R3    -93672.226  187416.452 -        0  187416.985 -        0  187651.329 - 7.78e-306
+Q.INSECT+R3      -93678.381  187426.762 -        0  187427.266 -        0  187655.115 - 1.17e-306
+WAG+R3           -93716.778  187503.556 -        0  187504.060 -        0  187731.908 - 2.47e-323
+WAG+I+R3         -93714.995  187501.989 -        0  187502.522 -        0  187736.867 - 4.94e-324
+VT+F+R3          -93693.402  187494.805 -        0  187495.997 -        0  187847.121 -        0
+VT+F+I+R3        -93691.701  187493.402 -        0  187494.639 -        0  187852.242 -        0
+VT+R3            -94035.257  188140.515 -        0  188141.019 -        0  188368.868 -        0
+VT+I+R3          -94033.667  188139.334 -        0  188139.867 -        0  188374.211 -        0
+BLOSUM62+F+R3    -94042.472  188192.944 -        0  188194.136 -        0  188545.260 -        0
+BLOSUM62+F+I+R3  -94040.917  188191.834 -        0  188193.071 -        0  188550.674 -        0
+RTREV+I+R3       -94152.985  188377.970 -        0  188378.503 -        0  188612.847 -        0
+RTREV+R3         -94158.265  188386.530 -        0  188387.034 -        0  188614.883 -        0
+CPREV+F+R3       -94099.315  188306.631 -        0  188307.823 -        0  188658.946 -        0
+CPREV+F+I+R3     -94096.748  188303.496 -        0  188304.733 -        0  188662.336 -        0
+DAYHOFF+F+I+R3   -94101.198  188312.397 -        0  188313.634 -        0  188671.237 -        0
+DCMUT+F+I+R3     -94102.633  188315.266 -        0  188316.503 -        0  188674.106 -        0
+DAYHOFF+F+R3     -94107.550  188323.100 -        0  188324.293 -        0  188675.416 -        0
+DCMUT+F+R3       -94108.926  188325.852 -        0  188327.044 -        0  188678.167 -        0
+JTTDCMUT+F+I+R3  -94119.938  188349.877 -        0  188351.114 -        0  188708.717 -        0
+PMB+F+R3         -94124.775  188357.550 -        0  188358.743 -        0  188709.866 -        0
+JTTDCMUT+F+R3    -94125.286  188358.573 -        0  188359.765 -        0  188710.888 -        0
+PMB+F+I+R3       -94123.047  188356.094 -        0  188357.331 -        0  188714.934 -        0
+JTT+F+I+R3       -94156.030  188422.059 -        0  188423.296 -        0  188780.899 -        0
+JTT+F+R3         -94161.551  188431.101 -        0  188432.294 -        0  188783.417 -        0
+Q.PLANT+F+I+R3   -94298.216  188706.431 -        0  188707.668 -        0  189065.272 -        0
+Q.PLANT+F+R3     -94312.234  188732.467 -        0  188733.660 -        0  189084.783 -        0
+BLOSUM62+R3      -94438.205  188946.410 -        0  188946.914 -        0  189174.763 -        0
+BLOSUM62+I+R3    -94436.846  188945.692 -        0  188946.224 -        0  189180.569 -        0
+Q.PLANT+I+R3     -94495.419  189062.838 -        0  189063.371 -        0  189297.715 -        0
+Q.PLANT+R3       -94507.818  189085.636 -        0  189086.140 -        0  189313.989 -        0
+CPREV+R3         -94513.584  189097.168 -        0  189097.672 -        0  189325.521 -        0
+CPREV+I+R3       -94511.472  189094.943 -        0  189095.476 -        0  189329.820 -        0
+JTTDCMUT+I+R3    -94549.929  189171.859 -        0  189172.392 -        0  189406.736 -        0
+JTTDCMUT+R3      -94554.252  189178.504 -        0  189179.008 -        0  189406.857 -        0
+JTT+I+R3         -94581.352  189234.705 -        0  189235.238 -        0  189469.582 -        0
+JTT+R3           -94585.814  189241.628 -        0  189242.132 -        0  189469.981 -        0
+LG+I             -94669.712  189403.424 -        0  189403.846 -        0  189612.204 -        0
+PMB+R3           -94731.665  189533.330 -        0  189533.834 -        0  189761.683 -        0
+PMB+I+R3         -94730.386  189532.772 -        0  189533.305 -        0  189767.649 -        0
+MTINV+F+I+R3     -94863.262  189836.523 -        0  189837.760 -        0  190195.363 -        0
+MTINV+F+R3       -94877.071  189862.142 -        0  189863.335 -        0  190214.458 -        0
+DAYHOFF+I+R3     -94985.747  190043.494 -        0  190044.027 -        0  190278.371 -        0
+DAYHOFF+R3       -94992.131  190054.263 -        0  190054.767 -        0  190282.616 -        0
+DCMUT+I+R3       -94990.625  190053.250 -        0  190053.782 -        0  190288.127 -        0
+DCMUT+R3         -94996.968  190063.935 -        0  190064.439 -        0  190292.288 -        0
+MTZOA+F+I+R3     -95050.946  190211.892 -        0  190213.129 -        0  190570.732 -        0
+MTZOA+F+R3       -95081.442  190270.884 -        0  190272.077 -        0  190623.200 -        0
+FLU+F+I+R3       -95278.554  190667.108 -        0  190668.345 -        0  191025.948 -        0
+FLU+F+R3         -95293.163  190694.326 -        0  190695.518 -        0  191046.642 -        0
+LG               -95522.375  191106.749 -        0  191107.146 -        0  191309.004 -        0
+MTREV+F+I+R3     -95479.441  191068.881 -        0  191070.118 -        0  191427.722 -        0
+MTREV+F+R3       -95495.121  191098.242 -        0  191099.435 -        0  191450.558 -        0
+Q.MAMMAL+F+I+R3  -95571.523  191253.046 -        0  191254.283 -        0  191611.887 -        0
+Q.MAMMAL+F+R3    -95585.506  191279.012 -        0  191280.205 -        0  191631.328 -        0
+MTMET+F+I+R3     -95751.274  191612.547 -        0  191613.784 -        0  191971.388 -        0
+MTMET+F+R3       -95777.338  191662.677 -        0  191663.869 -        0  192014.993 -        0
+Q.MAMMAL+I+R3    -96134.504  192341.008 -        0  192341.541 -        0  192575.885 -        0
+Q.MAMMAL+R3      -96145.018  192360.035 -        0  192360.539 -        0  192588.388 -        0
+MTART+F+I+R3     -96097.909  192305.818 -        0  192307.055 -        0  192664.658 -        0
+MTART+F+R3       -96148.458  192404.915 -        0  192406.108 -        0  192757.231 -        0
+FLU+I+R3         -96358.189  192788.377 -        0  192788.910 -        0  193023.255 -        0
+FLU+R3           -96369.373  192808.747 -        0  192809.251 -        0  193037.100 -        0
+HIVB+F+I+R3      -96351.503  192813.007 -        0  192814.244 -        0  193171.847 -        0
+HIVB+F+R3        -96375.965  192859.929 -        0  192861.122 -        0  193212.245 -        0
+Q.BIRD+F+I+R3    -96386.755  192883.510 -        0  192884.747 -        0  193242.350 -        0
+Q.BIRD+F+R3      -96410.232  192928.465 -        0  192929.657 -        0  193280.781 -        0
+Q.BIRD+I+R3      -96837.988  193747.975 -        0  193748.508 -        0  193982.853 -        0
+Q.BIRD+R3        -96855.766  193781.532 -        0  193782.036 -        0  194009.885 -        0
+HIVB+I+R3        -96988.598  194049.196 -        0  194049.729 -        0  194284.073 -        0
+HIVB+R3          -97007.149  194084.298 -        0  194084.802 -        0  194312.651 -        0
+MTVER+F+I+R3     -97059.661  194229.322 -        0  194230.559 -        0  194588.162 -        0
+MTVER+F+R3       -97104.171  194316.341 -        0  194317.534 -        0  194668.657 -        0
+MTMAM+F+I+R3     -97915.300  195940.600 -        0  195941.837 -        0  196299.440 -        0
+MTZOA+I+R3       -97996.856  196065.713 -        0  196066.246 -        0  196300.590 -        0
+MTZOA+R3         -98020.780  196111.560 -        0  196112.064 -        0  196339.913 -        0
+MTMAM+F+R3       -97982.705  196073.411 -        0  196074.603 -        0  196425.726 -        0
+FLAVI+F+I+R3     -98297.495  196704.989 -        0  196706.226 -        0  197063.829 -        0
+FLAVI+F+R3       -98349.098  196806.197 -        0  196807.389 -        0  197158.513 -        0
+FLAVI+I+R3       -98849.431  197770.862 -        0  197771.395 -        0  198005.739 -        0
+FLAVI+R3         -98889.325  197848.649 -        0  197849.153 -        0  198077.002 -        0
+HIVW+F+I+R3      -99000.408  198110.816 -        0  198112.052 -        0  198469.656 -        0
+HIVW+F+R3        -99027.435  198162.871 -        0  198164.063 -        0  198515.186 -        0
+MTREV+I+R3       -99510.069  199092.138 -        0  199092.671 -        0  199327.016 -        0
+MTREV+R3         -99523.595  199117.190 -        0  199117.694 -        0  199345.543 -        0
+MTMET+I+R3      -100081.577  200235.153 -        0  200235.686 -        0  200470.031 -        0
+MTMET+R3        -100098.591  200267.183 -        0  200267.687 -        0  200495.536 -        0
+MTART+I+R3      -100194.178  200460.355 -        0  200460.888 -        0  200695.232 -        0
+MTART+R3        -100234.210  200538.421 -        0  200538.925 -        0  200766.774 -        0
+MTINV+I+R3      -100445.954  200963.907 -        0  200964.440 -        0  201198.784 -        0
+MTINV+R3        -100454.967  200979.935 -        0  200980.439 -        0  201208.288 -        0
+MTVER+I+R3      -100816.763  201705.525 -        0  201706.058 -        0  201940.402 -        0
+MTVER+R3        -100851.534  201773.067 -        0  201773.571 -        0  202001.420 -        0
+HIVW+I+R3       -101200.918  202473.835 -        0  202474.368 -        0  202708.713 -        0
+HIVW+R3         -101228.746  202527.493 -        0  202527.997 -        0  202755.846 -        0
+MTMAM+I+R3      -101737.891  203547.782 -        0  203548.315 -        0  203782.659 -        0
+MTMAM+R3        -101818.762  203707.525 -        0  203708.029 -        0  203935.878 -        0
+
+AIC, w-AIC   : Akaike information criterion scores and weights.
+AICc, w-AICc : Corrected AIC scores and weights.
+BIC, w-BIC   : Bayesian information criterion scores and weights.
+
+Plus signs denote the 95% confidence sets.
+Minus signs denote significant exclusion.
+
+SUBSTITUTION PROCESS
+--------------------
+
+Model of substitution: LG+F+I+R3
+
+State frequencies: (empirical counts from alignment)
+
+  pi(A) = 0.0935
+  pi(R) = 0.0497
+  pi(N) = 0.0351
+  pi(D) = 0.0581
+  pi(C) = 0.0026
+  pi(Q) = 0.0342
+  pi(E) = 0.0786
+  pi(G) = 0.0565
+  pi(H) = 0.0173
+  pi(I) = 0.0782
+  pi(L) = 0.1045
+  pi(K) = 0.0643
+  pi(M) = 0.0256
+  pi(F) = 0.0351
+  pi(P) = 0.0338
+  pi(S) = 0.0465
+  pi(T) = 0.0563
+  pi(W) = 0.0040
+  pi(Y) = 0.0271
+  pi(V) = 0.0987
+
+Model of rate heterogeneity: Invar+FreeRate with 3 categories
+Proportion of invariable sites: 0.0297
+Site proportion and rates:  (0.3660,0.2527) (0.4454,0.9990) (0.1589,2.9111)
+
+ Category  Relative_rate  Proportion
+  0         0              0.0297
+  1         0.2527         0.3660
+  2         0.9990         0.4454
+  3         2.9111         0.1589
+
+MAXIMUM LIKELIHOOD TREE
+-----------------------
+
+Log-likelihood of the tree: -92888.8040 (s.e. 718.5690)
+Unconstrained log-likelihood (without tree): -42618.0919
+Number of free parameters (#branches + #model parameters): 55
+Akaike information criterion (AIC) score: 185887.6080
+Corrected Akaike information criterion (AICc) score: 185888.8449
+Bayesian information criterion (BIC) score: 186246.4482
+
+Total tree length (sum of branch lengths): 6.6462
+Sum of internal branch lengths: 2.2812 (34.3233% of tree length)
+
+NOTE: Tree is UNROOTED although outgroup taxon 'MAG01_0h' is drawn at root
+Numbers in parentheses are SH-aLRT support (%) / ultrafast bootstrap support (%)
+
++----MAG01_0h
+|
++----MAG02_09h
+|
+|                         +---------MAG03_09h
+|                    +----| (100/100)
+|                    |    +-------MAG04_09h
+|                 +--| (100/100)
+|                 |  +----------MAG08_24h
+|              +--| (100/100)
+|              |  +-----------------MAG16_48h
+|           +--| (87.5/80)
+|           |  |         +-------MAG10_24h
+|           |  |  +------| (100/100)
+|           |  |  |      |         +--MAG11_24h
+|           |  |  |      |      +--| (100/100)
+|           |  |  |      |      |  +--MAG17_48h
+|           |  |  |      |   +--| (100/100)
+|           |  |  |      |   |  +--MAG13_24h
+|           |  |  |      +---| (100/100)
+|           |  |  |          +--MAG15_48h
+|           |  +--| (99.8/100)
+|           |     +-------MAG14_48h
+|      +----| (100/100)
+|      |    +-------------MAG09_24h
+|   +--| (99.8/100)
+|   |  |                                         +-------MAG06_09h
+|   |  |            +----------------------------| (100/100)
+|   |  |            |                            +-------MAG12_24h
+|   |  +------------| (100/100)
+|   |               +------------------------------------MAG07_09h
++---| (100/100)
+    +-----------MAG05_09h
+
+Tree in newick format:
+
+(MAG01_0h:0.1333374635,MAG02_09h:0.1325696368,(((((((MAG03_09h:0.2815932530,MAG04_09h:0.2117430526)100/100:0.1381608922,MAG08_24h:0.3034542940)100/100:0.0709623407,MAG16_48h:0.4928118802)100/100:0.0770016769,((MAG10_24h:0.2120475860,(((MAG11_24h:0.0322167416,MAG17_48h:0.0275180381)100/100:0.0658038671,MAG13_24h:0.0952874245)100/100:0.0488130896,MAG15_48h:0.0961057398)100/100:0.1161925563)100/100:0.1866843452,MAG14_48h:0.2106726105)99.8/100:0.0568446294)87.5/80:0.0445442817,MAG09_24h:0.3675218906)100/100:0.1366334339,((MAG06_09h:0.2353056226,MAG12_24h:0.2316661511)100/100:0.7626802466,MAG07_09h:0.9833607904)100/100:0.3635224195)99.8/100:0.0964911267,MAG05_09h:0.3177713363)100/100:0.1168534182);
+
+CONSENSUS TREE
+--------------
+
+Consensus tree is constructed from 1000 bootstrap trees
+Log-likelihood of consensus tree: -92888.803700
+Robinson-Foulds distance between ML tree and consensus tree: 0
+
+Branches with support >0.000000% are kept (extended consensus)
+Branch lengths are optimized by maximum likelihood on original alignment
+Numbers in parentheses are bootstrap supports (%)
+
++----MAG01_0h
+|
++----MAG02_09h
+|
+|                         +---------MAG03_09h
+|                    +----| (100)
+|                    |    +-------MAG04_09h
+|                 +--| (100)
+|                 |  +----------MAG08_24h
+|              +--| (100)
+|              |  +-----------------MAG16_48h
+|           +--| (80)
+|           |  |         +-------MAG10_24h
+|           |  |  +------| (100)
+|           |  |  |      |         +--MAG11_24h
+|           |  |  |      |      +--| (100)
+|           |  |  |      |      |  +--MAG17_48h
+|           |  |  |      |   +--| (100)
+|           |  |  |      |   |  +--MAG13_24h
+|           |  |  |      +---| (100)
+|           |  |  |          +--MAG15_48h
+|           |  +--| (100)
+|           |     +-------MAG14_48h
+|      +----| (100)
+|      |    +------------MAG09_24h
+|   +--| (100)
+|   |  |                                         +-------MAG06_09h
+|   |  |            +----------------------------| (100)
+|   |  |            |                            +-------MAG12_24h
+|   |  +------------| (100)
+|   |               +------------------------------------MAG07_09h
++---| (100)
+    +-----------MAG05_09h
+
+
+Consensus tree in newick format: 
+
+(MAG01_0h:0.1333315112,MAG02_09h:0.1325403989,(((((((MAG03_09h:0.2815171784,MAG04_09h:0.2116752815)100:0.1381259760,MAG08_24h:0.3033543709)100:0.0709507134,MAG16_48h:0.4926336198)100:0.0769920633,((MAG10_24h:0.2119616564,(((MAG11_24h:0.0322060028,MAG17_48h:0.0275102702)100:0.0657820785,MAG13_24h:0.0952494981)100:0.0487990629,MAG15_48h:0.0960679735)100:0.1161654315)100:0.1866125645,MAG14_48h:0.2105993827)100:0.0568335724)80:0.0445498712,MAG09_24h:0.3674136734)100:0.1366165398,((MAG06_09h:0.2352932276,MAG12_24h:0.2315946397)100:0.7624928182,MAG07_09h:0.9830717466)100:0.3635265963)100:0.0964776104,MAG05_09h:0.3177210544)100:0.1168428226);
+
+ALISIM COMMAND
+--------------
+To simulate an alignment of the same length as the original alignment, using the tree and model parameters estimated from this analysis, you can use the following command:
+
+--alisim simulated_MSA -t /home/lauram/curso_microbiota/09_filogenomica_mags/results/arbol/bac120_17mags.treefile -m "LG+F+I{0.0297387}+R3{0.365986,0.252665,0.445365,0.999021,0.15891,2.91108}" --length 5036
+
+To mimic the alignment used to produce this analysis, i.e. simulate an alignment of the same length as the original alignment, using the tree and model parameters estimated from this analysis *and* copying the same gap positions as the original alignment, you can use the following command:
+
+iqtree -s /home/lauram/curso_microbiota/09_filogenomica_mags/results/arbol/bac120_17mags.faa --alisim mimicked_MSA
+
+To simulate any number of alignments in either of the two commandlines above, use the --num-alignments options, for example mimic 100 alignments you would use the command line:
+
+iqtree -s /home/lauram/curso_microbiota/09_filogenomica_mags/results/arbol/bac120_17mags.faa --alisim mimicked_MSA --num-alignments 100
+
+For more information on using AliSim, please visit: www.iqtree.org/doc/AliSim
+
+TIME STAMP
+----------
+
+Date and time: Wed Oct 21 23:39:48 2026
+Total CPU time used: 1188.207836 seconds (0h:19m:48s)
+Total wall-clock time used: 299.2381985 seconds (0h:4m:59s)
+

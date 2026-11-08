@@ -66,11 +66,11 @@ ls -lh
 ::: callout-tip
 ## Reglas del juego
 
-- **En este tutorial haremos el ejemplo corriendo la muestra del tiempo 0h.**
+-   **En este tutorial haremos el ejemplo corriendo la muestra del tiempo 0h.**
 
-- **Se formarán 6 equipos (2 correspondientes a los tiempos 0, 24 y 48 horas).**
+-   **Se formarán 6 equipos (2 correspondientes a los tiempos 0, 24 y 48 horas).**
 
-- **Se reunirán y en equipo discutirán y presentarán sus resultados cuando se indique en el tutorial.**
+-   **Se reunirán y en equipo discutirán y presentarán sus resultados cuando se indique en el tutorial.**
 :::
 
 ------------------------------------------------------------------------
@@ -98,19 +98,19 @@ Cada programa tiene una ayuda y un manual de usuario, es **importante** revisarl
 
 En cada paso:
 
-- **Detente a revisar la información de cada programa, lee el manual y la ayuda**
+-   **Detente a revisar la información de cada programa, lee el manual y la ayuda**
 
-- **Elige los parámetros que mejor se adapten a tus datos.**
+-   **Elige los parámetros que mejor se adapten a tus datos.**
 
-- **Analiza las salidas de cada proceso y los resultados.**
+-   **Analiza las salidas de cada proceso y los resultados.**
 
-- **Haz varias pruebas, usa controles (positivo y negativo).**
+-   **Haz varias pruebas, usa controles (positivo y negativo).**
 
-- **Visita foros de ayuda, complementa con IA.**
+-   **Visita foros de ayuda, complementa con IA.**
 
-- **Toma decisiones informadas y con argumentos sólidos.**
+-   **Toma decisiones informadas y con argumentos sólidos.**
 
-- **Disfruta el proceso.**
+-   **Disfruta el proceso.**
 :::
 
 ## 04. ¿Cómo abordar Proyecto Metagenómico?

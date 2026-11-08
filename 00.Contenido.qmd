@@ -7,50 +7,77 @@ Este es el programa del taller **De lecturas a MAGs**. Está diseñado para que 
 ## Día 1 · Del dato crudo al ensamble
 
 | Jornada | Hora | Tema | Modalidad |
-|----|----|----|----|
-| Mañana | 8:00–8:20 | Llegada y preparación del entorno | — |
-|  | 8:20–9:20 | Charla: flujo bioinformático para metagenómica centrada en genomas | Charla |
-|  | 9:20–10:00 | Control de calidad de lecturas (FastQC / MultiQC) | Práctica |
-|  | 10:00–10:20 | ☕ **Refrigerio** | Descanso |
-|  | 10:20–12:30 | Filtrado y recorte (Trim Galore); remoción de hospedero (conceptual) | Práctica |
-| Almuerzo | 12:30–14:00 | 🍽️ **Almuerzo** 🚀 *dejar corriendo el ensamble v1* | Descanso + cómputo |
-| Tarde | 14:00–14:30 | Charla: ensamblaje metagenómico (métricas, N50 vs auN) | Charla |
-|  | 14:30–16:45 | Comparación de ensambles (QUAST, mapeo) 🚀 *dejar corriendo la profundidad* | Práctica |
+|------------------|------------------|------------------|------------------|
+| Mañana | 9:00–10:00 | Charla: Pregunta biológica, diseño y datos | Charla |
+|  | 10:00–10:45 | Charla: Espacio de trabajo y trazabilidad | Teoria + práctica |
+|  | 10:45–11:00 | ☕**Refrigerio** | Descanso |
+|  | 11:00–12:00 | Control de calidad de lecturas (FastQC / MultiQC) | Teoria + práctica |
+| Tarde | 12:00–13:00 | Filtrado y recorte (Trim Galore); remoción de hospedero (conceptual) | Teoria + práctica |
+| Almuerzo | 13:00–14:00 | 🍽️ **Almuerzo** | Descanso |
+|  | 14:00–15:00 | Ensamblaje metagenómico (métricas, N50 vs auN) | Teoria + práctica |
+|  | 15:00–15:45 | Evaluación y comparación de ensambles (QUAST) | Teoria + práctica |
+|  | 15:45–16:00 | ☕**Refrigerio** | Descanso |
+|  | 16:00–17:00 | Mapeo y profundidad para binning | Teoria + práctica |
 
 ## Día 2 · Binning y refinamiento
 
 | Jornada | Hora | Tema | Modalidad |
-|----|----|----|----|
-| Mañana | 8:00–8:20 | Llegada | — |
-|  | 8:20–9:20 | Charla: binning (cobertura + composición; los cuatro binneadores) | Charla |
-|  | 9:20–10:00 | MetaBAT2 y MaxBin2 🚀 *dejar corriendo antes del descanso* | Práctica |
-|  | 10:00–10:20 | ☕ **Refrigerio** *(binning corriendo)* | Descanso + cómputo |
-|  | 10:20–12:30 | VAMB (COMEBin 🔧 pre-computado) · CheckM2 sobre MetaBAT | Práctica |
-| Almuerzo | 12:30–14:00 | 🍽️ **Almuerzo** 🚀 *dejar corriendo DAS_Tool + MAGScoT* | Descanso + cómputo |
-| Tarde | 14:00–15:00 | Charla: refinamiento y desreplicación (DAS_Tool, MAGScoT, dRep; MIMAG) | Charla |
-|  | 15:00–16:45 | Explorar el refinamiento · dRep → MAGs finales | Práctica |
+|------------------|------------------|------------------|------------------|
+| Mañana | 9:00–10:00 | Charla: Principios del binning | Charla |
+|  | 10:00–10:45 | Comparación de algoritmos de binning | Teoria + práctica |
+|  | 10:45–11:00 | ☕ **Refrigerio** | Descanso |
+|  | 11:00–12:00 | Calidad de MAGs: Refinamiento con CheckM2 y estándares | Teoria + práctica |
+| Tarde | 12:00–13:00 | Calidad de MAGs: Refinamiento con DASTool | Teoria + práctica |
+| Almuerzo | 13:00–14:00 | 🍽️ **Almuerzo** | Descanso |
+|  | 14:00–15:00 | Calidad de MAGs: Refinamiento con MAGScoT | Teoria + práctica |
+|  | 15:00–15:45 | Explorando el refinamiento: De la desreplicación a los MAGs finales | Teoria + práctica |
+|  | 15:45–16:00 | ☕**Refrigerio** | Descanso |
+|  | 16:00–17:00 | Auditoría del catálogo local | Teoria + práctica |
 
-## Día 3 · Taxonomía, anotación y análisis global
-
-| Jornada | Hora | Tema | Modalidad |
-|----|----|----|----|
-| Mañana | 8:00–8:20 | Llegada | — |
-|  | 8:20–9:20 | Charla: clasificación taxonómica y anotación funcional | Charla |
-|  | 9:20–10:00 | GTDB-Tk (🔧 pre-computado) · Prokka en vivo sobre un MAG 🚀 | Práctica |
-|  | 10:00–10:20 | ☕ **Refrigerio** | Descanso |
-|  | 10:20–12:30 | Bakta (🔧 pre-computado) · KofamScan · Análisis global: tabla de metadatos y RbiMs | Práctica |
-| Almuerzo | 12:30–14:00 | 🍽️ **Almuerzo** | Descanso |
-
-## Día 4 · Caso de estudio: degradación de hidrocarburos
+## Día 3 · Anotación funcional y reconstrucción metabólica
 
 | Jornada | Hora | Tema | Modalidad |
-|----|----|----|----|
-| Mañana | 8:00–8:20 | Llegada | — |
-|  | 8:20–9:20 | Charla: degradación de hidrocarburos y análisis funcional comparativo | Charla |
-|  | 9:20–10:00 | Carga de datos (🔧 pre-computados) y exploración de rutas de hidrocarburos | Práctica |
-|  | 10:00–10:20 | ☕ **Refrigerio** | Descanso |
-|  | 10:20–12:30 | Análisis discriminante, sesgo direccional por ruta y lectura biológica | Práctica |
-| Almuerzo | 12:30–14:00 | 🍽️ **Almuerzo** | Descanso |
+|------------------|------------------|------------------|------------------|
+| Mañana | 9:00–10:00 | Charla: Predicción de genes y anotación estructural | Teoria + práctica |
+|  | 10:00–10:45 | Anotación con Bakta | Teoria + práctica |
+|  | 10:45–11:00 | ☕ **Refrigerio** | Descanso |
+|  | 11:00–12:00 | Ortología y asignación de KO con KofamScan | Teoria + práctica |
+| Tarde | 12:00–13:00 | KEGG, eggNOG y Pfam: ¿qué nos aporta cada uno? | Teoria + práctica |
+| Almuerzo | 13:00–14:00 | 🍽️ **Almuerzo** | Descanso |
+|  | 14:00–15:00 | Reconstrucción metabólica y límites | Teoria + práctica |
+|  | 15:00–15:45 | Catálogo global y unión de metadatos | Teoria + práctica |
+|  | 15:45–16:00 | ☕**Refrigerio** | Descanso |
+|  | 16:00–17:00 | RbiMs: del KO a la comparación funcional | Teoria + práctica |
+
+## Día 4 · Taxonomía, estadistica y análisis global
+
+| Jornada | Hora | Tema | Modalidad |
+|------------------|------------------|------------------|------------------|
+| Mañana | 9:00–10:00 | Taxonomía y filogenómica con GTDB-Tk | Teoria + práctica |
+|  | 10:00–10:45 | Charla: Viromas y genes metabólicos auxiliares: panorama | Charla |
+|  | 10:45-11:00 | ☕ **Refrigerio** | Descanso |
+|  | 11:00–12:00 | Viromas y genes metabólicos auxiliares: panorama | Práctica |
+| Tarde | 12:00–13:00 | Funciones, comunidad y preguntas ecológicas | Charla |
+| Almuerzo | 13:00–14:00 | 🍽️ **Almuerzo** | Descanso |
+|  | 14:00–15:00 | Integración del catálogo funcional del pozol | Teoria + práctica |
+|  | 15:00–15:45 | Baxter: datos, rarefacción y diversidad alfa | Teoria + práctica |
+|  | 15:45–16:00 | ☕**Refrigerio** | Descanso |
+|  | 16:00–17:00 | Composición, matriz de distancias y ordenación | Teoria + práctica |
+
+## Día 5 · Caso de estudio
+
+| Jornada | Hora | Tema | Modalidad |
+|------------------|------------------|------------------|------------------|
+| Mañana | 9:00–10:00 | Inferencia y conclusión ecológica de Baxter | Teoria + práctica |
+|  | 10:00–10:45 |  |  |
+|  | 10:45-11:00 | ☕ **Refrigerio** | Descanso |
+|  | 11:00–12:00 |  |  |
+| Tarde | 12:00–13:00 |  |  |
+| Almuerzo | 13:00–14:00 | 🍽️ **Almuerzo** | Descanso |
+|  | 14:00–15:00 |  |  |
+|  | 15:00–15:45 |  |  |
+|  | 15:45–16:00 | ☕**Refrigerio** | Descanso |
+|  | 16:00–17:00 |  |  |
 
 : {.striped .hover tbl-colwidths="\[15,18,52,15\]"}
 

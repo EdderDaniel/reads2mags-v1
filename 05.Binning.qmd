@@ -23,8 +23,8 @@ Para obtener MAGs podemos seguir el siguiente flujo de análisis:
 
 Antes de correr las herramientas, vale la pena entender **por qué** es posible agrupar contigs en genomas. La idea común a todos los binneadores, es que los contigs que provienen de un **mismo genoma** comparten dos propiedades:
 
-- **Cobertura parecida.** Cada organismo está presente en cierta abundancia dentro de la muestra, así que las lecturas se mapean a *todos* sus contigs a una profundidad similar. La cobertura funciona como una huella de "cuánto hay" de ese organismo.
-- **Composición parecida.** Cada genoma tiene una firma característica en su **frecuencia de tetranucleótidos** (el patrón de k-mers, ligado a su GC y a sesgos propios), y esa firma se conserva a lo largo de todos sus contigs, sin importar qué genes lleven.
+-   **Cobertura parecida.** Cada organismo está presente en cierta abundancia dentro de la muestra, así que las lecturas se mapean a *todos* sus contigs a una profundidad similar. La cobertura funciona como una huella de "cuánto hay" de ese organismo.
+-   **Composición parecida.** Cada genoma tiene una firma característica en su **frecuencia de tetranucleótidos** (el patrón de k-mers, ligado a su GC y a sesgos propios), y esa firma se conserva a lo largo de todos sus contigs, sin importar qué genes lleven.
 
 Ninguna señal basta por sí sola, dos genomas distintos pueden coincidir en abundancia, o en composición, pero combinando ambas los genomas se separan bastante bien. Por eso el archivo de profundidad que generamos antes es clave: aporta justo la señal de cobertura que el ensamble por sí solo no tiene.
 
@@ -37,9 +37,9 @@ A partir de aquí, **todos los binneadores usan estas mismas dos señales; lo qu
 
 Antes de comenzar, reúnete con tu equipo y juntos
 
-- Revisen nuevamente el contenido de los directorios `Ensambles` y `Profundidad`
+-   Revisen nuevamente el contenido de los directorios `Ensambles` y `Profundidad`
 
-- ¿Cuentan con la información necesaria para realizar el *binning*?
+-   ¿Cuentan con la información necesaria para realizar el *binning*?
 
 Tiempo: 5 min
 :::
@@ -286,8 +286,8 @@ Antes de refinar necesitamos una forma de medir qué tan buenos son los *bins* q
 
 A diferencia de su antecesor **CheckM1** —que colocaba cada genoma en un **árbol de referencia** y contaba **genes marcadores de copia única específicos de cada linaje** (su presencia estima la completitud y su duplicación, la contaminación)— **CheckM2** estima la calidad con **modelos de aprendizaje automático** entrenados sobre miles de genomas. En lugar de depender de marcadores por linaje, predice la completitud y la contaminación a partir de las características del propio genoma. Esto lo hace:
 
-- **más rápido y mucho más ligero en memoria**, porque no construye árboles filogenéticos ni usa `pplacer`;
-- **más preciso en organismos poco representados** en las bases de datos o con **genomas reducidos** y biología inusual (p. ej. Patescibacteria, Nanoarchaeota), donde CheckM1 subestimaba la calidad por falta de marcadores.
+-   **más rápido y mucho más ligero en memoria**, porque no construye árboles filogenéticos ni usa `pplacer`;
+-   **más preciso en organismos poco representados** en las bases de datos o con **genomas reducidos** y biología inusual (p. ej. Patescibacteria, Nanoarchaeota), donde CheckM1 subestimaba la calidad por falta de marcadores.
 
 Por dentro, CheckM2 predice los genes con **Prodigal**, los anota con **DIAMOND** contra una base de referencia y con esas características alimenta sus modelos: uno de **contaminación** y uno de **completitud** que elige automáticamente entre un modelo *general* (para organismos novedosos) y uno *específico* (para organismos cercanos al set de entrenamiento). Por eso, en la salida verás una columna que indica qué modelo se usó para cada MAG.
 
@@ -350,7 +350,7 @@ Y ahora sí, a refinar los *bins* ... 🥳
 
 ------------------------------------------------------------------------
 
-### 2.2 DASTool
+### 02.2 DASTool
 
 [DAS_Tool](https://github.com/cmks/DAS_Tool) toma los bins de todos los binneadores y **puntúa cada candidato** según sus **genes de copia única**, con lo que estima su completitud y contaminación (por eso no depende de CheckM). Después selecciona un conjunto **no redundante**, quedándose con la mejor versión de cada genoma entre todas las herramientas, e incluso ajusta los bins añadiendo contigs para mejorar ese puntaje. A diferencia de Binning_refiner, que conserva la intersección, DAS_Tool **elige y optimiza** los bins de mayor puntaje.
 
@@ -397,7 +397,7 @@ nohup bash scripts/10.dastool_0h.sh > outs/10.dastool.out &
 
 ------------------------------------------------------------------------
 
-### 2.2 MAGScoT
+### 02.3 MAGScoT
 
 Como segundo refinador usaremos [MAGScoT](https://github.com/ikmb/MAGScoT), una herramienta más reciente y ligera. Comparte la misma filosofía que DAS_Tool, puntúa cada bin candidato usando **genes marcadores de copia única** y selecciona de forma iterativa el mejor conjunto **no redundante**, sin depender de CheckM, pero agrega un paso propio: **fusiona bins que se solapan** entre binneadores para formar *bins híbridos* y los mete también a la competencia. A veces ese híbrido resulta mejor que cualquiera de los bins originales.
 
@@ -587,9 +587,9 @@ dRep dereplicate results/12.drep/0h/ \
 ::: callout-important
 ## Para tomar en cuenta
 
-- En la vida real, si el proyecto de metagenómica que estás desarrollando tiene **librerías de diferentes muestras** usarías dRep entre todos los conjuntos de *bins* ya refinados para **eliminar redundancia de genomas.**
+-   En la vida real, si el proyecto de metagenómica que estás desarrollando tiene **librerías de diferentes muestras** usarías dRep entre todos los conjuntos de *bins* ya refinados para **eliminar redundancia de genomas.**
 
-- Qué harías si antes de desreplicar tienes un bin que tiene 98 % de completitud y 11 % de contaminación?. dRep en automático lo descartaría.
+-   Qué harías si antes de desreplicar tienes un bin que tiene 98 % de completitud y 11 % de contaminación?. dRep en automático lo descartaría.
 
 Propondrías alguna manera para quedarte con este bin y curarlo para reducir su contaminación?
 
@@ -613,15 +613,15 @@ Ahora te toca a ti
 
 Ahora te toca a ti.
 
-- Reúnanse en equipos y repliquen todo el flujo hasta este punto con la muestra que les toca. No ejecuten COMEBin, sólo Metabat, Maxbin y Vamb.
+-   Reúnanse en equipos y repliquen todo el flujo hasta este punto con la muestra que les toca. No ejecuten COMEBin, sólo Metabat, Maxbin y Vamb.
 
-- Discutan cada resultado obtenido.
+-   Discutan cada resultado obtenido.
 
-- ¿Qué refinador dió mejores resultados?
+-   ¿Qué refinador dió mejores resultados?
 
-- Clasifica tus bins según MIMAG. ¿Cuántos de cada uno?
+-   Clasifica tus bins según MIMAG. ¿Cuántos de cada uno?
 
-- En la [carpeta compartida de Drive](https://docs.google.com/presentation/d/1f4vaJ_fV_8-i-dja2wtFx55vRkgeAB5Y4s-opCvFI1k/edit?usp=sharing) busquen la presentación para el Ejercicio 2, en la diapositiva correspondiente resuman sus resultados obtenidos para que los presenten.
+-   En la [carpeta compartida de Drive](https://docs.google.com/presentation/d/1f4vaJ_fV_8-i-dja2wtFx55vRkgeAB5Y4s-opCvFI1k/edit?usp=sharing) busquen la presentación para el Ejercicio 2, en la diapositiva correspondiente resuman sus resultados obtenidos para que los presenten.
 
 Tiempo de actividad (1 hr)
 

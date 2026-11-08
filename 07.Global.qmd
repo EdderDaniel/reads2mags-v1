@@ -100,7 +100,7 @@ Cambia el encabezado del nombre del bin: `user_genome` por `Bin_name`
 Tienes tres archivos, y cada uno aporta una pieza:
 
 | Fuente | Aporta | Cómo llama al MAG |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | `gtdbtk.bac120.summary.tsv` | taxonomía | columna `user_genome` |
 | `quality_report.tsv` (CheckM2) | completitud, contaminación | columna `Name` |
 | el **nombre del MAG** | muestra de origen | p\. ej. `MAG15_48h` → `48h` |
