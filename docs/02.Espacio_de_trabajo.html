@@ -187,10 +187,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#espacio-de-trabajo" id="toc-espacio-de-trabajo" class="nav-link active" data-scroll-target="#espacio-de-trabajo">01. Espacio de trabajo</a></li>
-  <li><a href="#vamos-a-organizarnos" id="toc-vamos-a-organizarnos" class="nav-link" data-scroll-target="#vamos-a-organizarnos">02. Vamos a organizarnos</a></li>
-  <li><a href="#advertencias" id="toc-advertencias" class="nav-link" data-scroll-target="#advertencias">03. Advertencias</a></li>
-  <li><a href="#cómo-abordar-proyecto-metagenómico" id="toc-cómo-abordar-proyecto-metagenómico" class="nav-link" data-scroll-target="#cómo-abordar-proyecto-metagenómico">04. ¿Cómo abordar Proyecto Metagenómico?</a></li>
+  <li><a href="#visual-studio-code-conexión-al-servidor-de-prácticas" id="toc-visual-studio-code-conexión-al-servidor-de-prácticas" class="nav-link active" data-scroll-target="#visual-studio-code-conexión-al-servidor-de-prácticas">01. Visual Studio Code: conexión al servidor de prácticas</a>
+  <ul class="collapse">
+  <li><a href="#qué-aprenderemos" id="toc-qué-aprenderemos" class="nav-link" data-scroll-target="#qué-aprenderemos">¿Qué aprenderemos?</a></li>
+  <li><a href="#nuestro-entorno-de-trabajo" id="toc-nuestro-entorno-de-trabajo" class="nav-link" data-scroll-target="#nuestro-entorno-de-trabajo">01.1 Nuestro entorno de trabajo</a></li>
+  <li><a href="#preparación-antes-de-conectarte" id="toc-preparación-antes-de-conectarte" class="nav-link" data-scroll-target="#preparación-antes-de-conectarte">01.2 Preparación: antes de conectarte</a></li>
+  <li><a href="#comprobar-la-conexión-ssh" id="toc-comprobar-la-conexión-ssh" class="nav-link" data-scroll-target="#comprobar-la-conexión-ssh">01.3 Comprobar la conexión SSH</a></li>
+  <li><a href="#conectarte-desde-vs-code" id="toc-conectarte-desde-vs-code" class="nav-link" data-scroll-target="#conectarte-desde-vs-code">01.4 Conectarte desde VS Code</a></li>
+  <li><a href="#abrir-la-carpeta-y-orientarte-en-la-terminal" id="toc-abrir-la-carpeta-y-orientarte-en-la-terminal" class="nav-link" data-scroll-target="#abrir-la-carpeta-y-orientarte-en-la-terminal">01.5 Abrir la carpeta y orientarte en la terminal</a></li>
+  <li><a href="#tu-primera-bitácora-en-una-carpeta-personal" id="toc-tu-primera-bitácora-en-una-carpeta-personal" class="nav-link" data-scroll-target="#tu-primera-bitácora-en-una-carpeta-personal">01.6 Tu primera bitácora (en una carpeta personal)</a></li>
+  <li><a href="#si-no-funciona-diagnóstico-sin-modificar-el-servidor" id="toc-si-no-funciona-diagnóstico-sin-modificar-el-servidor" class="nav-link" data-scroll-target="#si-no-funciona-diagnóstico-sin-modificar-el-servidor">01.7 Si no funciona: diagnóstico sin modificar el servidor</a></li>
+  <li><a href="#comprobación-y-discusión" id="toc-comprobación-y-discusión" class="nav-link" data-scroll-target="#comprobación-y-discusión">01.8 Comprobación y discusión</a></li>
+  <li><a href="#continuamos-con-el-flujo-de-reads2mags" id="toc-continuamos-con-el-flujo-de-reads2mags" class="nav-link" data-scroll-target="#continuamos-con-el-flujo-de-reads2mags">Continuamos con el flujo de <em>reads2mags</em></a></li>
+  </ul></li>
+  <li><a href="#organización-de-el-entorno-de-trabajo" id="toc-organización-de-el-entorno-de-trabajo" class="nav-link" data-scroll-target="#organización-de-el-entorno-de-trabajo">02. Organización de el entorno de trabajo</a></li>
+  <li><a href="#vamos-a-organizarnos" id="toc-vamos-a-organizarnos" class="nav-link" data-scroll-target="#vamos-a-organizarnos">03. Vamos a organizarnos</a></li>
+  <li><a href="#advertencias" id="toc-advertencias" class="nav-link" data-scroll-target="#advertencias">04. Advertencias</a></li>
+  <li><a href="#cómo-abordar-proyecto-metagenómico" id="toc-cómo-abordar-proyecto-metagenómico" class="nav-link" data-scroll-target="#cómo-abordar-proyecto-metagenómico">05. ¿Cómo abordar Proyecto Metagenómico?</a></li>
   </ul>
 </nav>
     </div>
@@ -216,8 +229,196 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="espacio-de-trabajo" class="level2">
-<h2 class="anchored" data-anchor-id="espacio-de-trabajo">01. Espacio de trabajo</h2>
+<section id="visual-studio-code-conexión-al-servidor-de-prácticas" class="level2">
+<h2 class="anchored" data-anchor-id="visual-studio-code-conexión-al-servidor-de-prácticas">01. Visual Studio Code: conexión al servidor de prácticas</h2>
+<blockquote class="blockquote">
+<p><strong>Duración sugerida:</strong> 45 minutos (10 min de introducción y 35 min de práctica).<br>
+</p>
+</blockquote>
+<section id="qué-aprenderemos" class="level3">
+<h3 class="anchored" data-anchor-id="qué-aprenderemos">¿Qué aprenderemos?</h3>
+<p>Al terminar esta actividad podrás:</p>
+<ol type="1">
+<li>Distinguir <strong>tu computadora</strong>, <strong>VS Code</strong> y <strong>el servidor</strong> donde están los datos y programas del curso.</li>
+<li>Abrir una sesión SSH desde Visual Studio Code, explorar archivos y utilizar una terminal remota.</li>
+<li>Registrar en una bitácora las comprobaciones mínimas de tu entorno de trabajo.</li>
+</ol>
+<p><strong>Pregunta guía:</strong> <em>¿dónde se ejecuta realmente un comando y cómo podemos comprobarlo?</em></p>
+</section>
+<section id="nuestro-entorno-de-trabajo" class="level3">
+<h3 class="anchored" data-anchor-id="nuestro-entorno-de-trabajo">01.1 Nuestro entorno de trabajo</h3>
+<p>En las siguientes prácticas utilizaremos lecturas metagenómicas del <strong>pozol</strong> para seguir el flujo que va del control de calidad al ensamblaje, la recuperación de MAGs y su interpretación. No necesitamos descargar los metagenomas a nuestras computadoras para analizarlos.</p>
+<pre class="text"><code>TU COMPUTADORA
+  Visual Studio Code (interfaz y editor)
+           |
+           | conexión SSH
+           v
+SERVIDOR DEL CURSO
+  archivos, terminal, herramientas y resultados</code></pre>
+<p><strong>Visual Studio Code (VS Code)</strong> es un editor de código con explorador de archivos y terminal integrada. La extensión <strong>Remote - SSH</strong> permite abrir una carpeta remota y trabajar con sus archivos desde la interfaz de nuestra computadora. No es lo mismo que el programa <strong>Visual Studio</strong>. Tampoco sustituye al servidor, a Linux ni a las herramientas bioinformáticas. <a href="https://code.visualstudio.com/docs/remote/ssh">Documentación oficial</a>.</p>
+</section>
+<section id="preparación-antes-de-conectarte" class="level3">
+<h3 class="anchored" data-anchor-id="preparación-antes-de-conectarte">01.2 Preparación: antes de conectarte</h3>
+<p>En tu computadora:</p>
+<ol type="1">
+<li>Instala <a href="https://code.visualstudio.com/download">Visual Studio Code</a> y ábrelo.</li>
+<li>Ve a <strong>Extensions / Extensiones</strong> (icono de cuatro bloques) y busca <strong>Remote - SSH</strong>. Instala la extensión publicada por <strong>Microsoft</strong> (identificador <code>ms-vscode-remote.remote-ssh</code>).</li>
+<li>Comprueba que tienes un cliente SSH: abre <strong>Terminal</strong> en macOS o Linux, o <strong>PowerShell</strong> en Windows, y escribe <code>ssh -V</code>.</li>
+<li>Ten a mano los <strong>datos de conexión asignados individualmente</strong> por el equipo docente (usuario, dirección del servidor y método de autenticación). Se enviarán por un canal privado; <strong>no están publicados en esta página</strong>.</li>
+</ol>
+<blockquote class="blockquote">
+<p><strong>Importante:</strong> no compartas contraseñas, llaves privadas ni capturas donde se vean credenciales. Si aún no tienes cuenta o acceso al servidor, sigue la demostración y avisa al equipo docente; no inventes una dirección ni uses la cuenta de otra persona.</p>
+</blockquote>
+</section>
+<section id="comprobar-la-conexión-ssh" class="level3">
+<h3 class="anchored" data-anchor-id="comprobar-la-conexión-ssh">01.3 Comprobar la conexión SSH</h3>
+<p><strong>Este primer comando se ejecuta en una terminal de tu propia computadora</strong>, no en la terminal de VS Code conectada al servidor:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> USUARIO@SERVIDOR</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Sustituye <code>USUARIO</code> y <code>SERVIDOR</code> por los datos que recibiste. Si se te proporcionó un puerto diferente al habitual, utiliza <code>ssh -p PUERTO USUARIO@SERVIDOR</code>.</p>
+<ul>
+<li>La primera vez podría aparecer un aviso sobre la <strong>huella digital (fingerprint)</strong> del servidor. Compárala con la que proporcione el equipo docente antes de aceptarla.</li>
+<li>Al escribir una contraseña, es normal que no aparezcan caracteres en pantalla.</li>
+<li>Si te conectaste correctamente, puedes cerrar esa primera sesión con <code>exit</code> y continuar en VS Code.</li>
+</ul>
+</section>
+<section id="conectarte-desde-vs-code" class="level3">
+<h3 class="anchored" data-anchor-id="conectarte-desde-vs-code">01.4 Conectarte desde VS Code</h3>
+<ol type="1">
+<li>Abre la <strong>Paleta de comandos</strong>: <code>F1</code> o <code>Ctrl + Shift + P</code> (Windows/Linux), <code>Cmd + Shift + P</code> (macOS).</li>
+<li>Escribe y selecciona <strong>Remote-SSH: Connect to Host…</strong>.</li>
+<li>Elige el servidor guardado o escribe <code>USUARIO@SERVIDOR</code> (los mismos datos de la prueba anterior).</li>
+<li>Completa la autenticación cuando VS Code lo solicite. La primera conexión puede tardar mientras configura los componentes remotos.</li>
+<li>Comprueba que la <strong>barra de estado</strong> identifica una conexión <strong>SSH</strong> al servidor previsto.</li>
+</ol>
+<p>Si aparece una ventana nueva, es normal. Lo esencial es que <strong>la sesión actual indique que estás conectado al host remoto</strong>.</p>
+</section>
+<section id="abrir-la-carpeta-y-orientarte-en-la-terminal" class="level3">
+<h3 class="anchored" data-anchor-id="abrir-la-carpeta-y-orientarte-en-la-terminal">01.5 Abrir la carpeta y orientarte en la terminal</h3>
+<p>Ya conectado al servidor, usa <strong>File / Archivo → Open Folder / Abrir carpeta</strong> y selecciona <strong>la ruta que indique el equipo docente</strong>. En algunos entornos del curso se ha utilizado <code>~/reads2mags_pozol</code>, pero <strong>esa ruta no está garantizada para todas las cuentas</strong>.</p>
+<p>Ahora abre <strong>Terminal → New Terminal / Nueva terminal</strong> y ejecuta estos comandos <strong>dentro de VS Code conectado por SSH</strong>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span>       <span class="co"># ¿Con qué cuenta entré?</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hostname</span>     <span class="co"># ¿En qué computadora se ejecutan mis comandos?</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span>          <span class="co"># ¿En qué directorio estoy?</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lah</span>      <span class="co"># ¿Qué archivos, tamaños y permisos puedo ver?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Comprueba tus respuestas:</strong> <code>hostname</code> debería corresponder al servidor del curso; <code>whoami</code>, a tu usuario asignado; y <code>pwd</code>, a tu carpeta actual. Una terminal <em>local</em> y una terminal <em>remota</em> pueden verse iguales: estos comandos permiten distinguirlas.</p>
+<p>Para identificar tipos de archivos del flujo metagenómico, revisa el listado que muestre el equipo:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Extensión</th>
+<th>¿Qué representa en este taller?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>.fastq</code> / <code>.fastq.gz</code></td>
+<td>Lecturas de secuenciación y sus calidades; pueden venir en pares R1/R2.</td>
+</tr>
+<tr class="even">
+<td><code>.fasta</code> / <code>.fa</code></td>
+<td>Secuencias, como contigs o genomas reconstruidos, sin valores de calidad por base.</td>
+</tr>
+<tr class="odd">
+<td><code>.tsv</code> / <code>.csv</code></td>
+<td>Tablas de resultados y metadatos.</td>
+</tr>
+<tr class="even">
+<td><code>.sh</code> / <code>.R</code> / <code>.Rmd</code></td>
+<td>Comandos, scripts o análisis documentados.</td>
+</tr>
+<tr class="odd">
+<td><code>.html</code></td>
+<td>Informes y reportes que podemos consultar desde el navegador.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>No abras ni copies FASTQ grandes sólo para comprobar que existen.</strong> Por ahora basta con reconocer el nombre y el tipo de archivo; el capítulo 03 explica cómo evaluar su calidad.</p>
+</section>
+<section id="tu-primera-bitácora-en-una-carpeta-personal" class="level3">
+<h3 class="anchored" data-anchor-id="tu-primera-bitácora-en-una-carpeta-personal">01.6 Tu primera bitácora (en una carpeta personal)</h3>
+<p>Una práctica reproducible necesita dejar constancia de lo que hicimos. <strong>No modifiques el proyecto original ni los resultados compartidos.</strong> Primero crea una carpeta en tu propio espacio de usuario:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$HOME</span><span class="st">/curso_metagenomica_2026/bitacora"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">"</span><span class="va">$HOME</span><span class="st">/curso_metagenomica_2026/bitacora"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> 00_entorno.md</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> 00_entorno.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Desde el explorador de VS Code, abre <code>00_entorno.md</code> y escribe una nota como ésta (sin incluir credenciales ni datos personales de otros participantes):</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Mi entorno de trabajo</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Fecha:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>¿VS Code está conectado al servidor?: Sí / No</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>¿Identifiqué mi carpeta de trabajo?: Sí / No</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>¿Puedo reconocer un archivo de datos y uno de resultados?: Sí / No</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Duda o problema que debo resolver:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Guarda el archivo (<code>Ctrl + S</code> o <code>Cmd + S</code>). El resultado de esta actividad es <strong>una bitácora breve que podrás seguir usando en las prácticas</strong>, no una copia de los datos originales.</p>
+</section>
+<section id="si-no-funciona-diagnóstico-sin-modificar-el-servidor" class="level3">
+<h3 class="anchored" data-anchor-id="si-no-funciona-diagnóstico-sin-modificar-el-servidor">01.7 Si no funciona: diagnóstico sin modificar el servidor</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Síntoma</th>
+<th>¿Qué comprobar primero?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>La terminal dice <code>ssh: command not found</code></td>
+<td>Estás en tu equipo local: revisa la instalación del cliente SSH.</td>
+</tr>
+<tr class="even">
+<td>No se puede localizar el host o expira la conexión</td>
+<td>Verifica dirección, conexión de red y si el equipo docente indicó utilizar VPN.</td>
+</tr>
+<tr class="odd">
+<td><code>Permission denied</code></td>
+<td>Revisa el usuario y el método de autenticación asignados; no publiques la contraseña.</td>
+</tr>
+<tr class="even">
+<td>VS Code se conecta, pero no abre la carpeta</td>
+<td>Confirma la ruta y los permisos de tu cuenta; no uses <code>sudo</code> ni cambies permisos de carpetas compartidas.</td>
+</tr>
+<tr class="odd">
+<td>VS Code falla, pero el comando <code>ssh</code> sí funciona</td>
+<td>Revisa <strong>View → Output → Remote - SSH</strong> y comparte sólo el error relevante, sin credenciales.</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p><strong>Alternativa durante la clase:</strong> si la extensión no conecta, puedes seguir temporalmente los ejemplos con una terminal SSH convencional. El equipo docente te ayudará a resolver el acceso gráfico después. No instales herramientas ni ejecutes trabajos pesados en el nodo de acceso por tu cuenta.</p>
+</blockquote>
+</section>
+<section id="comprobación-y-discusión" class="level3">
+<h3 class="anchored" data-anchor-id="comprobación-y-discusión">01.8 Comprobación y discusión</h3>
+<p><strong>Marca lo que lograste:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox">Abrí VS Code e instalé Remote - SSH.</label></li>
+<li><label><input type="checkbox">Identifiqué si mi terminal está trabajando localmente o en el servidor.</label></li>
+<li><label><input type="checkbox">Localicé una carpeta de práctica autorizada o documenté que necesito acceso.</label></li>
+<li><label><input type="checkbox">Creé una nota <code>00_entorno.md</code> en mi carpeta personal.</label></li>
+</ul>
+<p><strong>Preguntas para conversar (2–3 minutos):</strong></p>
+<ol type="1">
+<li>Si editas un script remoto desde VS Code, ¿dónde se guarda el archivo y dónde se ejecuta el comando de la terminal remota?</li>
+<li>¿Por qué conviene conservar las lecturas originales y trabajar en una carpeta separada?</li>
+<li>¿Cómo explicarías a otra persona qué archivos y decisiones necesitaría para reproducir tu análisis?</li>
+</ol>
+</section>
+<section id="continuamos-con-el-flujo-de-reads2mags" class="level3">
+<h3 class="anchored" data-anchor-id="continuamos-con-el-flujo-de-reads2mags">Continuamos con el flujo de <em>reads2mags</em></h3>
+<p>Con la conexión comprobada, seguiremos con <strong>FastQC, MultiQC, filtrado y remoción de secuencias del hospedador</strong> (capítulo 03). Después continuaremos con el <strong>ensamblaje y su evaluación</strong> (capítulo 04). Utiliza los archivos, comandos y resultados precomputados de esos capítulos: <strong>no necesitas recrearlos ni volver a descargar las bases de datos</strong>.</p>
+<p><strong>Referencias técnicas:</strong> <a href="https://code.visualstudio.com/docs/remote/ssh">VS Code: Remote Development using SSH</a> · <a href="https://code.visualstudio.com/docs/remote/ssh-tutorial">Tutorial oficial Remote - SSH</a>.</p>
+</section>
+</section>
+<section id="organización-de-el-entorno-de-trabajo" class="level2">
+<h2 class="anchored" data-anchor-id="organización-de-el-entorno-de-trabajo">02. Organización de el entorno de trabajo</h2>
 <p>Durante cualquier proyecto bioinformático es importante tener orden del directorio de trabajo y los procesos que se ejecutan.</p>
 <p>Una buena práctica es crear un directorio principal del proyecto que contenga subdirectorios de trabajo, la estructura puede ser la siguiente:</p>
 <p><strong><code>data</code></strong> Directorio donde se almacenan los datos que sirven como<br>
@@ -232,21 +433,21 @@ ejecución, estructura del repositorio, los resultados obtenidos y sus conclusio
 <hr>
 <p>Conozcamos el directorio en el que estamos situados</p>
 <p>copia el directorio completo</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> /home/dianao/reads2mags_pozol .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> /home/dianao/reads2mags_pozol .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Vamos a acceder al directorio de este proyecto</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> reads2mags_pozol</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> reads2mags_pozol</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Y ahora revisemos la estructura</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Entremos al directorio <code>data</code> para ver lo que contiene</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> data/</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> data/</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>¿Cuántas muestras hay?</p>
 <hr>
 <hr>
 </section>
 <section id="vamos-a-organizarnos" class="level2">
-<h2 class="anchored" data-anchor-id="vamos-a-organizarnos">02. Vamos a organizarnos</h2>
+<h2 class="anchored" data-anchor-id="vamos-a-organizarnos">03. Vamos a organizarnos</h2>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -268,7 +469,7 @@ Reglas del juego
 <hr>
 </section>
 <section id="advertencias" class="level2">
-<h2 class="anchored" data-anchor-id="advertencias">03. Advertencias</h2>
+<h2 class="anchored" data-anchor-id="advertencias">04. Advertencias</h2>
 <p align="justify">
 </p><p><font color="black">La presente práctica sólo es una representación del flujo de trabajo para el análisis metagenómico, sin embargo, <strong>no sustituye los manuales</strong> de cada programa y el flujo puede variar dependiendo del tipo de datos y pregunta de investigación, de hecho para fines del taller, con frecuencia se utilizan las líneas de comando más simples para eficientar tiempo y recursos, tómalo en cuenta.</font></p>
 <p></p>
@@ -301,7 +502,7 @@ Important
 </div>
 </section>
 <section id="cómo-abordar-proyecto-metagenómico" class="level2">
-<h2 class="anchored" data-anchor-id="cómo-abordar-proyecto-metagenómico">04. ¿Cómo abordar Proyecto Metagenómico?</h2>
+<h2 class="anchored" data-anchor-id="cómo-abordar-proyecto-metagenómico">05. ¿Cómo abordar Proyecto Metagenómico?</h2>
 <p>En los proyectos metagenómicos el diseño experimental y el procesamiento de los datos es muy importante. El procesamiento puede abordarse de dos maneras diferentes, durante este taller veremos la forma más básica y durante la segunda parte veremos la forma avanzada.</p>
 <p><img src="images/clipboard-744435939.png" class="img-fluid"></p>
 

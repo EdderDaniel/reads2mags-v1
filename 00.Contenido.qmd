@@ -49,7 +49,7 @@ Este es el programa del taller **De lecturas a MAGs**. Está diseñado para que 
 |  | 15:45–16:00 | ☕**Refrigerio** | Descanso |
 |  | 16:00–17:00 | RbiMs: del KO a la comparación funcional | Teoria + práctica |
 
-## Día 4 · Taxonomía, estadistica y análisis global
+## Día 4 · Taxonomía, filogenómica y análisis global
 
 | Jornada | Hora | Tema | Modalidad |
 |------------------|------------------|------------------|------------------|
@@ -64,20 +64,18 @@ Este es el programa del taller **De lecturas a MAGs**. Está diseñado para que 
 |  | 15:45–16:00 | ☕**Refrigerio** | Descanso |
 |  | 16:00–17:00 | Composición, matriz de distancias y ordenación | Teoria + práctica |
 
-## Día 5 · Caso de estudio
+## Día 5 · Ejercicio de integración
 
 | Jornada | Hora | Tema | Modalidad |
 |------------------|------------------|------------------|------------------|
 | Mañana | 9:00–10:00 | Inferencia y conclusión ecológica de Baxter | Teoria + práctica |
-|  | 10:00–10:45 |  |  |
+|  | 10:00–10:45 | Ejercicio de integración | Práctica |
 |  | 10:45-11:00 | ☕ **Refrigerio** | Descanso |
-|  | 11:00–12:00 |  |  |
-| Tarde | 12:00–13:00 |  |  |
+|  | 11:00–13:00 | Ejercicio de integración | Práctica |
 | Almuerzo | 13:00–14:00 | 🍽️ **Almuerzo** | Descanso |
-|  | 14:00–15:00 |  |  |
-|  | 15:00–15:45 |  |  |
+|  | 14:00–15:45 | Ejercicio de integración | Práctica |
 |  | 15:45–16:00 | ☕**Refrigerio** | Descanso |
-|  | 16:00–17:00 |  |  |
+|  | 16:00–17:00 | FIN DEL CURSO | :) |
 
 : {.striped .hover tbl-colwidths="\[15,18,52,15\]"}
 

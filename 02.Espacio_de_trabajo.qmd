@@ -2,7 +2,157 @@
 title: "00. Preparación del proyecto"
 ---
 
-## 01. Espacio de trabajo
+## 01. Visual Studio Code: conexión al servidor de prácticas
+
+> **Duración sugerida:** 45 minutos (10 min de introducción y 35 min de práctica).\
+
+### ¿Qué aprenderemos?
+
+Al terminar esta actividad podrás:
+
+1.  Distinguir **tu computadora**, **VS Code** y **el servidor** donde están los datos y programas del curso.
+2.  Abrir una sesión SSH desde Visual Studio Code, explorar archivos y utilizar una terminal remota.
+3.  Registrar en una bitácora las comprobaciones mínimas de tu entorno de trabajo.
+
+**Pregunta guía:** *¿dónde se ejecuta realmente un comando y cómo podemos comprobarlo?*
+
+### 01.1 Nuestro entorno de trabajo
+
+En las siguientes prácticas utilizaremos lecturas metagenómicas del **pozol** para seguir el flujo que va del control de calidad al ensamblaje, la recuperación de MAGs y su interpretación. No necesitamos descargar los metagenomas a nuestras computadoras para analizarlos.
+
+``` text
+TU COMPUTADORA
+  Visual Studio Code (interfaz y editor)
+           |
+           | conexión SSH
+           v
+SERVIDOR DEL CURSO
+  archivos, terminal, herramientas y resultados
+```
+
+**Visual Studio Code (VS Code)** es un editor de código con explorador de archivos y terminal integrada. La extensión **Remote - SSH** permite abrir una carpeta remota y trabajar con sus archivos desde la interfaz de nuestra computadora. No es lo mismo que el programa **Visual Studio**. Tampoco sustituye al servidor, a Linux ni a las herramientas bioinformáticas. [Documentación oficial](https://code.visualstudio.com/docs/remote/ssh).
+
+### 01.2 Preparación: antes de conectarte
+
+En tu computadora:
+
+1.  Instala [Visual Studio Code](https://code.visualstudio.com/download) y ábrelo.
+2.  Ve a **Extensions / Extensiones** (icono de cuatro bloques) y busca **Remote - SSH**. Instala la extensión publicada por **Microsoft** (identificador `ms-vscode-remote.remote-ssh`).
+3.  Comprueba que tienes un cliente SSH: abre **Terminal** en macOS o Linux, o **PowerShell** en Windows, y escribe `ssh -V`.
+4.  Ten a mano los **datos de conexión asignados individualmente** por el equipo docente (usuario, dirección del servidor y método de autenticación). Se enviarán por un canal privado; **no están publicados en esta página**.
+
+> **Importante:** no compartas contraseñas, llaves privadas ni capturas donde se vean credenciales. Si aún no tienes cuenta o acceso al servidor, sigue la demostración y avisa al equipo docente; no inventes una dirección ni uses la cuenta de otra persona.
+
+### 01.3 Comprobar la conexión SSH
+
+**Este primer comando se ejecuta en una terminal de tu propia computadora**, no en la terminal de VS Code conectada al servidor:
+
+``` bash
+ssh USUARIO@SERVIDOR
+```
+
+Sustituye `USUARIO` y `SERVIDOR` por los datos que recibiste. Si se te proporcionó un puerto diferente al habitual, utiliza `ssh -p PUERTO USUARIO@SERVIDOR`.
+
+-   La primera vez podría aparecer un aviso sobre la **huella digital (fingerprint)** del servidor. Compárala con la que proporcione el equipo docente antes de aceptarla.
+-   Al escribir una contraseña, es normal que no aparezcan caracteres en pantalla.
+-   Si te conectaste correctamente, puedes cerrar esa primera sesión con `exit` y continuar en VS Code.
+
+### 01.4 Conectarte desde VS Code
+
+1.  Abre la **Paleta de comandos**: `F1` o `Ctrl + Shift + P` (Windows/Linux), `Cmd + Shift + P` (macOS).
+2.  Escribe y selecciona **Remote-SSH: Connect to Host…**.
+3.  Elige el servidor guardado o escribe `USUARIO@SERVIDOR` (los mismos datos de la prueba anterior).
+4.  Completa la autenticación cuando VS Code lo solicite. La primera conexión puede tardar mientras configura los componentes remotos.
+5.  Comprueba que la **barra de estado** identifica una conexión **SSH** al servidor previsto.
+
+Si aparece una ventana nueva, es normal. Lo esencial es que **la sesión actual indique que estás conectado al host remoto**.
+
+### 01.5 Abrir la carpeta y orientarte en la terminal
+
+Ya conectado al servidor, usa **File / Archivo → Open Folder / Abrir carpeta** y selecciona **la ruta que indique el equipo docente**. En algunos entornos del curso se ha utilizado `~/reads2mags_pozol`, pero **esa ruta no está garantizada para todas las cuentas**.
+
+Ahora abre **Terminal → New Terminal / Nueva terminal** y ejecuta estos comandos **dentro de VS Code conectado por SSH**:
+
+``` bash
+whoami       # ¿Con qué cuenta entré?
+hostname     # ¿En qué computadora se ejecutan mis comandos?
+pwd          # ¿En qué directorio estoy?
+ls -lah      # ¿Qué archivos, tamaños y permisos puedo ver?
+```
+
+**Comprueba tus respuestas:** `hostname` debería corresponder al servidor del curso; `whoami`, a tu usuario asignado; y `pwd`, a tu carpeta actual. Una terminal *local* y una terminal *remota* pueden verse iguales: estos comandos permiten distinguirlas.
+
+Para identificar tipos de archivos del flujo metagenómico, revisa el listado que muestre el equipo:
+
+| Extensión | ¿Qué representa en este taller? |
+|------------------------------------|------------------------------------|
+| `.fastq` / `.fastq.gz` | Lecturas de secuenciación y sus calidades; pueden venir en pares R1/R2. |
+| `.fasta` / `.fa` | Secuencias, como contigs o genomas reconstruidos, sin valores de calidad por base. |
+| `.tsv` / `.csv` | Tablas de resultados y metadatos. |
+| `.sh` / `.R` / `.Rmd` | Comandos, scripts o análisis documentados. |
+| `.html` | Informes y reportes que podemos consultar desde el navegador. |
+
+**No abras ni copies FASTQ grandes sólo para comprobar que existen.** Por ahora basta con reconocer el nombre y el tipo de archivo; el capítulo 03 explica cómo evaluar su calidad.
+
+### 01.6 Tu primera bitácora (en una carpeta personal)
+
+Una práctica reproducible necesita dejar constancia de lo que hicimos. **No modifiques el proyecto original ni los resultados compartidos.** Primero crea una carpeta en tu propio espacio de usuario:
+
+``` bash
+mkdir -p "$HOME/curso_metagenomica_2026/bitacora"
+cd "$HOME/curso_metagenomica_2026/bitacora"
+touch 00_entorno.md
+ls -lh 00_entorno.md
+```
+
+Desde el explorador de VS Code, abre `00_entorno.md` y escribe una nota como ésta (sin incluir credenciales ni datos personales de otros participantes):
+
+``` markdown
+# Mi entorno de trabajo
+
+- Fecha:
+- ¿VS Code está conectado al servidor?: Sí / No
+- ¿Identifiqué mi carpeta de trabajo?: Sí / No
+- ¿Puedo reconocer un archivo de datos y uno de resultados?: Sí / No
+- Duda o problema que debo resolver:
+```
+
+Guarda el archivo (`Ctrl + S` o `Cmd + S`). El resultado de esta actividad es **una bitácora breve que podrás seguir usando en las prácticas**, no una copia de los datos originales.
+
+### 01.7 Si no funciona: diagnóstico sin modificar el servidor
+
+| Síntoma | ¿Qué comprobar primero? |
+|------------------------------------|------------------------------------|
+| La terminal dice `ssh: command not found` | Estás en tu equipo local: revisa la instalación del cliente SSH. |
+| No se puede localizar el host o expira la conexión | Verifica dirección, conexión de red y si el equipo docente indicó utilizar VPN. |
+| `Permission denied` | Revisa el usuario y el método de autenticación asignados; no publiques la contraseña. |
+| VS Code se conecta, pero no abre la carpeta | Confirma la ruta y los permisos de tu cuenta; no uses `sudo` ni cambies permisos de carpetas compartidas. |
+| VS Code falla, pero el comando `ssh` sí funciona | Revisa **View → Output → Remote - SSH** y comparte sólo el error relevante, sin credenciales. |
+
+> **Alternativa durante la clase:** si la extensión no conecta, puedes seguir temporalmente los ejemplos con una terminal SSH convencional. El equipo docente te ayudará a resolver el acceso gráfico después. No instales herramientas ni ejecutes trabajos pesados en el nodo de acceso por tu cuenta.
+
+### 01.8 Comprobación y discusión
+
+**Marca lo que lograste:**
+
+-   [ ] Abrí VS Code e instalé Remote - SSH.
+-   [ ] Identifiqué si mi terminal está trabajando localmente o en el servidor.
+-   [ ] Localicé una carpeta de práctica autorizada o documenté que necesito acceso.
+-   [ ] Creé una nota `00_entorno.md` en mi carpeta personal.
+
+**Preguntas para conversar (2–3 minutos):**
+
+1.  Si editas un script remoto desde VS Code, ¿dónde se guarda el archivo y dónde se ejecuta el comando de la terminal remota?
+2.  ¿Por qué conviene conservar las lecturas originales y trabajar en una carpeta separada?
+3.  ¿Cómo explicarías a otra persona qué archivos y decisiones necesitaría para reproducir tu análisis?
+
+### Continuamos con el flujo de *reads2mags*
+
+Con la conexión comprobada, seguiremos con **FastQC, MultiQC, filtrado y remoción de secuencias del hospedador** (capítulo 03). Después continuaremos con el **ensamblaje y su evaluación** (capítulo 04). Utiliza los archivos, comandos y resultados precomputados de esos capítulos: **no necesitas recrearlos ni volver a descargar las bases de datos**.
+
+**Referencias técnicas:** [VS Code: Remote Development using SSH](https://code.visualstudio.com/docs/remote/ssh) · [Tutorial oficial Remote - SSH](https://code.visualstudio.com/docs/remote/ssh-tutorial).
+
+## 02. Organización de el entorno de trabajo
 
 Durante cualquier proyecto bioinformático es importante tener orden del directorio de trabajo y los procesos que se ejecutan.
 
@@ -61,7 +211,7 @@ ls -lh
 
 ------------------------------------------------------------------------
 
-## 02. Vamos a organizarnos
+## 03. Vamos a organizarnos
 
 ::: callout-tip
 ## Reglas del juego
@@ -77,7 +227,7 @@ ls -lh
 
 ------------------------------------------------------------------------
 
-## 03. Advertencias
+## 04. Advertencias
 
 <p align="justify">
 
@@ -113,7 +263,7 @@ En cada paso:
 -   **Disfruta el proceso.**
 :::
 
-## 04. ¿Cómo abordar Proyecto Metagenómico?
+## 05. ¿Cómo abordar Proyecto Metagenómico?
 
 En los proyectos metagenómicos el diseño experimental y el procesamiento de los datos es muy importante. El procesamiento puede abordarse de dos maneras diferentes, durante este taller veremos la forma más básica y durante la segunda parte veremos la forma avanzada.
 
