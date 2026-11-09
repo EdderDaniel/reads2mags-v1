@@ -364,7 +364,7 @@ Partimos de lo que ya produjo el taller:
 
 Todo está en tu directorio, dentro de `results/19.gtdbtk_global/`: la carpeta `mags/`, `gtdbtk.bac120.summary.tsv` y `quality_report.tsv`.
 
--   **Ambientes.** Esta práctica usa dos ambientes de conda que ya están instalados en el servidor: `gtdbtk` (pasos 2 y 3) y `qiime2` (paso 4). Para R se usan los paquetes `tidyverse`, `ape` y `ggrepel`. En cada paso de terminal se indica cuándo activar y desactivar el ambiente.
+-   **Ambientes.** Esta práctica usa dos ambientes de conda que ya están instalados en el servidor: `gtdbtk` (pasos 2 y 3) y `qiime2` (paso 4). Para R se usan los paquetes `tidyverse` y `ape`. En cada paso de terminal se indica cuándo activar y desactivar el ambiente.
 
 ------------------------------------------------------------------------
 
@@ -439,11 +439,6 @@ Ya no necesitamos este ambiente, así que lo desactivamos:
 conda deactivate
 ```
 
-**Si algo falla** en este paso o en el anterior, copia el resultado precomputado:
-
-```{bash, eval=FALSE}
-cp -r RUTA_RESPALDO/22.gtdbtk_marcadores results/
-```
 
 ------------------------------------------------------------------------
 
@@ -487,11 +482,7 @@ Desactivamos el ambiente:
 conda deactivate
 ```
 
-**Si algo falla**, copia el resultado precomputado:
 
-```{bash, eval=FALSE}
-cp -r RUTA_RESPALDO/23.iqtree results/
-```
 
 ------------------------------------------------------------------------
 
@@ -591,9 +582,6 @@ Los 17 MAGs (`results/19.gtdbtk_global/mags/`) y las tablas `19.gtdbtk_global/gt
 
 `results/22.gtdbtk_marcadores/` (marcadores y alineamiento) y `results/23.iqtree/` (árbol y reporte de IQ-TREE).
 
-## Resultados precomputados de respaldo
-
-Para poder continuar aunque falle un paso, se entregan junto con el `.Rmd` los resultados ya calculados, con la misma estructura de `results/`: `22.gtdbtk_marcadores/` (marcadores y alineamiento) y `23.iqtree/` (árbol y reporte de IQ-TREE). En cada paso se indica cuándo copiarlos. Las tablas de `19.gtdbtk_global/` se incluyen para poder compilar el documento.
 
 ## Preguntas de interpretación
 
