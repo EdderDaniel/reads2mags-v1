@@ -404,17 +404,6 @@ Y la calidad de CheckM2: nombre del MAG, completitud y contaminación:
 cut -f1,2,3 results/19.gtdbtk_global/quality_report.tsv | column -t
 ```
 
-```{r}
-#| include: false
-library(tidyverse)
-library(ape)
-library(ggrepel)
-mk <- read_tsv("22.gtdbtk_marcadores/identify/gtdbtk.bac120.markers_summary.tsv") |>
-  select(Bin_name = name, Unicos = number_unique_genes, Multiples = number_multiple_genes)
-cal <- read_tsv("19.gtdbtk_global/quality_report.tsv") |>
-  select(Bin_name = Name, Completitud = Completeness, Contaminacion = Contamination)
-mk <- left_join(mk, cal, by = "Bin_name")
-```
 
 Un MAG con pocos de los 120 marcadores aporta poca información al árbol. Para ver cuáles son, comparamos los marcadores únicos de cada MAG con su completitud según CheckM2, que mide algo parecido con otro método. Esta es la gráfica, ya preparada:
 
@@ -507,6 +496,13 @@ cp -r RUTA_RESPALDO/23.iqtree results/
 ------------------------------------------------------------------------
 
 ### 03.5 Leer y enraizar el árbol
+
+Esta parte se hace en R, con `results` como directorio de trabajo. Cargamos los paquetes que vamos a usar:
+
+```{r}
+library(tidyverse)
+library(ape)
+```
 
 Vamos a leer el árbol en R. IQ-TREE lo entrega sin raíz; para leerlo en una dirección hay que enraizarlo con un grupo externo, y **enraizar no es trivial**. Aquí usamos MAG07 (*Acinetobacter*), el único MAG de otro filo (Pseudomonadota), porque es el único candidato claro dentro de este catálogo. En un proyecto propio conviene elegir el grupo externo con cuidado, y no tiene que ser uno de tus MAGs: también puedes buscar un genoma adecuado en bases de datos de genomas y añadirlo al análisis. Otra raíz cambia cómo se dibuja el árbol y quién parece divergir primero, pero las agrupaciones que veremos no cambian mientras la raíz quede fuera de ellas. La opción `edgelabel = TRUE` mantiene cada soporte en su nodo al enraizar:
 
