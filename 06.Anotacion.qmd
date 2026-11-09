@@ -1,5 +1,8 @@
 ---
 title: "Anotación"
+knitr:
+  opts_knit:
+    root.dir: "09_filogenomica_mags_entrega"
 ---
 
 ## 01. Asignación taxonómica
@@ -400,14 +403,14 @@ library(ggrepel)
 Ahora leemos el resumen de marcadores. Nos quedamos con el nombre del MAG y las dos columnas que usaremos:
 
 ```{r}
-mk <- read_tsv("09_filogenomica_mags_entrega/22.gtdbtk_marcadores/identify/gtdbtk.bac120.markers_summary.tsv") |>
+mk <- read_tsv("22.gtdbtk_marcadores/identify/gtdbtk.bac120.markers_summary.tsv") |>
   select(Bin_name = name, Unicos = number_unique_genes, Multiples = number_multiple_genes)
 ```
 
 Leemos también la calidad de CheckM2 (completitud y contaminación):
 
 ```{r}
-cal <- read_tsv("09_filogenomica_mags_entrega/19.gtdbtk_global/quality_report.tsv") |>
+cal <- read_tsv("19.gtdbtk_global/quality_report.tsv") |>
   select(Bin_name = Name, Completitud = Completeness, Contaminacion = Contamination)
 ```
 
@@ -519,14 +522,14 @@ cp -r RUTA_RESPALDO/23.iqtree results/
 Vamos a leer el árbol en R. IQ-TREE lo entrega sin raíz; para leerlo en una dirección hay que enraizarlo con un grupo externo, y **enraizar no es trivial**. Aquí usamos MAG07 (*Acinetobacter*), el único MAG de otro filo (Pseudomonadota), porque es el único candidato claro dentro de este catálogo. En un proyecto propio conviene elegir el grupo externo con cuidado, y no tiene que ser uno de tus MAGs: también puedes buscar un genoma adecuado en bases de datos de genomas y añadirlo al análisis. Otra raíz cambia cómo se dibuja el árbol y quién parece divergir primero, pero las agrupaciones que veremos no cambian mientras la raíz quede fuera de ellas. La opción `edgelabel = TRUE` mantiene cada soporte en su nodo al enraizar:
 
 ```{r}
-tr <- read.tree("09_filogenomica_mags_entrega/23.iqtree/bac120_17mags.treefile")
+tr <- read.tree("23.iqtree/bac120_17mags.treefile")
 tr <- root(tr, outgroup = "MAG07_09h", resolve.root = TRUE, edgelabel = TRUE)
 ```
 
 Ahora leemos la taxonomía de GTDB-Tk y separamos sus niveles:
 
 ```{r}
-tax <- read_tsv("09_filogenomica_mags_entrega/19.gtdbtk_global/gtdbtk.bac120.summary.tsv") |>
+tax <- read_tsv("19.gtdbtk_global/gtdbtk.bac120.summary.tsv") |>
   transmute(Bin_name = user_genome,
             Phylum = str_match(classification, "p__([^;]*)")[, 2],
             Order  = str_match(classification, "o__([^;]*)")[, 2],
