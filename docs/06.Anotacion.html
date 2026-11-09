@@ -217,7 +217,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#inputs" id="toc-inputs" class="nav-link" data-scroll-target="#inputs">Inputs</a></li>
   <li><a href="#outputs" id="toc-outputs" class="nav-link" data-scroll-target="#outputs">Outputs</a></li>
-  <li><a href="#resultados-precomputados-de-respaldo" id="toc-resultados-precomputados-de-respaldo" class="nav-link" data-scroll-target="#resultados-precomputados-de-respaldo">Resultados precomputados de respaldo</a></li>
   <li><a href="#preguntas-de-interpretación" id="toc-preguntas-de-interpretación" class="nav-link" data-scroll-target="#preguntas-de-interpretación">Preguntas de interpretación</a></li>
   <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias">Referencias</a></li>
   <li><a href="#viromas-genomas-virales-a-partir-de-metagenomas" id="toc-viromas-genomas-virales-a-partir-de-metagenomas" class="nav-link" data-scroll-target="#viromas-genomas-virales-a-partir-de-metagenomas">04. Viromas: genomas virales a partir de metagenomas</a>
@@ -641,7 +640,7 @@ Así se corre (no lo ejecutes)
 </ul>
 <p>Todo está en tu directorio, dentro de <code>results/19.gtdbtk_global/</code>: la carpeta <code>mags/</code>, <code>gtdbtk.bac120.summary.tsv</code> y <code>quality_report.tsv</code>.</p>
 <ul>
-<li><strong>Ambientes.</strong> Esta práctica usa dos ambientes de conda que ya están instalados en el servidor: <code>gtdbtk</code> (pasos 2 y 3) y <code>qiime2</code> (paso 4). Para R se usan los paquetes <code>tidyverse</code>, <code>ape</code> y <code>ggrepel</code>. En cada paso de terminal se indica cuándo activar y desactivar el ambiente.</li>
+<li><strong>Ambientes.</strong> Esta práctica usa dos ambientes de conda que ya están instalados en el servidor: <code>gtdbtk</code> (pasos 2 y 3) y <code>qiime2</code> (paso 4). Para R se usan los paquetes <code>tidyverse</code> y <code>ape</code>. En cada paso de terminal se indica cuándo activar y desactivar el ambiente.</li>
 </ul>
 <hr>
 </section>
@@ -665,118 +664,17 @@ Así se corre (no lo ejecutes)
 <li><code>--cpus</code>: hilos</li>
 </ul>
 <p>La salida que nos interesa es <code>identify/gtdbtk.bac120.markers_summary.tsv</code>, con una fila por MAG. <code>number_unique_genes</code> cuenta los marcadores encontrados una sola vez y <code>number_multiple_genes</code> los que aparecen con más de una copia.</p>
-<p>Esta parte se hace en R, igual que en las prácticas anteriores, con <code>results</code> como directorio de trabajo. Cargamos los paquetes que vamos a usar:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'tidyverse' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'ggplot2' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'tibble' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'tidyr' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'readr' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'purrr' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'dplyr' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'stringr' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'forcats' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'lubridate' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.2.0     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.2
-✔ ggplot2   3.5.2     ✔ tibble    3.2.1
-✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-✔ purrr     1.0.4     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'ape' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Adjuntando el paquete: 'ape'
-
-The following object is masked from 'package:dplyr':
-
-    where</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'ggrepel' was built under R version 4.4.3</code></pre>
-</div>
-</div>
-<p>Ahora leemos el resumen de marcadores. Nos quedamos con el nombre del MAG y las dos columnas que usaremos:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>mk <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"22.gtdbtk_marcadores/identify/gtdbtk.bac120.markers_summary.tsv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">Bin_name =</span> name, <span class="at">Unicos =</span> number_unique_genes, <span class="at">Multiples =</span> number_multiple_genes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 17 Columns: 9
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: "\t"
-chr (4): name, list_unique_genes, list_multiple_genes, list_missing_genes
-dbl (4): number_unique_genes, number_multiple_genes, number_multiple_unique_...
-lgl (1): list_multiple_unique_genes
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-</div>
-<p>Leemos también la calidad de CheckM2 (completitud y contaminación):</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>cal <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"19.gtdbtk_global/quality_report.tsv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">Bin_name =</span> Name, <span class="at">Completitud =</span> Completeness, <span class="at">Contaminacion =</span> Contamination)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 17 Columns: 14
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: "\t"
-chr  (3): Name, Completeness_Model_Used, Additional_Notes
-dbl (11): Completeness, Contamination, Translation_Table_Used, Coding_Densit...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-</div>
-<p>Unimos las dos tablas por el nombre del MAG:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>mk <span class="ot">&lt;-</span> <span class="fu">left_join</span>(mk, cal, <span class="at">by =</span> <span class="st">"Bin_name"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Un MAG con pocos de los 120 marcadores aporta poca información al árbol. Para ver cuáles son, comparamos los marcadores únicos de cada MAG con su completitud según CheckM2, que mide algo parecido con otro método:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mk, <span class="fu">aes</span>(Completitud, Unicos, <span class="at">label =</span> Bin_name)) <span class="sc">+</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_text_repel</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Completitud CheckM2 (%)"</span>, <span class="at">y =</span> <span class="st">"Marcadores bac120 únicos (de 120)"</span>) <span class="sc">+</span></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
+<p>Para ver las tablas en la terminal (desde <code>~/reads2mags_pozol</code>), primero la de marcadores. Las columnas son el nombre del MAG, los marcadores únicos y los marcadores con más de una copia:</p>
+<div class="sourceCode" id="cbm1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cbm1-1"><a href="#cbm1-1" aria-hidden="true" tabindex="-1"></a>cut -f1,2,3 results/22.gtdbtk_marcadores/identify/gtdbtk.bac120.markers_summary.tsv | column -t</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Y la calidad de CheckM2: nombre del MAG, completitud y contaminación:</p>
+<div class="sourceCode" id="cbm2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cbm2-1"><a href="#cbm2-1" aria-hidden="true" tabindex="-1"></a>cut -f1,2,3 results/19.gtdbtk_global/quality_report.tsv | column -t</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Un MAG con pocos de los 120 marcadores aporta poca información al árbol. Para ver cuáles son, comparamos los marcadores únicos de cada MAG con su completitud según CheckM2, que mide algo parecido con otro método. Esta es la gráfica, ya preparada:</p>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="06.Anotacion_files/figure-html/marcadores-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Figures/marcadores.png" class="img-fluid figure-img" style="width:70.0%" alt="Marcadores bac120 únicos contra completitud CheckM2"></p>
+<figcaption>Marcadores bac120 únicos contra completitud CheckM2</figcaption>
 </figure>
 </div>
-</div>
-</div>
-<p>El resultado esperado es la gráfica de arriba. Si tu sesión de R no muestra gráficos (por ejemplo, si trabajas en la terminal del servidor), guárdala con <code>ggsave("marcadores.png", width = 7, height = 5)</code> y descárgala a tu computadora para verla.</p>
 <p><strong>Explora:</strong></p>
 <ol type="1">
 <li>¿Los dos valores van de la mano?</li>
@@ -802,10 +700,6 @@ dbl (11): Completeness, Contamination, Translation_Table_Used, Coding_Densit...
 <p>Ya no necesitamos este ambiente, así que lo desactivamos:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> deactivate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><strong>Si algo falla</strong> en este paso o en el anterior, copia el resultado precomputado:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> RUTA_RESPALDO/22.gtdbtk_marcadores results/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
 </section>
@@ -841,14 +735,13 @@ dbl (11): Completeness, Contamination, Translation_Table_Used, Coding_Densit...
 <div class="cell">
 <div class="sourceCode cell-code" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> deactivate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Si algo falla</strong>, copia el resultado precomputado:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> RUTA_RESPALDO/23.iqtree results/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <hr>
 </section>
 <section id="leer-y-enraizar-el-árbol" class="level3">
 <h3 class="anchored" data-anchor-id="leer-y-enraizar-el-árbol">03.5 Leer y enraizar el árbol</h3>
+<p>Esta parte se hace en R, con <code>results</code> como directorio de trabajo. Cargamos los paquetes que vamos a usar:</p>
+<div class="sourceCode" id="cbl1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cbl1-1"><a href="#cbl1-1" aria-hidden="true" tabindex="-1"></a>library(tidyverse)</span>
+<span id="cbl1-2"><a href="#cbl1-2" aria-hidden="true" tabindex="-1"></a>library(ape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Vamos a leer el árbol en R. IQ-TREE lo entrega sin raíz; para leerlo en una dirección hay que enraizarlo con un grupo externo, y <strong>enraizar no es trivial</strong>. Aquí usamos MAG07 (<em>Acinetobacter</em>), el único MAG de otro filo (Pseudomonadota), porque es el único candidato claro dentro de este catálogo. En un proyecto propio conviene elegir el grupo externo con cuidado, y no tiene que ser uno de tus MAGs: también puedes buscar un genoma adecuado en bases de datos de genomas y añadirlo al análisis. Otra raíz cambia cómo se dibuja el árbol y quién parece divergir primero, pero las agrupaciones que veremos no cambian mientras la raíz quede fuera de ellas. La opción <code>edgelabel = TRUE</code> mantiene cada soporte en su nodo al enraizar:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>tr <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="st">"23.iqtree/bac120_17mags.treefile"</span>)</span>
@@ -952,10 +845,6 @@ chr (20): user_genome, classification, closest_genome_reference, closest_gen...
 <section id="outputs" class="level2">
 <h2 class="anchored" data-anchor-id="outputs">Outputs</h2>
 <p><code>results/22.gtdbtk_marcadores/</code> (marcadores y alineamiento) y <code>results/23.iqtree/</code> (árbol y reporte de IQ-TREE).</p>
-</section>
-<section id="resultados-precomputados-de-respaldo" class="level2">
-<h2 class="anchored" data-anchor-id="resultados-precomputados-de-respaldo">Resultados precomputados de respaldo</h2>
-<p>Para poder continuar aunque falle un paso, se entregan junto con el <code>.Rmd</code> los resultados ya calculados, con la misma estructura de <code>results/</code>: <code>22.gtdbtk_marcadores/</code> (marcadores y alineamiento) y <code>23.iqtree/</code> (árbol y reporte de IQ-TREE). En cada paso se indica cuándo copiarlos. Las tablas de <code>19.gtdbtk_global/</code> se incluyen para poder compilar el documento.</p>
 </section>
 <section id="preguntas-de-interpretación" class="level2">
 <h2 class="anchored" data-anchor-id="preguntas-de-interpretación">Preguntas de interpretación</h2>
