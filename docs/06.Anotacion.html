@@ -729,7 +729,7 @@ The following object is masked from 'package:dplyr':
 </div>
 <p>Ahora leemos el resumen de marcadores. Nos quedamos con el nombre del MAG y las dos columnas que usaremos:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>mk <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"09_filogenomica_mags_entrega/22.gtdbtk_marcadores/identify/gtdbtk.bac120.markers_summary.tsv"</span>) <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>mk <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"22.gtdbtk_marcadores/identify/gtdbtk.bac120.markers_summary.tsv"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">Bin_name =</span> name, <span class="at">Unicos =</span> number_unique_genes, <span class="at">Multiples =</span> number_multiple_genes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 17 Columns: 9
@@ -745,7 +745,7 @@ lgl (1): list_multiple_unique_genes
 </div>
 <p>Leemos también la calidad de CheckM2 (completitud y contaminación):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>cal <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"09_filogenomica_mags_entrega/19.gtdbtk_global/quality_report.tsv"</span>) <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>cal <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"19.gtdbtk_global/quality_report.tsv"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">Bin_name =</span> Name, <span class="at">Completitud =</span> Completeness, <span class="at">Contaminacion =</span> Contamination)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 17 Columns: 14
@@ -851,12 +851,12 @@ dbl (11): Completeness, Contamination, Translation_Table_Used, Coding_Densit...
 <h3 class="anchored" data-anchor-id="leer-y-enraizar-el-árbol">03.5 Leer y enraizar el árbol</h3>
 <p>Vamos a leer el árbol en R. IQ-TREE lo entrega sin raíz; para leerlo en una dirección hay que enraizarlo con un grupo externo, y <strong>enraizar no es trivial</strong>. Aquí usamos MAG07 (<em>Acinetobacter</em>), el único MAG de otro filo (Pseudomonadota), porque es el único candidato claro dentro de este catálogo. En un proyecto propio conviene elegir el grupo externo con cuidado, y no tiene que ser uno de tus MAGs: también puedes buscar un genoma adecuado en bases de datos de genomas y añadirlo al análisis. Otra raíz cambia cómo se dibuja el árbol y quién parece divergir primero, pero las agrupaciones que veremos no cambian mientras la raíz quede fuera de ellas. La opción <code>edgelabel = TRUE</code> mantiene cada soporte en su nodo al enraizar:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>tr <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="st">"09_filogenomica_mags_entrega/23.iqtree/bac120_17mags.treefile"</span>)</span>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>tr <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="st">"23.iqtree/bac120_17mags.treefile"</span>)</span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>tr <span class="ot">&lt;-</span> <span class="fu">root</span>(tr, <span class="at">outgroup =</span> <span class="st">"MAG07_09h"</span>, <span class="at">resolve.root =</span> <span class="cn">TRUE</span>, <span class="at">edgelabel =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Ahora leemos la taxonomía de GTDB-Tk y separamos sus niveles:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>tax <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"09_filogenomica_mags_entrega/19.gtdbtk_global/gtdbtk.bac120.summary.tsv"</span>) <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>tax <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"19.gtdbtk_global/gtdbtk.bac120.summary.tsv"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">Bin_name =</span> user_genome,</span>
 <span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">Phylum =</span> <span class="fu">str_match</span>(classification, <span class="st">"p__([^;]*)"</span>)[, <span class="dv">2</span>],</span>
 <span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">Order  =</span> <span class="fu">str_match</span>(classification, <span class="st">"o__([^;]*)"</span>)[, <span class="dv">2</span>],</span>
