@@ -392,44 +392,33 @@ gtdbtk identify --genome_dir results/19.gtdbtk_global/mags \
 
 La salida que nos interesa es `identify/gtdbtk.bac120.markers_summary.tsv`, con una fila por MAG. `number_unique_genes` cuenta los marcadores encontrados una sola vez y `number_multiple_genes` los que aparecen con más de una copia.
 
-Esta parte se hace en R, igual que en las prácticas anteriores, con `results` como directorio de trabajo. Cargamos los paquetes que vamos a usar:
+Para ver las tablas en la terminal (desde `~/reads2mags_pozol`), primero la de marcadores. Las columnas son el nombre del MAG, los marcadores únicos y los marcadores con más de una copia:
+
+``` bash
+cut -f1,2,3 results/22.gtdbtk_marcadores/identify/gtdbtk.bac120.markers_summary.tsv | column -t
+```
+
+Y la calidad de CheckM2: nombre del MAG, completitud y contaminación:
+
+``` bash
+cut -f1,2,3 results/19.gtdbtk_global/quality_report.tsv | column -t
+```
 
 ```{r}
+#| include: false
 library(tidyverse)
 library(ape)
 library(ggrepel)
-```
-
-Ahora leemos el resumen de marcadores. Nos quedamos con el nombre del MAG y las dos columnas que usaremos:
-
-```{r}
 mk <- read_tsv("22.gtdbtk_marcadores/identify/gtdbtk.bac120.markers_summary.tsv") |>
   select(Bin_name = name, Unicos = number_unique_genes, Multiples = number_multiple_genes)
-```
-
-Leemos también la calidad de CheckM2 (completitud y contaminación):
-
-```{r}
 cal <- read_tsv("19.gtdbtk_global/quality_report.tsv") |>
   select(Bin_name = Name, Completitud = Completeness, Contaminacion = Contamination)
-```
-
-Unimos las dos tablas por el nombre del MAG:
-
-```{r}
 mk <- left_join(mk, cal, by = "Bin_name")
 ```
 
-Un MAG con pocos de los 120 marcadores aporta poca información al árbol. Para ver cuáles son, comparamos los marcadores únicos de cada MAG con su completitud según CheckM2, que mide algo parecido con otro método:
+Un MAG con pocos de los 120 marcadores aporta poca información al árbol. Para ver cuáles son, comparamos los marcadores únicos de cada MAG con su completitud según CheckM2, que mide algo parecido con otro método. Esta es la gráfica, ya preparada:
 
-```{r marcadores}
-ggplot(mk, aes(Completitud, Unicos, label = Bin_name)) +
-  geom_point() + geom_text_repel(size = 3) +
-  labs(x = "Completitud CheckM2 (%)", y = "Marcadores bac120 únicos (de 120)") +
-  theme_minimal()
-```
-
-El resultado esperado es la gráfica de arriba. Si tu sesión de R no muestra gráficos (por ejemplo, si trabajas en la terminal del servidor), guárdala con `ggsave("marcadores.png", width = 7, height = 5)` y descárgala a tu computadora para verla.
+![Marcadores bac120 únicos contra completitud CheckM2](Figures/marcadores.png){fig-align="center" width="70%"}
 
 **Explora:**
 
