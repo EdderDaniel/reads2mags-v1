@@ -603,6 +603,7 @@ Así se corre (no lo ejecutes)
 <p>Si te interesa buscar BGCs en los genomas de tu interés puedes aprender siguiendo el flujo de análisis propuestos en la lección de <a href="https://carpentries-incubator.github.io/genome-mining/">Minería Genómica</a> de Software Carpentry.</p>
 </section>
 </section>
+
 <section id="filogenómica" class="level2">
 <h2 class="anchored" data-anchor-id="filogenómica">03. Filogenómica</h2>
 <p>La sección anterior termina con una tabla de taxonomía para cada MAG del pozol. Este módulo va un paso más allá: construye un árbol con los mismos genes marcadores que usa GTDB-Tk, lo lee de forma crítica y lo compara con esa taxonomía.</p>
@@ -640,7 +641,7 @@ Así se corre (no lo ejecutes)
 </ul>
 <p>Todo está en tu directorio, dentro de <code>results/19.gtdbtk_global/</code>: la carpeta <code>mags/</code>, <code>gtdbtk.bac120.summary.tsv</code> y <code>quality_report.tsv</code>.</p>
 <ul>
-<li><strong>Ambientes.</strong> Esta práctica usa dos ambientes de conda que ya están instalados en el servidor: <code>gtdbtk</code> (pasos 2 y 3) y <code>qiime2</code> (paso 4). Para R se usan los paquetes <code>tidyverse</code> y <code>ape</code>. En cada paso de terminal se indica cuándo activar y desactivar el ambiente.</li>
+<li><strong>Ambientes.</strong> Esta práctica usa dos ambientes de conda que ya están instalados en el servidor: <code>gtdbtk</code> (pasos 2 y 3) y <code>qiime2</code> (pasos 4 a 6). El ambiente <code>qiime2</code> también trae R, con los paquetes <code>tidyverse</code> y <code>ape</code>. En cada paso de terminal se indica cuándo activar y desactivar el ambiente.</li>
 </ul>
 <hr>
 </section>
@@ -731,15 +732,15 @@ Así se corre (no lo ejecutes)
 <li><code>--prefix</code>: nombre base de las salidas</li>
 </ul>
 <p>Las salidas principales son <code>bac120_17mags.treefile</code> (el árbol con los soportes SH-aLRT/UFBoot en cada nodo) y <code>bac120_17mags.iqtree</code> (el reporte con el modelo y la verosimilitud). Con 4 hilos tarda unos 5 minutos (unos 3 de ellos en ModelFinder).</p>
-<p>Desactivamos el ambiente:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> deactivate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <hr>
 </section>
 <section id="leer-y-enraizar-el-árbol" class="level3">
 <h3 class="anchored" data-anchor-id="leer-y-enraizar-el-árbol">03.5 Leer y enraizar el árbol</h3>
-<p>Esta parte se hace en R, con <code>results</code> como directorio de trabajo. Cargamos los paquetes que vamos a usar:</p>
+<p>Esta parte se hace en R, con <code>results</code> como directorio de trabajo. Usamos otra vez el ambiente <code>qiime2</code>, que también trae R (si ya lo tienes activo, no pasa nada). Entramos a <code>results</code> y abrimos R:</p>
+<div class="sourceCode" id="cbr1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cbr1-1"><a href="#cbr1-1" aria-hidden="true" tabindex="-1"></a>conda activate qiime2</span>
+<span id="cbr1-2"><a href="#cbr1-2" aria-hidden="true" tabindex="-1"></a>cd results</span>
+<span id="cbr1-3"><a href="#cbr1-3" aria-hidden="true" tabindex="-1"></a>R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Cargamos los paquetes que vamos a usar:</p>
 <div class="sourceCode" id="cbl1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cbl1-1"><a href="#cbl1-1" aria-hidden="true" tabindex="-1"></a>library(tidyverse)</span>
 <span id="cbl1-2"><a href="#cbl1-2" aria-hidden="true" tabindex="-1"></a>library(ape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Vamos a leer el árbol en R. IQ-TREE lo entrega sin raíz; para leerlo en una dirección hay que enraizarlo con un grupo externo, y <strong>enraizar no es trivial</strong>. Aquí usamos MAG07 (<em>Acinetobacter</em>), el único MAG de otro filo (Pseudomonadota), porque es el único candidato claro dentro de este catálogo. En un proyecto propio conviene elegir el grupo externo con cuidado, y no tiene que ser uno de tus MAGs: también puedes buscar un genoma adecuado en bases de datos de genomas y añadirlo al análisis. Otra raíz cambia cómo se dibuja el árbol y quién parece divergir primero, pero las agrupaciones que veremos no cambian mientras la raíz quede fuera de ellas. La opción <code>edgelabel = TRUE</code> mantiene cada soporte en su nodo al enraizar:</p>
@@ -787,7 +788,17 @@ chr (20): user_genome, classification, closest_genome_reference, closest_gen...
 </div>
 </div>
 </div>
-<p>El resultado esperado es el árbol de arriba. Si tu sesión de R no muestra gráficos, ejecuta <code>png("arbol.png", width = 900, height = 700)</code> antes del bloque de código, y <code>dev.off()</code> al terminar, para guardarlo y descargarlo.</p>
+<p>El resultado esperado es el árbol de arriba. En la terminal del servidor no se abre ninguna ventana con la gráfica, así que hay que guardarla en un archivo. Corre el mismo bloque entre <code>png()</code> y <code>dev.off()</code>:</p>
+<div class="sourceCode" id="cbr4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cbr4-1"><a href="#cbr4-1" aria-hidden="true" tabindex="-1"></a>png("23.iqtree/arbol.png", width = 900, height = 700)</span>
+<span id="cbr4-2"><a href="#cbr4-2" aria-hidden="true" tabindex="-1"></a>arbol &lt;- tr</span>
+<span id="cbr4-3"><a href="#cbr4-3" aria-hidden="true" tabindex="-1"></a>arbol$tip.label &lt;- etiquetas</span>
+<span id="cbr4-4"><a href="#cbr4-4" aria-hidden="true" tabindex="-1"></a>plot(arbol, tip.color = colores[tx$Family], cex = 0.9, label.offset = 0.02)</span>
+<span id="cbr4-5"><a href="#cbr4-5" aria-hidden="true" tabindex="-1"></a>nodelabels(arbol$node.label, frame = "none", cex = 0.6, adj = c(1.1, -0.4), col = "grey30")</span>
+<span id="cbr4-6"><a href="#cbr4-6" aria-hidden="true" tabindex="-1"></a>legend("bottomleft", legend = names(colores), text.col = colores, bty = "n", cex = 0.8)</span>
+<span id="cbr4-7"><a href="#cbr4-7" aria-hidden="true" tabindex="-1"></a>add.scale.bar()</span>
+<span id="cbr4-8"><a href="#cbr4-8" aria-hidden="true" tabindex="-1"></a>dev.off()</span>
+<span id="cbr4-9"><a href="#cbr4-9" aria-hidden="true" tabindex="-1"></a>getwd()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>El árbol queda guardado como <code>23.iqtree/arbol.png</code>, dentro de la carpeta donde está trabajando R (<code>results</code>; <code>getwd()</code> te la muestra), junto a los demás archivos de IQ-TREE. Ábrelo desde el explorador de archivos de tu editor o descárgalo a tu computadora para verlo.</p>
 <p><strong>Explora:</strong> observa qué ramas son largas y qué nodos tienen soporte bajo. ¿Qué cambia si enraizas en otro MAG? Prueba con otro valor de <code>outgroup</code>.</p>
 <hr>
 </section>
@@ -824,6 +835,10 @@ chr (20): user_genome, classification, closest_genome_reference, closest_gen...
 </div>
 </div>
 <p><strong>Explora:</strong> revisa los soportes de esos grupos en la figura anterior.</p>
+<p>Para terminar, salimos de R (si pregunta si guardas la sesión, responde <code>n</code>), volvemos a la raíz del proyecto y desactivamos el ambiente:</p>
+<div class="sourceCode" id="cbr2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cbr2-1"><a href="#cbr2-1" aria-hidden="true" tabindex="-1"></a>q()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cbr3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cbr3-1"><a href="#cbr3-1" aria-hidden="true" tabindex="-1"></a>cd ..</span>
+<span id="cbr3-2"><a href="#cbr3-2" aria-hidden="true" tabindex="-1"></a>conda deactivate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 <section id="límites-de-la-inferencia" class="level3">
@@ -866,6 +881,7 @@ chr (20): user_genome, classification, closest_genome_reference, closest_gen...
 <p>Parks, D. H., Chaumeil, P.-A., Mussig, A. J., Rinke, C., Chuvochina, M., &amp; Hugenholtz, P. (2025). GTDB release 10: a complete and systematic taxonomy for 715 230 bacterial and 17 245 archaeal genomes. <em>Nucleic Acids Research</em>, 54(D1), D743–D754. <a href="https://doi.org/10.1093/nar/gkaf1040" class="uri">https://doi.org/10.1093/nar/gkaf1040</a></p>
 <p>Wong, T. K. F., Ly-Trong, N., Ren, H., Demotte, P., Baños, H., Roger, A. J., Susko, E., Bielow, C., De Maio, N., Goldman, N., et al.&nbsp;(2026). IQ-TREE 3: phylogenomic inference software using complex evolutionary models. <em>Molecular Biology and Evolution</em>, 43(5), msag117. <a href="https://doi.org/10.1093/molbev/msag117" class="uri">https://doi.org/10.1093/molbev/msag117</a></p>
 </section>
+
 <section id="viromas-genomas-virales-a-partir-de-metagenomas" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="viromas-genomas-virales-a-partir-de-metagenomas">04. Viromas: genomas virales a partir de metagenomas</h2>
 <p>Este módulo es un recorrido por el flujo de identificación, evaluación de calidad, agrupación y clasificación de virus, revsando sus genes auxiliares del metabolismo, a partir de los ensambles de los cuatro tiempos de fermentación (0, 9, 24 y 48 h).</p>
